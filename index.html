@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#173f37" />
+  <link rel="icon" type="image/png" href="assets/fusha-zone-favicon.png" />
+  <title>Fusha Zone | لتعليم العربية والقرآن الكريم</title>
+  <style>
+    :root {
+      --ink: #15352f;
+      --ink-2: #1d4b42;
+      --evergreen: #0e2a25;
+      --mint: #cfe5d9;
+      --sage: #95b9a7;
+      --paper: #fbfaf5;
+      --cream: #f4efdf;
+      --gold: #e3b65e;
+      --gold-dark: #b78123;
+      --clay: #d8785e;
+      --line: rgba(21, 53, 47, .13);
+      --muted: #637a72;
+      --white: #fff;
+      --shadow: 0 20px 60px rgba(14, 42, 37, .14);
+      --radius: 28px;
+      --display: "Noto Sans Arabic", "Tahoma", "Arial", sans-serif;
+      --body: "Noto Sans Arabic", "Tahoma", "Arial", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--body);
+      overflow-x: hidden;
+    }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+
+    .skip-link {
+      position: fixed; inset-inline-start: 12px; top: -60px; z-index: 2000;
+      background: var(--gold); color: var(--evergreen); padding: 10px 15px; border-radius: 12px; font-weight: 800;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* Header */
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(251,250,245,.84); backdrop-filter: blur(16px); border-bottom: 1px solid transparent; transition: .25s ease; }
+    .site-header.scrolled { border-color: var(--line); box-shadow: 0 6px 30px rgba(21,53,47,.06); }
+    .nav { height: 100px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { display: inline-flex; align-items: center; flex: 0 0 auto; min-width: 0; }
+    .brand-logo { display:block; width:auto; height:78px; max-width:min(35vw, 310px); object-fit:contain; object-position:center; }
+    .primary-nav { display: flex; align-items: center; gap: 19px; font-size: 13px; font-weight: 800; }
+    .primary-nav a { position: relative; padding: 9px 0; color: var(--ink); }
+    .primary-nav a::after { content: ""; position: absolute; bottom: 2px; inset-inline: 0; height: 2px; border-radius: 50px; background: var(--gold); transform: scaleX(0); transition: transform .25s ease; }
+    .primary-nav a:hover::after, .primary-nav a:focus-visible::after { transform: scaleX(1); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .lang-toggle, .menu-toggle { border: 1px solid var(--line); color: var(--ink); background: rgba(255,255,255,.58); border-radius: 13px; min-width: 42px; height: 40px; padding: 0 11px; font-size: 12px; font-weight: 900; transition: .2s; }
+    .lang-toggle:hover, .menu-toggle:hover { transform: translateY(-1px); border-color: var(--sage); background: var(--white); }
+    .nav-cta, .button-primary, .button-secondary { display: inline-flex; justify-content: center; align-items: center; gap: 8px; border-radius: 14px; padding: 12px 17px; font-size: 13px; font-weight: 900; transition: .23s ease; }
+    .nav-cta, .button-primary { border: 1px solid var(--gold); background: var(--gold); color: var(--evergreen); box-shadow: 0 10px 22px rgba(227,182,94,.22); }
+    .nav-cta:hover, .button-primary:hover { background: #f1c66f; transform: translateY(-2px); box-shadow: 0 14px 24px rgba(227,182,94,.3); }
+    .button-secondary { border: 1px solid rgba(255,255,255,.45); color: var(--white); background: rgba(255,255,255,.08); }
+    .button-secondary:hover { background: rgba(255,255,255,.16); transform: translateY(-2px); }
+    .menu-toggle { display: none; padding: 0; }
+    .menu-toggle svg { width: 20px; height: 20px; }
+
+    /* Hero */
+    .hero { position: relative; min-height: 670px; padding: 68px 0 88px; color: var(--white); background: radial-gradient(circle at 85% 17%, rgba(227,182,94,.19) 0, rgba(227,182,94,0) 23%), radial-gradient(circle at 8% 82%, rgba(157,201,181,.19) 0, rgba(157,201,181,0) 24%), var(--evergreen); isolation: isolate; overflow: hidden; }
+    .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; }
+    .hero::before { width: 530px; height: 530px; inset-inline-start: -215px; top: 70px; }
+    .hero::after { width: 790px; height: 790px; inset-inline-end: -355px; bottom: -480px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 58px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; color: #f6d48f; font-size: 12px; font-weight: 900; letter-spacing: .02em; }
+    .eyebrow::before { content: ""; width: 29px; height: 1px; background: currentColor; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 670px; margin-bottom: 18px; font-family: var(--display); font-size: clamp(38px, 5.25vw, 72px); line-height: 1.16; letter-spacing: -.035em; }
+    .hero h1 em { color: #f0c669; font-style: normal; }
+    .hero-copy { max-width: 650px; margin-bottom: 30px; color: rgba(255,255,255,.78); font-size: clamp(15px, 1.6vw, 18px); line-height: 2.05; }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 11px; margin-bottom: 42px; }
+    .mini-proof { display: flex; align-items: center; gap: 13px; color: rgba(255,255,255,.72); font-size: 12px; font-weight: 700; }
+    .proof-avatars { display: flex; direction: ltr; }
+    .proof-avatars b { display: grid; place-items: center; width: 29px; height: 29px; margin-left: -7px; border: 2px solid var(--evergreen); border-radius: 50%; background: #d6a85e; color: var(--evergreen); font-size: 10px; }
+    .proof-avatars b:nth-child(2) { background:#e7cda1; }
+    .proof-avatars b:nth-child(3) { background:#9fc4b3; }
+    .hero-art { position: relative; display: grid; place-items: center; min-height: 450px; }
+    .hero-orbit { position: absolute; width: min(42vw, 430px); aspect-ratio: 1; border: 1px solid rgba(255,255,255,.16); border-radius: 46% 54% 42% 58% / 45% 43% 57% 55%; transform: rotate(-15deg); }
+    .hero-orbit::before, .hero-orbit::after { content: ""; position: absolute; border-radius: inherit; border: 1px solid rgba(227,182,94,.28); }
+    .hero-orbit::before { inset: 24px; }
+    .hero-orbit::after { inset: 58px; border-color: rgba(157,201,181,.22); }
+    .letter-sculpture { position: relative; display: grid; place-items: center; width: min(25vw, 250px); aspect-ratio: 1; border-radius: 49% 51% 53% 47% / 39% 51% 49% 61%; background: linear-gradient(145deg,#f5d898,#c88f35); box-shadow: inset -20px -18px 40px rgba(91,53,7,.22), 0 25px 70px rgba(0,0,0,.26); transform: rotate(-8deg); }
+    .letter-sculpture span { transform: rotate(8deg) translateY(-8px); color: var(--evergreen); font-family: Georgia,"Times New Roman",serif; font-size: clamp(128px,16vw,220px); line-height: .7; text-shadow: 0 3px rgba(255,255,255,.28); }
+    .floating-card { position: absolute; padding: 13px 15px; color: var(--ink); background: rgba(255,255,255,.94); box-shadow: var(--shadow); border-radius: 16px; }
+    .floating-card strong { display:block; font-size: 17px; }
+    .floating-card small { display:block; margin-top: 2px; color:var(--muted); font-size:10px; font-weight:800; }
+    .card-top { top: 27px; inset-inline-start: -5px; animation: float 5s ease-in-out infinite; }
+    .card-bottom { bottom: 20px; inset-inline-end: -2px; animation: float 6s ease-in-out .65s infinite; }
+    .floating-card .badge-line { display: flex; align-items: center; gap: 7px; color: var(--ink); font-size:11px; font-weight:900; }
+    .floating-card .badge-dot { width: 8px; height: 8px; background: #57a982; border-radius:999px; box-shadow: 0 0 0 4px rgba(87,169,130,.15); }
+    @keyframes float { 50% { transform: translateY(-10px); } }
+
+    /* Shared Sections */
+    section { padding: 105px 0; }
+    .section-head { max-width: 680px; margin-bottom: 42px; }
+    .section-kicker { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 12px; color: var(--gold-dark); font-size: 12px; font-weight: 950; }
+    .section-kicker::before { content:"✦"; font-size:14px; }
+    h2 { margin-bottom: 14px; font-family: var(--display); font-size: clamp(29px, 3.6vw, 47px); line-height: 1.28; letter-spacing: -.03em; }
+    .section-lede { margin: 0; color: var(--muted); font-size: 16px; line-height: 2; }
+    .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; align-items: center; }
+
+    /* Intro */
+    .intro { padding: 0; background: var(--paper); }
+    .value-bar { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: -42px; overflow: hidden; background: var(--white); border-radius: 22px; box-shadow: var(--shadow); }
+    .value-item { display: flex; align-items: center; gap: 13px; padding: 25px 28px; border-inline-start: 1px solid var(--line); }
+    .value-item:first-child { border-inline-start: 0; }
+    .value-icon { display:grid; place-items:center; flex:0 0 auto; width:42px; height:42px; border-radius:13px; background: #eaf4ed; color:var(--ink); }
+    .value-icon svg { width:22px; height:22px; }
+    .value-item strong { display:block; margin-bottom:2px; font-size:13px; }
+    .value-item span { color:var(--muted); font-size:11px; font-weight:700; line-height:1.5; }
+    .mission { padding-top: 110px; }
+    .mission-copy { padding-inline-end: 20px; }
+    .signature { display:inline-flex; align-items:center; gap:10px; margin-top:23px; color: var(--ink); font-size:12px; font-weight:900; }
+    .signature i { width:40px; height:1px; background: var(--gold); }
+    .principles { display: grid; gap: 13px; }
+    .principle { display:flex; align-items:flex-start; gap:14px; padding:18px 17px; background:var(--white); border:1px solid var(--line); border-radius:16px; }
+    .principle-number { flex:0 0 auto; display:grid; place-items:center; width:31px; height:31px; color:var(--gold-dark); background:var(--cream); border-radius:10px; font-size:12px; font-weight:900; }
+    .principle h3 { margin:0 0 3px; font-size:14px; }
+    .principle p { margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
+
+    /* Courses */
+    .courses { background: #eef5f0; }
+    .section-top-line { display:flex; gap:24px; justify-content:space-between; align-items:flex-end; }
+    .course-tabs { display:flex; flex:0 0 auto; gap:5px; padding:5px; background:rgba(21,53,47,.08); border-radius:15px; }
+    .course-tab { border:0; border-radius:11px; padding:10px 14px; color:var(--muted); background:transparent; font-size:12px; font-weight:900; }
+    .course-tab.active { color:var(--white); background:var(--ink); box-shadow:0 5px 10px rgba(21,53,47,.12); }
+    .course-subline { margin: -21px 0 28px; color:var(--muted); font-size:14px; font-weight:700; }
+    .course-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:16px; }
+    .course-card { position:relative; display:flex; flex-direction:column; min-height:353px; padding:23px; background:var(--white); border:1px solid rgba(21,53,47,.1); border-radius:21px; box-shadow:0 14px 32px rgba(21,53,47,.06); transition:transform .25s, box-shadow .25s, border-color .25s; }
+    .course-card:hover { transform:translateY(-6px); border-color:var(--sage); box-shadow:0 22px 38px rgba(21,53,47,.13); }
+    .course-card.popular { color:var(--white); background:var(--ink); border-color:var(--ink); }
+    .popular-tag { position:absolute; top:0; inset-inline-end:18px; transform:translateY(-50%); padding:6px 10px; border-radius:8px; color:var(--evergreen); background:var(--gold); font-size:9px; font-weight:950; }
+    .course-icon { display:grid; place-items:center; width:42px; height:42px; margin-bottom:21px; color:var(--ink); background:var(--cream); border-radius:14px; }
+    .popular .course-icon { color:var(--evergreen); background:var(--gold); }
+    .course-icon svg { width:21px; height:21px; }
+    .course-card h3 { margin:0 0 8px; font-size:16px; line-height:1.55; }
+    .course-duration { color:var(--gold-dark); font-size:11px; font-weight:900; }
+    .popular .course-duration { color:#f3cf85; }
+    .course-description { min-height:65px; margin:14px 0 18px; color:var(--muted); font-size:12px; line-height:1.85; }
+    .popular .course-description { color:rgba(255,255,255,.72); }
+    .course-price { margin-top:auto; padding-top:14px; border-top:1px solid var(--line); }
+    .popular .course-price { border-color:rgba(255,255,255,.15); }
+    .course-price strong { display:block; font-size:21px; letter-spacing:-.03em; }
+    .course-price span { display:block; margin-top:4px; color:var(--muted); font-size:10px; line-height:1.65; font-weight:700; }
+    .popular .course-price span { color:rgba(255,255,255,.64); }
+    .course-action { display:inline-flex; align-items:center; gap:7px; margin-top:16px; color:var(--ink); border:0; background:transparent; padding:0; font-size:12px; font-weight:950; }
+    .popular .course-action { color:var(--gold); }
+    .course-action svg { width:16px; height:16px; transition:transform .2s; }
+    .course-action:hover svg { transform:translateX(-4px); }
+    [dir="ltr"] .course-action:hover svg { transform:translateX(4px); }
+
+    /* Why */
+    .why-visual { position:relative; min-height:410px; display:grid; place-items:center; overflow:hidden; border-radius:28px; background:linear-gradient(145deg,#d9eadf,#a5cbb9); }
+    .why-visual::before, .why-visual::after { content:""; position:absolute; border:1px solid rgba(21,53,47,.16); border-radius:45% 55% 58% 42% / 48% 44% 56% 52%; }
+    .why-visual::before { width:320px; height:320px; transform:rotate(20deg); }
+    .why-visual::after { width:430px; height:430px; transform:rotate(-24deg); }
+    .path-badge { position:relative; z-index:1; display:grid; place-items:center; width:204px; height:204px; color:var(--paper); background:var(--ink); border-radius:47% 53% 47% 53% / 59% 46% 54% 41%; transform:rotate(-10deg); box-shadow:0 20px 35px rgba(21,53,47,.18); }
+    .path-badge b { transform:rotate(10deg); font-size:50px; line-height:1; }
+    .path-badge span { transform:rotate(10deg); margin-top:5px; font-size:11px; font-weight:900; }
+    .visual-chip { position:absolute; z-index:2; padding:11px 14px; color:var(--ink); background:rgba(255,255,255,.88); border-radius:13px; box-shadow:0 12px 25px rgba(21,53,47,.12); font-size:11px; font-weight:900; }
+    .chip-one { top:55px; inset-inline-start:38px; } .chip-two { bottom:52px; inset-inline-end:34px; }
+    .benefit-list { display:grid; gap:17px; }
+    .benefit { display:grid; grid-template-columns:43px 1fr; gap:13px; }
+    .benefit-icon { display:grid; place-items:center; width:43px; height:43px; color:var(--gold-dark); background:#fff5db; border-radius:14px; }
+    .benefit h3 { margin:0 0 5px; font-size:15px; }
+    .benefit p { margin:0; color:var(--muted); font-size:13px; line-height:1.8; }
+
+    /* Journal & library */
+    .journal { background: var(--cream); }
+    .journal-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:17px; }
+    .article-feature, .article-card { position:relative; overflow:hidden; border-radius:23px; }
+    .article-feature { min-height: 358px; padding:31px; display:flex; flex-direction:column; justify-content:end; color:var(--white); background:linear-gradient(0deg,rgba(14,42,37,.94),rgba(14,42,37,.25)),linear-gradient(135deg,#2d5a50,#9fc4b3); }
+    .article-feature::before { content:"ع"; position:absolute; top:-50px; inset-inline-start:25px; color:rgba(255,255,255,.12); font-family:Georgia,serif; font-size:260px; line-height:1; }
+    .article-meta { position:relative; display:inline-flex; align-items:center; gap:8px; color:#f5d38f; font-size:11px; font-weight:900; }
+    .article-feature h3 { position:relative; max-width:440px; margin:10px 0 8px; font-size:27px; line-height:1.45; }
+    .article-feature p { position:relative; max-width:520px; margin-bottom:17px; color:rgba(255,255,255,.73); font-size:13px; line-height:1.85; }
+    .read-link { position:relative; display:inline-flex; align-items:center; gap:7px; width:max-content; color:var(--white); font-size:12px; font-weight:900; }
+    .article-stack { display:grid; grid-template-rows:1fr 1fr; gap:17px; }
+    .article-card { padding:24px; background:var(--white); border:1px solid rgba(21,53,47,.08); }
+    .article-card::after { content:""; position:absolute; width:150px; height:150px; bottom:-72px; inset-inline-end:-65px; border-radius:50%; background:#e1efe5; }
+    .article-card:nth-child(2)::after { background:#f8dfaa; }
+    .article-card h3 { position:relative; z-index:1; max-width:300px; margin:11px 0; font-size:18px; line-height:1.6; }
+    .article-card p { position:relative; z-index:1; max-width:330px; margin:0 0 13px; color:var(--muted); font-size:12px; line-height:1.75; }
+    .article-card .read-link { color:var(--ink); }
+    .library { padding: 0 0 105px; background:var(--cream); }
+    .library-panel { position:relative; overflow:hidden; padding:36px; color:var(--white); background:var(--ink); border-radius:26px; }
+    .library-panel::after { content:"ق"; position:absolute; inset-inline-end:45px; bottom:-90px; color:rgba(255,255,255,.07); font-family:Georgia,serif; font-size:320px; line-height:1; }
+    .library-panel > * { position:relative; z-index:1; }
+    .library-panel h2 { max-width:500px; margin-bottom:9px; font-size:33px; }
+    .library-panel p { max-width:610px; margin:0 0 18px; color:rgba(255,255,255,.72); font-size:14px; line-height:1.9; }
+    .library-lock { display:inline-flex; align-items:center; gap:8px; padding:10px 12px; color:#f4d595; border:1px solid rgba(244,213,149,.35); border-radius:11px; font-size:11px; font-weight:900; }
+    .library-lock svg { width:16px; height:16px; }
+
+    /* Testimonials */
+    .testimonials { padding-bottom: 90px; }
+    .testimonials-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:25px; align-items:stretch; }
+    .quote-card { padding:33px; color:var(--white); background:var(--ink); border-radius:26px; }
+    .quote-mark { color:var(--gold); font-family:Georgia,serif; font-size:65px; line-height:.5; }
+    .quote-card blockquote { margin:25px 0 26px; font-size:21px; line-height:1.75; font-weight:800; }
+    .quote-person { display:flex; gap:11px; align-items:center; color:rgba(255,255,255,.72); font-size:12px; }
+    .person-avatar { display:grid; place-items:center; width:35px; height:35px; color:var(--evergreen); background:var(--gold); border-radius:50%; font-size:11px; font-weight:950; }
+    .feedback-panel { padding:27px; background:var(--white); border:1px solid var(--line); border-radius:26px; }
+    .feedback-panel h3 { margin:0 0 5px; font-size:20px; }
+    .feedback-panel > p { margin:0 0 19px; color:var(--muted); font-size:12px; line-height:1.75; }
+    .comment-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .input { width:100%; padding:12px 13px; outline:none; color:var(--ink); border:1px solid var(--line); border-radius:12px; background:#fdfdfb; font-size:12px; transition:.2s; }
+    .input:focus { border-color:var(--gold-dark); box-shadow:0 0 0 4px rgba(227,182,94,.16); }
+    textarea.input { min-height:86px; resize:vertical; margin-top:10px; }
+    .feedback-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:11px; }
+    .feedback-note { color:var(--muted); font-size:10px; line-height:1.5; }
+    .submit-mini { border:0; padding:11px 13px; color:var(--white); background:var(--ink); border-radius:11px; font-size:11px; font-weight:900; }
+    .submitted-comments { display:grid; gap:8px; margin-top:13px; }
+    .submitted-comments:empty { display:none; }
+    .user-comment { padding:10px 12px; background:#f4f8f4; border:1px solid #d9e8da; border-radius:11px; font-size:11px; line-height:1.65; }
+    .user-comment b { display:block; color:var(--ink); margin-bottom:2px; }
+
+    /* Contact */
+    .contact { position:relative; overflow:hidden; color:var(--white); background:var(--evergreen); }
+    .contact::before { content:""; position:absolute; width:640px; height:640px; border:1px solid rgba(255,255,255,.09); border-radius:50%; top:-420px; inset-inline-start:-215px; }
+    .contact-grid { position:relative; display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:start; }
+    .contact h2 { margin-bottom:14px; }
+    .contact .section-kicker { color:#f1c96f; }
+    .contact .section-lede { color:rgba(255,255,255,.73); }
+    .contact-details { display:grid; gap:10px; margin-top:26px; }
+    .contact-detail { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.82); font-size:13px; font-weight:700; }
+    .contact-detail svg { flex:0 0 auto; width:19px; height:19px; color:var(--gold); }
+    .booking-form { padding:25px; color:var(--ink); background:var(--paper); border-radius:24px; box-shadow:0 18px 48px rgba(0,0,0,.19); }
+    .booking-form h3 { margin:0 0 4px; font-size:20px; }
+    .booking-form > p { margin:0 0 18px; color:var(--muted); font-size:12px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .field label { display:block; margin:0 0 6px; font-size:11px; font-weight:900; }
+    .field.full { grid-column:1 / -1; }
+    .booking-form .input { background:#fff; }
+    .booking-submit { width:100%; margin-top:13px; border:0; padding:13px; color:var(--evergreen); background:var(--gold); border-radius:13px; font-size:13px; font-weight:950; }
+    .booking-submit:hover { background:#f0c76e; }
+    .form-message { min-height:17px; margin:9px 0 0; color:#367b5a; font-size:11px; font-weight:800; }
+
+    /* Footer */
+    footer { padding:27px 0; color:#627a70; background:#0a211d; }
+    .footer-row { display:flex; justify-content:space-between; align-items:center; gap:18px; font-size:11px; font-weight:700; }
+    .footer-brand { display:flex; align-items:center; gap:14px; color:var(--white); }
+    .footer-brand img { display:block; width:auto; height:88px; max-width:min(52vw, 340px); object-fit:contain; object-position:center; }
+    .footer-brand strong { font-size:13px; }
+
+    /* Toast */
+    .toast { position:fixed; z-index:100; right:20px; bottom:20px; max-width:320px; padding:13px 15px; color:var(--white); background:var(--ink); border:1px solid rgba(255,255,255,.14); border-radius:14px; box-shadow:var(--shadow); font-size:12px; font-weight:800; opacity:0; pointer-events:none; transform:translateY(16px); transition:.25s ease; }
+    [dir="rtl"] .toast { right:auto; left:20px; }
+    .toast.show { opacity:1; transform:translateY(0); }
+
+    @media (max-width: 1050px) {
+      .nav { height:90px; }
+      .brand-logo { height:68px; max-width:250px; }
+      .primary-nav { gap:13px; font-size:12px; }
+      .course-grid { grid-template-columns:repeat(2,1fr); }
+      .hero-grid { gap:28px; }
+      .hero-art { min-height:390px; }
+      .hero-orbit { width:390px; }
+    }
+    @media (max-width: 820px) {
+      .shell { width:min(100% - 30px, 680px); }
+      .nav { height:86px; }
+      .brand-logo { height:64px; max-width:230px; }
+      .primary-nav { position:fixed; inset:86px 15px auto 15px; display:flex; flex-direction:column; align-items:stretch; gap:1px; padding:13px; border:1px solid var(--line); border-radius:18px; background:rgba(251,250,245,.98); box-shadow:var(--shadow); opacity:0; visibility:hidden; transform:translateY(-8px); transition:.2s; }
+      .primary-nav.open { opacity:1; visibility:visible; transform:translateY(0); }
+      .primary-nav a { padding:11px 10px; border-radius:10px; }
+      .primary-nav a:hover { background:#eff5f0; }
+      .primary-nav a::after { display:none; }
+      .menu-toggle { display:grid; place-items:center; }
+      .nav-cta { display:none; }
+      .hero { min-height:auto; padding:60px 0 65px; }
+      .hero-grid, .section-grid, .testimonials-grid, .contact-grid { grid-template-columns:1fr; }
+      .hero-copy { max-width:600px; }
+      .hero-art { min-height:350px; margin-top:-12px; }
+      .hero-orbit { width:360px; }
+      .letter-sculpture { width:210px; }
+      .card-top { inset-inline-start:10px; }.card-bottom{inset-inline-end:10px;}
+      .value-bar { grid-template-columns:1fr; margin-top:-25px; }
+      .value-item { border-inline-start:0; border-top:1px solid var(--line); }
+      .value-item:first-child { border-top:0; }
+      .mission-copy { padding-inline-end:0; }
+      .section-top-line { align-items:flex-start; flex-direction:column; }
+      .course-subline { margin-top:-26px; }
+      .why-visual { min-height:330px; max-width:520px; }
+      .journal-grid { grid-template-columns:1fr; }
+      .article-feature { min-height:330px; }
+      .library-panel { padding:27px; }
+      .footer-row { align-items:flex-start; flex-direction:column; }
+      .footer-brand { flex-direction:column; align-items:flex-start; }
+      .footer-brand img { height:70px; max-width:300px; }
+    }
+    @media (max-width: 520px) {
+      .shell { width:calc(100% - 26px); }
+      .brand-logo { height:52px; max-width:180px; }
+      .lang-toggle { min-width:38px; padding:0 9px; }
+      .hero { padding-top:48px; }
+      .hero h1 { font-size:40px; }
+      .hero-copy { font-size:14px; line-height:1.95; }
+      .hero-buttons { display:grid; grid-template-columns:1fr; }
+      .hero-buttons a { width:100%; }
+      .hero-art { min-height:300px; }
+      .hero-orbit { width:280px; }.letter-sculpture{width:170px;}.letter-sculpture span{font-size:145px;}
+      .card-top { top:8px; inset-inline-start:0; }.card-bottom{bottom:0;inset-inline-end:0;}
+      section { padding:72px 0; }
+      .section-lede { font-size:14px; }
+      .course-tabs { width:100%; }.course-tab { flex:1; }
+      .course-grid { grid-template-columns:1fr; }
+      .course-card { min-height:315px; }
+      .article-feature { padding:25px; min-height:310px; }.article-feature h3{font-size:22px;}
+      .article-stack { grid-template-rows:auto; }
+      .article-card { min-height:205px; }
+      .comment-row, .form-grid { grid-template-columns:1fr; }
+      .feedback-bottom { align-items:flex-start; flex-direction:column; }
+      .feedback-bottom .submit-mini { width:100%; }
+      .library-panel h2 { font-size:28px; }
+      .booking-form { padding:20px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">انتقل إلى المحتوى</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="shell nav">
+      <a href="#home" class="brand" aria-label="Fusha Zone">
+        <img class="brand-logo" src="assets/fusha-zone-logo-transparent.png" alt="Fusha Zone logo" />
+      </a>
+      <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+        <a href="#home" data-i18n="navHome">الرئيسية</a>
+        <a href="#about" data-i18n="navAbout">عن الأكاديمية</a>
+        <a href="#courses" data-i18n="navCourses">الدورات والباقات</a>
+        <a href="#journal" data-i18n="navJournal">المدونة والمكتبة</a>
+        <a href="#feedback" data-i18n="navFeedback">آراؤكم</a>
+        <a href="#contact" data-i18n="navContact">تواصل معنا</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="lang-toggle" type="button" id="langToggle" aria-label="Switch language">EN</button>
+        <a class="nav-cta" href="#contact" data-i18n="navCTA">احجز حصتك</a>
+        <button class="menu-toggle" type="button" id="menuToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="home" class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <div class="eyebrow" data-i18n="heroEyebrow">عربية راسخة، تواصل حي</div>
+          <h1 data-i18n-html="heroTitle">لغتك العربية... <em>هويتك</em> وعالمك</h1>
+          <p class="hero-copy" data-i18n="heroCopy">مرحبا بكم في منصة Fusha Zone. نقدم رحلة تعليمية فريدة للناطقين بغير العربية، حيث تلتقي الأصالة الأكاديمية بالطلاقة الحوارية بأسلوب عصري وحيوي مع معلمين محترفين متحدثين أصليين باللغة العربية.</p>
+          <div class="hero-buttons">
+            <a href="#courses" class="button-primary" data-i18n-html="heroPrimary">اكتشف برامجنا <span aria-hidden="true">←</span></a>
+            <a href="#about" class="button-secondary" data-i18n="heroSecondary">اكتشف هويتنا التعليمية</a>
+          </div>
+          <div class="mini-proof">
+            <div class="proof-avatars"><b>ع</b><b>ق</b><b>أ</b></div>
+            <span data-i18n="heroProof">تعلم مخصص مع معلمين متحدثين أصليين</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-orbit"></div>
+          <div class="letter-sculpture"><span>ض</span></div>
+          <div class="floating-card card-top"><strong data-i18n="artCardTopValue">50 دقيقة</strong><small data-i18n="artCardTopLabel">جلسات عربية مرنة</small></div>
+          <div class="floating-card card-bottom"><div class="badge-line"><i class="badge-dot"></i><span data-i18n="artCardBottom">تعلم على وتيرتك</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro" aria-label="Why Fusha Zone">
+      <div class="shell value-bar">
+        <div class="value-item"><span class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a8 8 0 1 0 8 8c0-2.3-1-4.4-2.6-5.8M12 3v8l5 3"/><path d="M4 20 2.5 21.5M20 20l1.5 1.5"/></svg></span><div><strong data-i18n="valueOneTitle">خطة تناسب وقتك</strong><span data-i18n="valueOneText">جلسات ثابتة أو مرنة حسب جدولك</span></div></div>
+        <div class="value-item"><span class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 2.2 6.2L20 10l-5.8 1.8L12 18l-2.2-6.2L4 10l5.8-1.8L12 2Z"/><path d="M5 16.5 6.5 20 10 21.5 6.5 23 5 26" transform="scale(.72) translate(7 -4)"/></svg></span><div><strong data-i18n="valueTwoTitle">إتقان نطق أصيل</strong><span data-i18n="valueTwoText">مع معلمين محترفين متحدثين أصليين</span></div></div>
+        <div class="value-item"><span class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6 3h14v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 7h8M8 11h6"/></svg></span><div><strong data-i18n="valueThreeTitle">عربية وقرآن كريم</strong><span data-i18n="valueThreeText">منهج أكاديمي وروحي متكامل</span></div></div>
+      </div>
+
+      <div class="shell mission section-grid" id="about">
+        <div class="mission-copy">
+          <div class="section-kicker" data-i18n="missionKicker">رسالتنا التعليمية</div>
+          <h2 data-i18n="missionTitle">نتعلم اللغة لنقترب من عالمها، لا لنحفظها فقط.</h2>
+          <p class="section-lede" data-i18n="missionCopy">في Fusha Zone نؤمن أن تعلم اللغة مفتاح للثقافة. لذلك صممنا منهجا يوازن بذكاء بين الرصانة الأكاديمية، من قواعد ونحو وصوتيات، وبين القدرة على التواصل الفوري والواثق.</p>
+          <div class="signature"><i></i><span data-i18n="missionSignature">منهج مخصص لأهداف كل طالب</span></div>
+        </div>
+        <div class="principles">
+          <article class="principle"><span class="principle-number">01</span><div><h3 data-i18n="principleOneTitle">أصالة أكاديمية</h3><p data-i18n="principleOneText">قواعد ونحو وصوتيات تمنحك أساسا واضحا وقويا.</p></div></article>
+          <article class="principle"><span class="principle-number">02</span><div><h3 data-i18n="principleTwoTitle">طلاقة حوارية</h3><p data-i18n="principleTwoText">ممارسة عملية تساعدك على التحدث بثقة من البداية.</p></div></article>
+          <article class="principle"><span class="principle-number">03</span><div><h3 data-i18n="principleThreeTitle">أهدافك أولا</h3><p data-i18n="principleThreeText">خطط تناسب الدراسة أو العمل أو التقرب من الثقافة والقرآن الكريم.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="courses" id="courses">
+      <div class="shell">
+        <div class="section-top-line">
+          <div class="section-head">
+            <div class="section-kicker" data-i18n="coursesKicker">ابدأ من مكانك</div>
+            <h2 data-i18n="coursesTitle">برامج مصممة لتتحرك بك بثقة.</h2>
+          </div>
+          <div class="course-tabs" role="tablist" aria-label="Course type">
+            <button class="course-tab active" type="button" role="tab" aria-selected="true" data-course="arabic" data-i18n="tabArabic">اللغة العربية</button>
+            <button class="course-tab" type="button" role="tab" aria-selected="false" data-course="quran" data-i18n="tabQuran">القرآن والتجويد</button>
+          </div>
+        </div>
+        <p class="course-subline" id="courseIntro"></p>
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <section class="why" id="why">
+      <div class="shell section-grid">
+        <div class="why-visual" aria-hidden="true">
+          <div class="visual-chip chip-one" data-i18n="visualChipOne">من الحروف إلى الطلاقة</div>
+          <div class="path-badge"><b>فُصحى</b><span data-i18n="visualBadge">خطوتك نحو الإتقان</span></div>
+          <div class="visual-chip chip-two" data-i18n="visualChipTwo">تعلم شخصي وعملي</div>
+        </div>
+        <div>
+          <div class="section-kicker" data-i18n="benefitsKicker">لماذا ندرس معا؟</div>
+          <h2 data-i18n="benefitsTitle">كل حصة تقربك من اللغة التي تريد استخدامها فعلا.</h2>
+          <div class="benefit-list">
+            <article class="benefit"><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 18.5A4.5 4.5 0 0 1 3 14V8a4.5 4.5 0 0 1 9 0v6a4.5 4.5 0 0 1-4.5 4.5Z"/><path d="M12 11h2.2a3.8 3.8 0 0 1 0 7.5H12M17.8 10.5A3.5 3.5 0 0 1 21 14v1a3.5 3.5 0 0 1-3.5 3.5H12"/></svg></span><div><h3 data-i18n="benefitOneTitle">تصحيح صوتي دقيق</h3><p data-i18n="benefitOneText">نتدرب على مخارج الحروف كما ينطقها أهل اللغة، لتسمع الفرق وتطبقه.</p></div></article>
+            <article class="benefit"><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></span><div><h3 data-i18n="benefitTwoTitle">منهج واضح بلا تشتت</h3><p data-i18n="benefitTwoText">توازن بين القراءة والكتابة والقواعد والتواصل لتبني مهارة ثابتة.</p></div></article>
+            <article class="benefit"><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="9"/></svg></span><div><h3 data-i18n="benefitThreeTitle">مرونة تناسب الحياة</h3><p data-i18n="benefitThreeText">اختر الباقة التي تمنحك الاستمرارية، حتى مع جدول مزدحم.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journal" id="journal">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-kicker" data-i18n="journalKicker">مدونة فصحى زون</div>
+          <h2 data-i18n="journalTitle">نافذة صغيرة على رحلة أكبر.</h2>
+          <p class="section-lede" data-i18n="journalLede">استكشف أفكارا عملية تساعدك على فهم العربية والتقدم فيها بذكاء.</p>
+        </div>
+        <div class="journal-grid" id="journalGrid"></div>
+      </div>
+    </section>
+
+    <section class="library" id="library">
+      <div class="shell">
+        <div class="library-panel">
+          <div class="section-kicker" data-i18n="libraryKicker">واحة القصص والموارد</div>
+          <h2 data-i18n="libraryTitle">مكتبة حصرية تجعل التعلم مستمرا بين الحصص.</h2>
+          <p data-i18n="libraryCopy">قصص تفاعلية ومناهج أكاديمية محمية، مصممة حصريا لطلاب Fusha Zone.</p>
+          <span class="library-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-i18n="libraryLock">المعاينة التفاعلية للمشتركين فقط</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials" id="feedback">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-kicker" data-i18n="feedbackKicker">آراؤكم تهمنا</div>
+          <h2 data-i18n="feedbackTitle">نصغي للمتعلمين في كل خطوة.</h2>
+        </div>
+        <div class="testimonials-grid">
+          <article class="quote-card">
+            <div class="quote-mark">“</div>
+            <blockquote id="testimonialText">أكاديمية ممتازة جدا وتوفر أفضل المعلمين المحترفين.</blockquote>
+            <div class="quote-person"><span class="person-avatar">أم</span><span><strong id="testimonialName">أحمد محمد</strong><br><span id="testimonialDate">24 يونيو 2026</span></span></div>
+          </article>
+          <div class="feedback-panel">
+            <h3 data-i18n="commentTitle">أضف تعليقك أو سؤالك</h3>
+            <p data-i18n="commentCopy">نرحب بأسئلتك. يظهر تعليقك هنا على جهازك كمعاينة خاصة.</p>
+            <form id="commentForm">
+              <div class="comment-row"><input class="input" id="commentName" required data-i18n-placeholder="commentName" placeholder="الاسم" /><input class="input" id="commentEmail" type="email" required data-i18n-placeholder="commentEmail" placeholder="البريد الإلكتروني" /></div>
+              <textarea class="input" id="commentText" required data-i18n-placeholder="commentText" placeholder="اكتب تعليقك أو سؤالك"></textarea>
+              <div class="feedback-bottom"><span class="feedback-note" data-i18n="commentNote">للحفاظ على الخصوصية، لا يتم إرسال هذا النموذج إلى خادم.</span><button class="submit-mini" type="submit" data-i18n="commentSubmit">إرسال التعليق</button></div>
+            </form>
+            <div class="submitted-comments" id="submittedComments"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="shell contact-grid">
+        <div>
+          <div class="section-kicker" data-i18n="contactKicker">خطوتك التالية</div>
+          <h2 data-i18n="contactTitle">ابدأ رحلتك مع العربية أو القرآن الكريم.</h2>
+          <p class="section-lede" data-i18n="contactCopy">أرسل لنا طلبك وسنتواصل معك لتحديد الباقة المناسبة ومستواك الحالي.</p>
+          <div class="contact-details"><a class="contact-detail" href="mailto:fushazone@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>fushazone@gmail.com</span></a><div class="contact-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span data-i18n="contactOnline">تعلم أونلاين من أي مكان</span></div></div>
+        </div>
+        <form class="booking-form" id="bookingForm">
+          <h3 data-i18n="bookingTitle">احجز استشارتك</h3>
+          <p data-i18n="bookingCopy">سيتم فتح بريدك الإلكتروني برسالة جاهزة للإرسال إلى الأكاديمية.</p>
+          <div class="form-grid">
+            <div class="field"><label for="bookingName" data-i18n="formName">الاسم الكامل</label><input class="input" id="bookingName" required /></div>
+            <div class="field"><label for="bookingEmail" data-i18n="formEmail">البريد الإلكتروني</label><input class="input" id="bookingEmail" type="email" required /></div>
+            <div class="field full"><label for="bookingCourse" data-i18n="formCourse">الدورة أو الباقة المطلوبة</label><select class="input" id="bookingCourse" required></select></div>
+            <div class="field full"><label for="bookingMessage" data-i18n="formMessage">رسالتك أو مستواك الحالي</label><textarea class="input" id="bookingMessage"></textarea></div>
+          </div>
+          <button class="booking-submit" type="submit" data-i18n="bookingSubmit">إرسال طلب الحجز</button>
+          <p class="form-message" id="formMessage" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row"><div class="footer-brand"><img src="assets/fusha-zone-logo-transparent.png" alt="Fusha Zone logo" /><div><strong>Fusha Zone</strong><br><span data-i18n="footerTag">لتعليم اللغة العربية لغير الناطقين بها والقرآن الكريم</span></div></div><span data-i18n="footerCopyright">© 2026 جميع الحقوق محفوظة.</span></div>
+  </footer>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const icon = {
+      calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
+      book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6 3h14v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 7h8M8 11h5"/></svg>',
+      speech: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11.5a7 7 0 0 1-7 7H8l-4 3v-7.7A7 7 0 1 1 20 11.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01" stroke-linecap="round"/></svg>',
+      spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 2.2 6.2L20 10l-5.8 1.8L12 18l-2.2-6.2L4 10l5.8-1.8L12 2Z"/><path d="m5 17 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z" transform="scale(.66) translate(15 9)"/></svg>'
+    };
+
+    const courseData = {
+      arabic: {
+        intro: { ar: 'تعلم القواعد والقراءة والكتابة، وابن مهارات تواصل قوية وثابتة.', en: 'Learn grammar, reading, writing, and build strong, steady communication skills.' },
+        cards: [
+          { icon: 'calendar', title: {ar:'الباقة الشهرية الكاملة',en:'Full Monthly Package'}, duration:{ar:'12 حصة / شهر · 50 دقيقة للجلسة',en:'12 lessons / month · 50 minutes each'}, description:{ar:'جلسات مكثفة ومستمرة لضمان أعلى درجات التقدم والطلاقة الحوارية.',en:'Focused, continuous lessons for meaningful progress and conversational fluency.'}, price:'$100', note:{ar:'فردي · ثنائي: $120 إجمالي ($60 لكل طالب)',en:'One-to-one · Two learners: $120 total ($60 each)'}, popular:true, select:'Arabic: Full Monthly (12 lessons)' },
+          { icon: 'book', title:{ar:'الباقة الشهرية المرنة',en:'Flexible Monthly Package'}, duration:{ar:'8 حصص / شهر · 50 دقيقة للجلسة',en:'8 lessons / month · 50 minutes each'}, description:{ar:'جدول مرن يتناسب مع أوقاتك لضمان الاستمرارية وتطوير المهارات.',en:'A flexible schedule that supports consistency and skill growth.'}, price:'$60', note:{ar:'فردي · ثنائي: $80 إجمالي ($40 لكل طالب)',en:'One-to-one · Two learners: $80 total ($40 each)'}, select:'Arabic: Flexible Monthly (8 lessons)' },
+          { icon:'spark', title:{ar:'جلسة دفع فردية مستقلة',en:'Single Pay-as-you-go Session'}, duration:{ar:'50 دقيقة للجلسة',en:'50 minutes'}, description:{ar:'جلسة مرنة لتقييم مستواك الحالي أو مناقشة مواضيع محددة.',en:'A flexible session to assess your current level or discuss specific topics.'}, price:'$10', note:{ar:'جلسة فردية مرنة',en:'Flexible individual session'}, select:'Arabic: Single Session ($10)' },
+          { icon:'speech', title:{ar:'جلسة محادثة حصرية',en:'Conversation-Only Session'}, duration:{ar:'50 دقيقة للجلسة',en:'50 minutes'}, description:{ar:'جلسة مخصصة للمحادثة والطلاقة الشفهية لكسر حاجز الخوف من التحدث.',en:'A conversation-focused session to build spoken fluency and confidence.'}, price:'$15', note:{ar:'مخصصة للمحادثة والطلاقة',en:'Dedicated to conversation and fluency'}, select:'Arabic: Conversation Session ($15)' }
+        ]
+      },
+      quran: {
+        intro: { ar: 'أتقن تلاوة القرآن الكريم وأحكام التجويد والحفظ والمراجعة مع معلمين محترفين متحدثين أصليين.', en: 'Master Qur’an recitation, tajweed rules, memorization, and revision with professional native Arabic-speaking teachers.' },
+        cards: [
+          { icon:'calendar', title:{ar:'الباقة الشهرية الكاملة',en:'Full Monthly Package'}, duration:{ar:'12 حصة / شهر · 40 دقيقة للجلسة',en:'12 lessons / month · 40 minutes each'}, description:{ar:'دراسة مكثفة ومتابعة مستمرة لضبط مخارج الحروف وحفظ متقن لكتاب الله الكريم.',en:'Focused study and consistent follow-up for precise pronunciation and confident memorization.'}, price:'$50', note:{ar:'فردي · ثنائي: $60 إجمالي ($30 لكل طالب)',en:'One-to-one · Two learners: $60 total ($30 each)'}, popular:true, select:'Quran: Full Monthly (12 lessons)' },
+          { icon:'book', title:{ar:'الباقة الشهرية المرنة',en:'Flexible Monthly Package'}, duration:{ar:'8 حصص / شهر · 40 دقيقة للجلسة',en:'8 lessons / month · 40 minutes each'}, description:{ar:'باقة مرنة لأصحاب الجداول المزدحمة لتعلم أحكام التجويد والحفظ التدريجي بانتظام.',en:'A flexible package for busy schedules, with steady tajweed learning and gradual memorization.'}, price:'$35', note:{ar:'فردي · ثنائي: $40 إجمالي ($20 لكل طالب)',en:'One-to-one · Two learners: $40 total ($20 each)'}, select:'Quran: Flexible Monthly (8 lessons)' },
+          { icon:'spark', title:{ar:'تقييم مستوى التلاوة',en:'Recitation Level Assessment'}, duration:{ar:'جلسة مخصصة بحسب احتياجك',en:'A session tailored to your needs'}, description:{ar:'نحدد نقطة البداية المناسبة لخطة التلاوة أو التجويد أو الحفظ.',en:'Find the right starting point for your recitation, tajweed, or memorization plan.'}, price:{ar:'تواصل معنا',en:'Contact us'}, note:{ar:'لمن يريد خطة واضحة للبداية',en:'For learners seeking a clear start'}, select:'Quran: Recitation Assessment' },
+          { icon:'speech', title:{ar:'حفظ ومراجعة منتظمة',en:'Memorization & Revision'}, duration:{ar:'بإيقاع يناسب تقدمك',en:'At a pace that suits your progress'}, description:{ar:'متابعة ثابتة لبناء روتين حفظ ومراجعة متوازن وواقعي.',en:'Consistent guidance to build a balanced, practical memorization and revision routine.'}, price:{ar:'تواصل معنا',en:'Contact us'}, note:{ar:'داخل باقات القرآن الشهرية',en:'Available within monthly Qur’an packages'}, select:'Quran: Memorization & Revision' }
+        ]
+      }
+    };
+
+    const journal = [
+      { featured:true, title:{ar:'أسرار النطق الصحيح: الفونيتكس',en:'The Secrets of Correct Pronunciation: Phonetics'}, text:{ar:'لماذا يجد الأجانب صعوبة في حرفي الضاد والعين؟ وكيف تتغلب على ذلك في أسبوع واحد؟',en:'Why are ض and ع difficult for non-native speakers, and how can you begin overcoming that in a week?'}, type:{ar:'دليل عملي',en:'Practical guide'} },
+      { title:{ar:'الفصحى أم العامية؟',en:'Fusha or Dialect?'}, text:{ar:'دليلك الشامل لاختيار المسار الصحيح لبدء تعلم اللغة العربية بذكاء.',en:'A clear guide to choosing the right path to begin learning Arabic intelligently.'}, type:{ar:'دليل البداية',en:'Getting started'} },
+      { title:{ar:'كيف تبني عادة عربية يومية؟',en:'How to Build a Daily Arabic Habit'}, text:{ar:'خطوات صغيرة واقعية تجعل اللغة جزءا لطيفا من يومك.',en:'Small, realistic steps that make Arabic a pleasant part of your day.'}, type:{ar:'تعلم ذاتي',en:'Self-study'} }
+    ];
+
+    const translations = {
+      ar: {
+        skip:'انتقل إلى المحتوى', brandTagline:'تعليم العربية والقرآن الكريم', navHome:'الرئيسية', navAbout:'عن الأكاديمية', navCourses:'الدورات والباقات', navJournal:'المدونة والمكتبة', navFeedback:'آراؤكم', navContact:'تواصل معنا', navCTA:'احجز حصتك',
+        heroEyebrow:'عربية راسخة، تواصل حي', heroTitle:'لغتك العربية... <em>هويتك</em> وعالمك', heroCopy:'مرحبا بكم في منصة Fusha Zone. نقدم رحلة تعليمية فريدة للناطقين بغير العربية، حيث تلتقي الأصالة الأكاديمية بالطلاقة الحوارية بأسلوب عصري وحيوي مع معلمين محترفين متحدثين أصليين باللغة العربية.', heroPrimary:'اكتشف برامجنا <span>←</span>', heroSecondary:'اكتشف هويتنا التعليمية', heroProof:'تعلم مخصص مع معلمين متحدثين أصليين', artCardTopValue:'50 دقيقة', artCardTopLabel:'جلسات عربية مرنة', artCardBottom:'تعلم على وتيرتك',
+        valueOneTitle:'خطة تناسب وقتك', valueOneText:'جلسات ثابتة أو مرنة حسب جدولك', valueTwoTitle:'إتقان نطق أصيل', valueTwoText:'مع معلمين محترفين متحدثين أصليين', valueThreeTitle:'عربية وقرآن كريم', valueThreeText:'منهج أكاديمي وروحي متكامل',
+        missionKicker:'رسالتنا التعليمية', missionTitle:'نتعلم اللغة لنقترب من عالمها، لا لنحفظها فقط.', missionCopy:'في Fusha Zone نؤمن أن تعلم اللغة مفتاح للثقافة. لذلك صممنا منهجا يوازن بذكاء بين الرصانة الأكاديمية، من قواعد ونحو وصوتيات، وبين القدرة على التواصل الفوري والواثق.', missionSignature:'منهج مخصص لأهداف كل طالب', principleOneTitle:'أصالة أكاديمية', principleOneText:'قواعد ونحو وصوتيات تمنحك أساسا واضحا وقويا.', principleTwoTitle:'طلاقة حوارية', principleTwoText:'ممارسة عملية تساعدك على التحدث بثقة من البداية.', principleThreeTitle:'أهدافك أولا', principleThreeText:'خطط تناسب الدراسة أو العمل أو التقرب من الثقافة والقرآن الكريم.',
+        coursesKicker:'ابدأ من مكانك', coursesTitle:'برامج مصممة لتتحرك بك بثقة.', tabArabic:'اللغة العربية', tabQuran:'القرآن والتجويد', bookCourse:'احجز الآن', popular:'الأكثر اختيارا',
+        visualChipOne:'من الحروف إلى الطلاقة', visualBadge:'خطوتك نحو الإتقان', visualChipTwo:'تعلم شخصي وعملي', benefitsKicker:'لماذا ندرس معا؟', benefitsTitle:'كل حصة تقربك من اللغة التي تريد استخدامها فعلا.', benefitOneTitle:'تصحيح صوتي دقيق', benefitOneText:'نتدرب على مخارج الحروف كما ينطقها أهل اللغة، لتسمع الفرق وتطبقه.', benefitTwoTitle:'منهج واضح بلا تشتت', benefitTwoText:'توازن بين القراءة والكتابة والقواعد والتواصل لتبني مهارة ثابتة.', benefitThreeTitle:'مرونة تناسب الحياة', benefitThreeText:'اختر الباقة التي تمنحك الاستمرارية، حتى مع جدول مزدحم.',
+        journalKicker:'مدونة فصحى زون', journalTitle:'نافذة صغيرة على رحلة أكبر.', journalLede:'استكشف أفكارا عملية تساعدك على فهم العربية والتقدم فيها بذكاء.', readArticle:'اقرأ المقال <span>←</span>', libraryKicker:'واحة القصص والموارد', libraryTitle:'مكتبة حصرية تجعل التعلم مستمرا بين الحصص.', libraryCopy:'قصص تفاعلية ومناهج أكاديمية محمية، مصممة حصريا لطلاب Fusha Zone.', libraryLock:'المعاينة التفاعلية للمشتركين فقط',
+        feedbackKicker:'آراؤكم تهمنا', feedbackTitle:'نصغي للمتعلمين في كل خطوة.', testimonial:'أكاديمية ممتازة جدا وتوفر أفضل المعلمين المحترفين.', testimonialName:'أحمد محمد', testimonialDate:'24 يونيو 2026', commentTitle:'أضف تعليقك أو سؤالك', commentCopy:'نرحب بأسئلتك. يظهر تعليقك هنا على جهازك كمعاينة خاصة.', commentName:'الاسم', commentEmail:'البريد الإلكتروني', commentText:'اكتب تعليقك أو سؤالك', commentNote:'للحفاظ على الخصوصية، لا يتم إرسال هذا النموذج إلى خادم.', commentSubmit:'إرسال التعليق', commentSaved:'تمت إضافة تعليقك كمعاينة خاصة على هذا الجهاز.',
+        contactKicker:'خطوتك التالية', contactTitle:'ابدأ رحلتك مع العربية أو القرآن الكريم.', contactCopy:'أرسل لنا طلبك وسنتواصل معك لتحديد الباقة المناسبة ومستواك الحالي.', contactOnline:'تعلم أونلاين من أي مكان', bookingTitle:'احجز استشارتك', bookingCopy:'سيتم فتح بريدك الإلكتروني برسالة جاهزة للإرسال إلى الأكاديمية.', formName:'الاسم الكامل', formEmail:'البريد الإلكتروني', formCourse:'الدورة أو الباقة المطلوبة', formMessage:'رسالتك أو مستواك الحالي', bookingSubmit:'إرسال طلب الحجز', formRequired:'يرجى تعبئة الاسم والبريد الإلكتروني واختيار الباقة.', mailSubject:'طلب حجز جديد من موقع Fusha Zone', mailOpened:'تم تجهيز رسالة الحجز في تطبيق البريد الإلكتروني.', footerTag:'لتعليم اللغة العربية لغير الناطقين بها والقرآن الكريم', footerCopyright:'© 2026 جميع الحقوق محفوظة.'
+      },
+      en: {
+        skip:'Skip to content', brandTagline:'Arabic & Qur’an Education', navHome:'Home', navAbout:'About', navCourses:'Courses & Packages', navJournal:'Journal & Library', navFeedback:'Feedback', navContact:'Contact', navCTA:'Book a lesson',
+        heroEyebrow:'Grounded Arabic, living communication', heroTitle:'Arabic is your <em>identity</em> and your world.', heroCopy:'Welcome to Fusha Zone. We offer a distinctive learning journey for non-native Arabic speakers, where academic depth meets natural conversation through an engaging, modern approach with professional native Arabic-speaking teachers.', heroPrimary:'Explore programs <span>→</span>', heroSecondary:'Discover our teaching identity', heroProof:'Personalized learning with native-speaking teachers', artCardTopValue:'50 minutes', artCardTopLabel:'Flexible Arabic lessons', artCardBottom:'Learn at your own pace',
+        valueOneTitle:'A plan around your time', valueOneText:'Fixed or flexible lessons that work with your schedule', valueTwoTitle:'Authentic pronunciation', valueTwoText:'Professional native Arabic-speaking teachers', valueThreeTitle:'Arabic & Qur’an', valueThreeText:'An integrated academic and spiritual curriculum',
+        missionKicker:'Our learning mission', missionTitle:'We learn a language to enter its world, not only to memorize it.', missionCopy:'At Fusha Zone, we believe language is a key to culture. Our approach thoughtfully balances academic foundations such as grammar, syntax, and phonetics with the ability to communicate immediately and with confidence.', missionSignature:'A plan built around each learner’s goals', principleOneTitle:'Academic foundations', principleOneText:'Grammar, syntax, and phonetics give you a clear, confident base.', principleTwoTitle:'Conversation fluency', principleTwoText:'Hands-on practice helps you speak with confidence from the beginning.', principleThreeTitle:'Your goals first', principleThreeText:'Plans for study, work, or a closer connection to Arabic culture and the Qur’an.',
+        coursesKicker:'Start where you are', coursesTitle:'Programs designed to move you forward with confidence.', tabArabic:'Arabic Language', tabQuran:'Qur’an & Tajweed', bookCourse:'Book now', popular:'Most chosen',
+        visualChipOne:'From letters to fluency', visualBadge:'Your route to mastery', visualChipTwo:'Personal & practical learning', benefitsKicker:'Why learn with us?', benefitsTitle:'Every lesson brings you closer to Arabic you can actually use.', benefitOneTitle:'Precise pronunciation coaching', benefitOneText:'Practice letter articulation as native speakers use it, so you hear and apply the difference.', benefitTwoTitle:'A clear path, not scattered lessons', benefitTwoText:'Reading, writing, grammar, and communication work together to build lasting skill.', benefitThreeTitle:'Flexibility for real life', benefitThreeText:'Choose the package that gives you consistency, even with a busy schedule.',
+        journalKicker:'Fusha Zone Journal', journalTitle:'A small window into a bigger journey.', journalLede:'Explore practical ideas that help you understand Arabic and progress with intention.', readArticle:'Read article <span>→</span>', libraryKicker:'Stories & Resources Oasis', libraryTitle:'An exclusive library that keeps learning going between lessons.', libraryCopy:'Interactive stories and protected academic resources, created exclusively for Fusha Zone students.', libraryLock:'Interactive preview for subscribers only',
+        feedbackKicker:'Your feedback matters', feedbackTitle:'We listen to learners at every step.', testimonial:'An excellent academy that offers the best professional teachers.', testimonialName:'Ahmed Mohammed', testimonialDate:'June 24, 2026', commentTitle:'Leave a comment or question', commentCopy:'Questions are welcome. Your comment appears here only as a private preview on this device.', commentName:'Name', commentEmail:'Email address', commentText:'Write your comment or question', commentNote:'For privacy, this form does not send data to a server.', commentSubmit:'Add private preview', commentSaved:'Your private preview was added on this device.',
+        contactKicker:'Your next step', contactTitle:'Begin your journey with Arabic or the Qur’an.', contactCopy:'Send us your request and we will help identify the right package and your current level.', contactOnline:'Learn online from anywhere', bookingTitle:'Book your consultation', bookingCopy:'Your email app will open with a booking message ready to send to the academy.', formName:'Full name', formEmail:'Email address', formCourse:'Course or requested package', formMessage:'Your message or current level', bookingSubmit:'Send booking request', formRequired:'Please complete your name, email, and preferred package.', mailSubject:'New Fusha Zone booking request', mailOpened:'Your booking message has been prepared in your email app.', footerTag:'Arabic education for non-native speakers and Qur’an learning', footerCopyright:'© 2026 All rights reserved.'
+      }
+    };
+
+    let lang = localStorage.getItem('fushaLanguage') || 'ar';
+    let activeCourse = 'arabic';
+
+    const t = (key) => translations[lang][key] || key;
+    const text = (obj) => typeof obj === 'string' ? obj : obj[lang];
+
+    function renderCourses() {
+      const data = courseData[activeCourse];
+      document.getElementById('courseIntro').textContent = text(data.intro);
+      document.getElementById('courseGrid').innerHTML = data.cards.map(card => `
+        <article class="course-card ${card.popular ? 'popular' : ''}">
+          ${card.popular ? `<span class="popular-tag">${t('popular')}</span>` : ''}
+          <span class="course-icon">${icon[card.icon]}</span>
+          <h3>${text(card.title)}</h3>
+          <span class="course-duration">${text(card.duration)}</span>
+          <p class="course-description">${text(card.description)}</p>
+          <div class="course-price"><strong>${text(card.price)}</strong><span>${text(card.note)}</span></div>
+          <button class="course-action" type="button" data-book="${card.select}">${t('bookCourse')} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+        </article>
+      `).join('');
+      document.querySelectorAll('[data-book]').forEach(btn => btn.addEventListener('click', () => {
+        const select = document.getElementById('bookingCourse');
+        const option = [...select.options].find(o => o.value === btn.dataset.book);
+        if (option) select.value = btn.dataset.book;
+        document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => document.getElementById('bookingName').focus({preventScroll:true}), 650);
+      }));
+    }
+
+    function renderJournal() {
+      document.getElementById('journalGrid').innerHTML = journal.map((post, index) => post.featured ? `
+        <article class="article-feature"><span class="article-meta">✦ ${text(post.type)}</span><h3>${text(post.title)}</h3><p>${text(post.text)}</p><a class="read-link" href="#contact">${t('readArticle')}</a></article>
+      ` : `
+        <div class="article-stack" ${index > 1 ? 'style="display:none"' : ''}><article class="article-card"><span class="article-meta">✦ ${text(post.type)}</span><h3>${text(post.title)}</h3><p>${text(post.text)}</p><a class="read-link" href="#contact">${t('readArticle')}</a></article></div>
+      `).join('').replace('</article></div><div class="article-stack"', '</article></div><div class="article-stack"');
+      // Rebuild correct compact right column after inserting content.
+      const grid = document.getElementById('journalGrid');
+      grid.innerHTML = `<article class="article-feature"><span class="article-meta">✦ ${text(journal[0].type)}</span><h3>${text(journal[0].title)}</h3><p>${text(journal[0].text)}</p><a class="read-link" href="#contact">${t('readArticle')}</a></article><div class="article-stack">${journal.slice(1).map(post => `<article class="article-card"><span class="article-meta">✦ ${text(post.type)}</span><h3>${text(post.title)}</h3><p>${text(post.text)}</p><a class="read-link" href="#contact">${t('readArticle')}</a></article>`).join('')}</div>`;
+    }
+
+    function populateSelect() {
+      const select = document.getElementById('bookingCourse');
+      const options = [
+        {value:'Free Trial', ar:'استشارة تجريبية مجانية', en:'Free Trial Consultation'},
+        ...courseData.arabic.cards.map(c => ({value:c.select, ar:c.select.replace('Arabic: ','العربية: '), en:c.select})),
+        ...courseData.quran.cards.map(c => ({value:c.select, ar:c.select.replace('Quran: ','القرآن: '), en:c.select}))
+      ];
+      const current = select.value;
+      select.innerHTML = options.map(o => `<option value="${o.value}">${lang === 'ar' ? o.ar : o.en}</option>`).join('');
+      if ([...select.options].some(o => o.value === current)) select.value = current;
+    }
+
+    function applyLanguage() {
+      const html = document.documentElement;
+      html.lang = lang;
+      html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.title = lang === 'ar' ? 'Fusha Zone | لتعليم العربية والقرآن الكريم' : 'Fusha Zone | Arabic & Qur’an Education';
+      document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+      document.querySelectorAll('[data-i18n-html]').forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.dataset.i18nPlaceholder));
+      document.getElementById('langToggle').textContent = lang === 'ar' ? 'EN' : 'ع';
+      document.getElementById('langToggle').setAttribute('aria-label', lang === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+      document.getElementById('testimonialText').textContent = t('testimonial');
+      document.getElementById('testimonialName').textContent = t('testimonialName');
+      document.getElementById('testimonialDate').textContent = t('testimonialDate');
+      renderCourses(); renderJournal(); populateSelect(); renderStoredComments();
+      localStorage.setItem('fushaLanguage', lang);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 3300);
+    }
+
+    function renderStoredComments() {
+      const container = document.getElementById('submittedComments');
+      const comments = JSON.parse(localStorage.getItem('fushaComments') || '[]');
+      container.innerHTML = comments.slice(-2).reverse().map(c => `<div class="user-comment"><b>${c.name}</b>${c.text}</div>`).join('');
+    }
+
+    document.querySelectorAll('.course-tab').forEach(button => button.addEventListener('click', () => {
+      activeCourse = button.dataset.course;
+      document.querySelectorAll('.course-tab').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-selected', String(b === button)); });
+      renderCourses();
+    }));
+
+    document.getElementById('langToggle').addEventListener('click', () => {
+      lang = lang === 'ar' ? 'en' : 'ar';
+      applyLanguage();
+    });
+
+    const menuToggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('primaryNav');
+    menuToggle.addEventListener('click', () => {
+      const opened = nav.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(opened));
+      document.body.classList.toggle('menu-open', opened);
+    });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); }));
+
+    document.getElementById('commentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const comment = document.getElementById('commentText').value.trim();
+      if (!name || !comment) return;
+      const comments = JSON.parse(localStorage.getItem('fushaComments') || '[]');
+      comments.push({ name, text: comment });
+      localStorage.setItem('fushaComments', JSON.stringify(comments.slice(-5)));
+      e.currentTarget.reset(); renderStoredComments(); showToast(t('commentSaved'));
+    });
+
+    document.getElementById('bookingForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('bookingName').value.trim();
+      const email = document.getElementById('bookingEmail').value.trim();
+      const course = document.getElementById('bookingCourse').value;
+      const message = document.getElementById('bookingMessage').value.trim();
+      const formMessage = document.getElementById('formMessage');
+      if (!name || !email || !course) { formMessage.textContent = t('formRequired'); return; }
+      const subject = `${t('mailSubject')} — ${name}`;
+      const body = `${t('formName')}: ${name}\n${t('formEmail')}: ${email}\n${t('formCourse')}: ${course}\n${t('formMessage')}: ${message || '-'}\n`;
+      formMessage.textContent = t('mailOpened');
+      window.location.href = `mailto:fushazone@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+
+    window.addEventListener('scroll', () => document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 12), {passive:true});
+    applyLanguage();
+  </script>
+</body>
+</html>

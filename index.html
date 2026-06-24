@@ -269,6 +269,11 @@
       .hero-art { min-height:390px; }
       .hero-orbit { width:390px; }
     }
+    @media (max-width: 960px) {
+      /* Keep the course selector in its own row so its description never overlaps on tablets or phones. */
+      .section-top-line { align-items:flex-start; flex-direction:column; gap:14px; }
+      .course-subline { margin:0 0 28px; }
+    }
     @media (max-width: 820px) {
       .shell { width:min(100% - 30px, 680px); }
       .nav { height:86px; }
@@ -291,8 +296,6 @@
       .value-item { border-inline-start:0; border-top:1px solid var(--line); }
       .value-item:first-child { border-top:0; }
       .mission-copy { padding-inline-end:0; }
-      .section-top-line { align-items:flex-start; flex-direction:column; }
-      .course-subline { margin-top:-26px; }
       .why-visual { min-height:330px; max-width:520px; }
       .journal-grid { grid-template-columns:1fr; }
       .article-feature { min-height:330px; }

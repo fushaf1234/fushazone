@@ -228,10 +228,11 @@
     .feedback-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:11px; }
     .feedback-note { color:var(--muted); font-size:10px; line-height:1.5; }
     .submit-mini { border:0; padding:11px 13px; color:var(--white); background:var(--ink); border-radius:11px; font-size:11px; font-weight:900; }
-    .submitted-comments { display:grid; gap:8px; margin-top:13px; }
-    .submitted-comments:empty { display:none; }
-    .user-comment { padding:10px 12px; background:#f4f8f4; border:1px solid #d9e8da; border-radius:11px; font-size:11px; line-height:1.65; }
-    .user-comment b { display:block; color:var(--ink); margin-bottom:2px; }
+    .submit-mini:disabled, .booking-submit:disabled { cursor:wait; opacity:.68; transform:none; }
+    .form-status { min-height:18px; margin:11px 0 0; font-size:11px; font-weight:800; line-height:1.65; }
+    .form-status.success { color:#197450; }
+    .form-status.error { color:#b44932; }
+    .honeypot { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
 
     /* Contact */
     .contact { position:relative; overflow:hidden; color:var(--white); background:var(--evergreen); }
@@ -484,12 +485,14 @@
           <div class="feedback-panel">
             <h3 data-i18n="commentTitle">أضف تعليقك أو سؤالك</h3>
             <p data-i18n="commentCopy">نرحب بأسئلتك. يظهر تعليقك هنا على جهازك كمعاينة خاصة.</p>
-            <form id="commentForm">
-              <div class="comment-row"><input class="input" id="commentName" required data-i18n-placeholder="commentName" placeholder="الاسم" /><input class="input" id="commentEmail" type="email" required data-i18n-placeholder="commentEmail" placeholder="البريد الإلكتروني" /></div>
-              <textarea class="input" id="commentText" required data-i18n-placeholder="commentText" placeholder="اكتب تعليقك أو سؤالك"></textarea>
-              <div class="feedback-bottom"><span class="feedback-note" data-i18n="commentNote">للحفاظ على الخصوصية، لا يتم إرسال هذا النموذج إلى خادم.</span><button class="submit-mini" type="submit" data-i18n="commentSubmit">إرسال التعليق</button></div>
+            <form id="commentForm" action="https://formspree.io/f/mpqgqpog" method="POST">
+              <input type="hidden" name="form_type" value="Fusha Zone Feedback or Question" />
+              <input class="honeypot" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <div class="comment-row"><input class="input" id="commentName" name="name" required data-i18n-placeholder="commentName" placeholder="الاسم" /><input class="input" id="commentEmail" name="email" type="email" required data-i18n-placeholder="commentEmail" placeholder="البريد الإلكتروني" /></div>
+              <textarea class="input" id="commentText" name="message" required data-i18n-placeholder="commentText" placeholder="اكتب تعليقك أو سؤالك"></textarea>
+              <div class="feedback-bottom"><span class="feedback-note" data-i18n="commentNote">سيصل تعليقك مباشرة إلى إدارة الأكاديمية.</span><button class="submit-mini" type="submit" data-i18n="commentSubmit">إرسال التعليق</button></div>
+              <p class="form-status" id="feedbackMessage" role="status" aria-live="polite"></p>
             </form>
-            <div class="submitted-comments" id="submittedComments"></div>
           </div>
         </div>
       </div>
@@ -503,17 +506,19 @@
           <p class="section-lede" data-i18n="contactCopy">أرسل لنا طلبك وسنتواصل معك لتحديد الباقة المناسبة ومستواك الحالي.</p>
           <div class="contact-details"><a class="contact-detail" href="mailto:fushazone@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>fushazone@gmail.com</span></a><div class="contact-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span data-i18n="contactOnline">تعلم أونلاين من أي مكان</span></div></div>
         </div>
-        <form class="booking-form" id="bookingForm">
+        <form class="booking-form" id="bookingForm" action="https://formspree.io/f/mykqkebb" method="POST">
+          <input type="hidden" name="form_type" value="Fusha Zone Booking and Contact Request" />
+          <input class="honeypot" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <h3 data-i18n="bookingTitle">احجز استشارتك</h3>
-          <p data-i18n="bookingCopy">سيتم فتح بريدك الإلكتروني برسالة جاهزة للإرسال إلى الأكاديمية.</p>
+          <p data-i18n="bookingCopy">أرسل طلبك مباشرة، وسيصل إلى بريد الأكاديمية.</p>
           <div class="form-grid">
-            <div class="field"><label for="bookingName" data-i18n="formName">الاسم الكامل</label><input class="input" id="bookingName" required /></div>
-            <div class="field"><label for="bookingEmail" data-i18n="formEmail">البريد الإلكتروني</label><input class="input" id="bookingEmail" type="email" required /></div>
-            <div class="field full"><label for="bookingCourse" data-i18n="formCourse">الدورة أو الباقة المطلوبة</label><select class="input" id="bookingCourse" required></select></div>
-            <div class="field full"><label for="bookingMessage" data-i18n="formMessage">رسالتك أو مستواك الحالي</label><textarea class="input" id="bookingMessage"></textarea></div>
+            <div class="field"><label for="bookingName" data-i18n="formName">الاسم الكامل</label><input class="input" id="bookingName" name="name" required /></div>
+            <div class="field"><label for="bookingEmail" data-i18n="formEmail">البريد الإلكتروني</label><input class="input" id="bookingEmail" name="email" type="email" required /></div>
+            <div class="field full"><label for="bookingCourse" data-i18n="formCourse">الدورة أو الباقة المطلوبة</label><select class="input" id="bookingCourse" name="course" required></select></div>
+            <div class="field full"><label for="bookingMessage" data-i18n="formMessage">رسالتك أو مستواك الحالي</label><textarea class="input" id="bookingMessage" name="message"></textarea></div>
           </div>
           <button class="booking-submit" type="submit" data-i18n="bookingSubmit">إرسال طلب الحجز</button>
-          <p class="form-message" id="formMessage" aria-live="polite"></p>
+          <p class="form-message form-status" id="formMessage" role="status" aria-live="polite"></p>
         </form>
       </div>
     </section>
@@ -568,8 +573,8 @@
         coursesKicker:'ابدأ من مكانك', coursesTitle:'برامج مصممة لتتحرك بك بثقة.', tabArabic:'اللغة العربية', tabQuran:'القرآن والتجويد', bookCourse:'احجز الآن', popular:'الأكثر اختيارا', oneLearner:'متعلم واحد', twoLearners:'متعلمان',
         visualChipOne:'من الحروف إلى الطلاقة', visualBadge:'خطوتك نحو الإتقان', visualChipTwo:'تعلم شخصي وعملي', benefitsKicker:'لماذا ندرس معا؟', benefitsTitle:'كل حصة تقربك من اللغة التي تريد استخدامها فعلا.', benefitOneTitle:'تصحيح صوتي دقيق', benefitOneText:'نتدرب على مخارج الحروف كما ينطقها أهل اللغة، لتسمع الفرق وتطبقه.', benefitTwoTitle:'منهج واضح بلا تشتت', benefitTwoText:'توازن بين القراءة والكتابة والقواعد والتواصل لتبني مهارة ثابتة.', benefitThreeTitle:'مرونة تناسب الحياة', benefitThreeText:'اختر الباقة التي تمنحك الاستمرارية، حتى مع جدول مزدحم.',
         journalKicker:'مدونة فصحى زون', journalTitle:'نافذة صغيرة على رحلة أكبر.', journalLede:'استكشف أفكارا عملية تساعدك على فهم العربية والتقدم فيها بذكاء.', readArticle:'اقرأ المقال <span>←</span>', libraryKicker:'واحة القصص والموارد', libraryTitle:'مكتبة حصرية تجعل التعلم مستمرا بين الحصص.', libraryCopy:'قصص تفاعلية ومناهج أكاديمية محمية، مصممة حصريا لطلاب Fusha Zone.', libraryLock:'المعاينة التفاعلية للمشتركين فقط',
-        feedbackKicker:'آراؤكم تهمنا', feedbackTitle:'نصغي للمتعلمين في كل خطوة.', testimonial:'أكاديمية ممتازة جدا وتوفر أفضل المعلمين المحترفين.', testimonialName:'أحمد محمد', testimonialDate:'24 يونيو 2026', commentTitle:'أضف تعليقك أو سؤالك', commentCopy:'نرحب بأسئلتك. يظهر تعليقك هنا على جهازك كمعاينة خاصة.', commentName:'الاسم', commentEmail:'البريد الإلكتروني', commentText:'اكتب تعليقك أو سؤالك', commentNote:'للحفاظ على الخصوصية، لا يتم إرسال هذا النموذج إلى خادم.', commentSubmit:'إرسال التعليق', commentSaved:'تمت إضافة تعليقك كمعاينة خاصة على هذا الجهاز.',
-        contactKicker:'خطوتك التالية', contactTitle:'ابدأ رحلتك مع القرآن الكريم واللغة العربية.', contactCopy:'أرسل لنا طلبك وسنتواصل معك لتحديد الباقة المناسبة ومستواك الحالي.', contactOnline:'تعلم أونلاين من أي مكان', bookingTitle:'احجز استشارتك', bookingCopy:'سيتم فتح بريدك الإلكتروني برسالة جاهزة للإرسال إلى الأكاديمية.', formName:'الاسم الكامل', formEmail:'البريد الإلكتروني', formCourse:'الدورة أو الباقة المطلوبة', formMessage:'رسالتك أو مستواك الحالي', bookingSubmit:'إرسال طلب الحجز', formRequired:'يرجى تعبئة الاسم والبريد الإلكتروني واختيار الباقة.', mailSubject:'طلب حجز جديد من موقع Fusha Zone', mailOpened:'تم تجهيز رسالة الحجز في تطبيق البريد الإلكتروني.', footerTag:'لتعليم اللغة العربية لغير الناطقين بها والقرآن الكريم', footerCopyright:'© 2026 جميع الحقوق محفوظة.'
+        feedbackKicker:'آراؤكم تهمنا', feedbackTitle:'نصغي للمتعلمين في كل خطوة.', testimonial:'أكاديمية ممتازة جدا وتوفر أفضل المعلمين المحترفين.', testimonialName:'أحمد محمد', testimonialDate:'24 يونيو 2026', commentTitle:'أضف تعليقك أو سؤالك', commentCopy:'نرحب بأسئلتك وتعليقاتك. سيصل ما ترسله مباشرة إلى إدارة الأكاديمية.', commentName:'الاسم', commentEmail:'البريد الإلكتروني', commentText:'اكتب تعليقك أو سؤالك', commentNote:'سيصل تعليقك مباشرة إلى إدارة الأكاديمية.', commentSubmit:'إرسال التعليق', commentSent:'شكرًا لك. تم إرسال تعليقك بنجاح.', commentError:'تعذر إرسال تعليقك الآن. يرجى المحاولة مرة أخرى.', formSending:'جارٍ الإرسال...',
+        contactKicker:'خطوتك التالية', contactTitle:'ابدأ رحلتك مع القرآن الكريم واللغة العربية.', contactCopy:'أرسل لنا طلبك وسنتواصل معك لتحديد الباقة المناسبة ومستواك الحالي.', contactOnline:'تعلم أونلاين من أي مكان', bookingTitle:'احجز استشارتك', bookingCopy:'أرسل طلبك مباشرة، وسيصل إلى بريد الأكاديمية.', formName:'الاسم الكامل', formEmail:'البريد الإلكتروني', formCourse:'الدورة أو الباقة المطلوبة', formMessage:'رسالتك أو مستواك الحالي', bookingSubmit:'إرسال طلب الحجز', formRequired:'يرجى تعبئة الاسم والبريد الإلكتروني واختيار الباقة.', bookingSent:'شكرًا لك. وصل طلب الحجز بنجاح وسنتواصل معك قريبًا.', bookingError:'تعذر إرسال طلبك الآن. يرجى المحاولة مرة أخرى.', feedbackSubject:'تعليق أو سؤال جديد من موقع Fusha Zone', bookingSubject:'طلب حجز أو تواصل جديد من موقع Fusha Zone', footerTag:'لتعليم اللغة العربية لغير الناطقين بها والقرآن الكريم', footerCopyright:'© 2026 جميع الحقوق محفوظة.'
       },
       en: {
         skip:'Skip to content', brandTagline:'Arabic & Qur’an Education', navHome:'Home', navAbout:'About', navCourses:'Courses & Packages', navJournal:'Journal & Library', navFeedback:'Feedback', navContact:'Contact', navCTA:'Book a lesson',
@@ -579,8 +584,8 @@
         coursesKicker:'Start where you are', coursesTitle:'Programs designed to move you forward with confidence.', tabArabic:'Arabic Language', tabQuran:'Qur’an & Tajweed', bookCourse:'Book now', popular:'Most chosen', oneLearner:'One learner', twoLearners:'Two learners',
         visualChipOne:'From letters to fluency', visualBadge:'Your route to mastery', visualChipTwo:'Personal & practical learning', benefitsKicker:'Why learn with us?', benefitsTitle:'Every lesson brings you closer to Arabic you can actually use.', benefitOneTitle:'Precise pronunciation coaching', benefitOneText:'Practice letter articulation as native speakers use it, so you hear and apply the difference.', benefitTwoTitle:'A clear path, not scattered lessons', benefitTwoText:'Reading, writing, grammar, and communication work together to build lasting skill.', benefitThreeTitle:'Flexibility for real life', benefitThreeText:'Choose the package that gives you consistency, even with a busy schedule.',
         journalKicker:'Fusha Zone Journal', journalTitle:'A small window into a bigger journey.', journalLede:'Explore practical ideas that help you understand Arabic and progress with intention.', readArticle:'Read article <span>→</span>', libraryKicker:'Stories & Resources Oasis', libraryTitle:'An exclusive library that keeps learning going between lessons.', libraryCopy:'Interactive stories and protected academic resources, created exclusively for Fusha Zone students.', libraryLock:'Interactive preview for subscribers only',
-        feedbackKicker:'Your feedback matters', feedbackTitle:'We listen to learners at every step.', testimonial:'An excellent academy that offers the best professional teachers.', testimonialName:'Ahmed Mohammed', testimonialDate:'June 24, 2026', commentTitle:'Leave a comment or question', commentCopy:'Questions are welcome. Your comment appears here only as a private preview on this device.', commentName:'Name', commentEmail:'Email address', commentText:'Write your comment or question', commentNote:'For privacy, this form does not send data to a server.', commentSubmit:'Add private preview', commentSaved:'Your private preview was added on this device.',
-        contactKicker:'Your next step', contactTitle:'Begin your journey with the Qur’an and Arabic.', contactCopy:'Send us your request and we will help identify the right package and your current level.', contactOnline:'Learn online from anywhere', bookingTitle:'Book your consultation', bookingCopy:'Your email app will open with a booking message ready to send to the academy.', formName:'Full name', formEmail:'Email address', formCourse:'Course or requested package', formMessage:'Your message or current level', bookingSubmit:'Send booking request', formRequired:'Please complete your name, email, and preferred package.', mailSubject:'New Fusha Zone booking request', mailOpened:'Your booking message has been prepared in your email app.', footerTag:'Arabic education for non-native speakers and Qur’an learning', footerCopyright:'© 2026 All rights reserved.'
+        feedbackKicker:'Your feedback matters', feedbackTitle:'We listen to learners at every step.', testimonial:'An excellent academy that offers the best professional teachers.', testimonialName:'Ahmed Mohammed', testimonialDate:'June 24, 2026', commentTitle:'Leave a comment or question', commentCopy:'Questions and feedback are welcome. What you send goes directly to the academy.', commentName:'Name', commentEmail:'Email address', commentText:'Write your comment or question', commentNote:'Your message will be sent directly to the academy.', commentSubmit:'Send feedback', commentSent:'Thank you. Your feedback was sent successfully.', commentError:'We could not send your feedback right now. Please try again.', formSending:'Sending...',
+        contactKicker:'Your next step', contactTitle:'Begin your journey with the Qur’an and Arabic.', contactCopy:'Send us your request and we will help identify the right package and your current level.', contactOnline:'Learn online from anywhere', bookingTitle:'Book your consultation', bookingCopy:'Send your request directly and it will arrive in the academy inbox.', formName:'Full name', formEmail:'Email address', formCourse:'Course or requested package', formMessage:'Your message or current level', bookingSubmit:'Send booking request', formRequired:'Please complete your name, email, and preferred package.', bookingSent:'Thank you. Your booking request was sent successfully. We will be in touch soon.', bookingError:'We could not send your request right now. Please try again.', feedbackSubject:'New feedback or question from the Fusha Zone website', bookingSubject:'New booking or contact request from the Fusha Zone website', footerTag:'Arabic education for non-native speakers and Qur’an learning', footerCopyright:'© 2026 All rights reserved.'
       }
     };
 
@@ -652,7 +657,7 @@
       document.getElementById('testimonialText').textContent = t('testimonial');
       document.getElementById('testimonialName').textContent = t('testimonialName');
       document.getElementById('testimonialDate').textContent = t('testimonialDate');
-      renderCourses(); renderJournal(); populateSelect(); renderStoredComments();
+      renderCourses(); renderJournal(); populateSelect();
       localStorage.setItem('fushaLanguage', lang);
     }
 
@@ -662,12 +667,6 @@
       toast.classList.add('show');
       clearTimeout(window.toastTimer);
       window.toastTimer = setTimeout(() => toast.classList.remove('show'), 3300);
-    }
-
-    function renderStoredComments() {
-      const container = document.getElementById('submittedComments');
-      const comments = JSON.parse(localStorage.getItem('fushaComments') || '[]');
-      container.innerHTML = comments.slice(-2).reverse().map(c => `<div class="user-comment"><b>${c.name}</b>${c.text}</div>`).join('');
     }
 
     document.querySelectorAll('.course-tab').forEach(button => button.addEventListener('click', () => {
@@ -690,29 +689,52 @@
     });
     nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); }));
 
+    async function submitToFormspree(form, statusElement, successKey, errorKey, subjectKey) {
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalLabel = submitButton.textContent;
+      statusElement.textContent = '';
+      statusElement.classList.remove('success', 'error');
+      submitButton.disabled = true;
+      submitButton.textContent = t('formSending');
+
+      try {
+        const data = new FormData(form);
+        data.set('_subject', t(subjectKey));
+        data.set('website', 'Fusha Zone');
+        data.set('language', lang === 'ar' ? 'Arabic' : 'English');
+
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' }
+        });
+
+        if (!response.ok) throw new Error('Formspree submission failed');
+        form.reset();
+        statusElement.textContent = t(successKey);
+        statusElement.classList.add('success');
+        showToast(t(successKey));
+      } catch (error) {
+        statusElement.textContent = t(errorKey);
+        statusElement.classList.add('error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalLabel;
+      }
+    }
+
     document.getElementById('commentForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('commentName').value.trim();
-      const comment = document.getElementById('commentText').value.trim();
-      if (!name || !comment) return;
-      const comments = JSON.parse(localStorage.getItem('fushaComments') || '[]');
-      comments.push({ name, text: comment });
-      localStorage.setItem('fushaComments', JSON.stringify(comments.slice(-5)));
-      e.currentTarget.reset(); renderStoredComments(); showToast(t('commentSaved'));
+      const form = e.currentTarget;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      submitToFormspree(form, document.getElementById('feedbackMessage'), 'commentSent', 'commentError', 'feedbackSubject');
     });
 
     document.getElementById('bookingForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('bookingName').value.trim();
-      const email = document.getElementById('bookingEmail').value.trim();
-      const course = document.getElementById('bookingCourse').value;
-      const message = document.getElementById('bookingMessage').value.trim();
-      const formMessage = document.getElementById('formMessage');
-      if (!name || !email || !course) { formMessage.textContent = t('formRequired'); return; }
-      const subject = `${t('mailSubject')} — ${name}`;
-      const body = `${t('formName')}: ${name}\n${t('formEmail')}: ${email}\n${t('formCourse')}: ${course}\n${t('formMessage')}: ${message || '-'}\n`;
-      formMessage.textContent = t('mailOpened');
-      window.location.href = `mailto:fushazone@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const form = e.currentTarget;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      submitToFormspree(form, document.getElementById('formMessage'), 'bookingSent', 'bookingError', 'bookingSubject');
     });
 
     window.addEventListener('scroll', () => document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 12), {passive:true});

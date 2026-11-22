@@ -1,0 +1,17 @@
+{
+  // الموقع (ملفات dist) + خادم صغير لمسار /api/rtc فقط (الغرف الصوتية)
+  "name": "english-zone-academy",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-10-01",
+  // يبني الموقع قبل النشر (Workers Builds لم يعد يبنيه تلقائيًا بعد إضافة هذا الملف)
+  "build": { "command": "npm run build" },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  // لا تمسح المتغيرات المضافة من لوحة Cloudflare عند كل نشر
+  "keep_vars": true,
+  "observability": { "enabled": true }
+}

@@ -1,0 +1,22 @@
+# فحص البناء فقط (لا ينشر شيئًا): يتأكد أن الموقع يُبنى بلا أخطاء قبل النشر
+name: Build check
+
+on:
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # نفس طريقة Netlify: المشروع يستعمل bun.lock
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx vite build
+      - name: Type check (report only)
+        run: bunx tsc --noEmit -p tsconfig.json || true

@@ -1,0 +1,372 @@
+import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { useAcademySettings, whatsappDisplay, handleFromUrl } from '../hooks/useAcademySettings';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import { 
+  Phone, 
+  Mail, 
+  Youtube, 
+  Instagram, 
+  MessageSquare, 
+  Send, 
+  CheckCircle, 
+  ExternalLink,
+  Clock,
+  MapPin,
+  Globe
+} from 'lucide-react';
+
+interface ContactPageProps {
+  navigate: (route: string) => void;
+}
+
+export const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
+  const contacts = useAcademySettings();
+  const { t, language } = useLanguage();
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
+
+  // الرسالة تُحفظ في contact_messages وتظهر في لوحة الإدارة (تبويب الرسائل)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+    setSending(true);
+    setSendError('');
+    try {
+      const id = `MSG-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
+      await setDoc(doc(db, 'contact_messages', id), {
+        id,
+        name: formData.name.trim().slice(0, 100),
+        email: formData.email.trim().slice(0, 150),
+        subject: formData.subject.trim().slice(0, 200),
+        message: formData.message.trim().slice(0, 3000),
+        status: 'new',
+        submittedAt: new Date().toISOString()
+      });
+      setFormSubmitted(true);
+    } catch (err) {
+      console.error('Contact message error:', err);
+      setSendError(
+        language === 'ar'
+          ? 'تعذر إرسال الرسالة. حاول مرة أخرى أو تواصل معنا عبر واتساب.'
+          : 'Your message could not be sent. Please try again or contact us on WhatsApp.'
+      );
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // القنوات تظهر فقط إذا كان رابطها محفوظًا في إعدادات الأكاديمية
+  const contactChannels = [
+    {
+      title: t.contact.whatsappCardTitle,
+      value: whatsappDisplay(contacts.whatsapp),
+      sub: t.contact.whatsappCardDesc,
+      href: contacts.whatsapp,
+      icon: Phone,
+      color: '#25D366',
+      isOfficial: true
+    },
+    {
+      title: t.contact.emailCardTitle,
+      value: contacts.email,
+      sub: language === 'ar' ? 'الرد الأكاديمي خلال 24 ساعة' : 'Academic response within 24 hours',
+      href: contacts.email ? `mailto:${contacts.email}` : '',
+      icon: Mail,
+      color: '#D4AF37',
+      isOfficial: true
+    },
+    {
+      title: t.contact.youtubeCardTitle,
+      value: handleFromUrl(contacts.youtube),
+      sub: t.contact.youtubeCardDesc,
+      href: contacts.youtube,
+      icon: Youtube,
+      color: '#FF0000',
+      isOfficial: true
+    },
+    {
+      title: t.contact.instagramCardTitle,
+      value: handleFromUrl(contacts.instagram),
+      sub: t.contact.instagramCardDesc,
+      href: contacts.instagram,
+      icon: Instagram,
+      color: '#E4405F',
+      isOfficial: true
+    },
+    {
+      title: t.contact.discordCardTitle,
+      value: 'Discord',
+      sub: t.contact.discordCardDesc,
+      href: contacts.discord,
+      icon: MessageSquare,
+      color: '#5865F2',
+      isOfficial: true
+    },
+    {
+      title: 'Facebook',
+      value: handleFromUrl(contacts.facebook),
+      sub: language === 'ar' ? 'صفحة الأكاديمية على فيسبوك' : 'Academy Facebook page',
+      href: contacts.facebook,
+      icon: Globe,
+      color: '#1877F2',
+      isOfficial: true
+    },
+    {
+      title: 'Telegram',
+      value: handleFromUrl(contacts.telegram),
+      sub: language === 'ar' ? 'قناة الأكاديمية على تيليجرام' : 'Academy Telegram channel',
+      href: contacts.telegram,
+      icon: Globe,
+      color: '#229ED9',
+      isOfficial: true
+    }
+  ].filter((c) => !!c.href) as any[];
+
+  return (
+    <div className="min-h-screen bg-[#FAF8F5] py-12">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="text-center max-w-3xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+            Official Admissions Desk
+          </span>
+          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F] mt-2">
+            {t.contact.title}
+          </h1>
+          <p className="text-base sm:text-lg text-gray-600 mt-4 leading-relaxed">
+            {t.contact.subtitle}
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Contact Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {contactChannels.map((item, index) => {
+            const Icon = item.icon;
+            const isClickable = item.href && item.href !== '#';
+            return (
+              <div 
+                key={index}
+                className="bg-white rounded-2xl p-6 border border-[#D4AF37]/30 shadow-sm hover:shadow-md hover:border-[#D4AF37] transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-white"
+                      style={{ backgroundColor: item.color }}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    {item.isPlaceholder ? (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 text-gray-500">
+                        {language === 'ar' ? 'موضع تعديل' : 'Placeholder'}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FAF8F5] text-[#AA820A] border border-[#D4AF37]/30">
+                        {language === 'ar' ? 'رسمي' : 'Official'}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-serif-luxury font-bold text-lg text-[#0A192F] mb-1">
+                    {item.title}
+                  </h3>
+                  <div className="text-xs sm:text-sm font-semibold text-gray-700 break-all mb-2">
+                    {item.value}
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {item.sub}
+                  </p>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  {isClickable ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A192F] hover:text-[#AA820A] transition-colors"
+                    >
+                      <span>{language === 'ar' ? 'فتح الرابط المباشر' : 'Open Link'}</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  ) : (
+                    <span className="text-xs text-gray-400 italic">
+                      {language === 'ar' ? 'قيد التفعيل في لوحة الإدارة' : 'Configured via Admin'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Inquiry Form & WhatsApp Quick Action */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          
+          {/* Quick WhatsApp Admissions Banner */}
+          <div className="lg:col-span-5 bg-gradient-to-br from-[#0A192F] to-[#162B4D] text-white rounded-3xl p-8 border border-[#D4AF37]/30 shadow-xl space-y-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] block">
+              Immediate Admissions Support
+            </span>
+            <h2 className="font-serif-luxury font-bold text-2xl sm:text-3xl text-white">
+              {language === 'ar' ? 'هل تود الاستفسار والتسجيل عبر الواتساب فوراً؟' : 'Prefer Direct WhatsApp Assistance?'}
+            </h2>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              {language === 'ar'
+                ? 'فريق القبول والتنسيق الأكاديمي متاح للرد على استفساراتك حول البرامج وتحديد موعد الحصة التجريبية أو حجز مقعدك مباشرة.'
+                : 'Our academic coordinator responds promptly to answer questions regarding CEFR level placement, small group schedules, and program enrollment.'}
+            </p>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs text-gray-300">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-[#D4AF37]" />
+                <span>Admissions Hours: 7 Days a week (Daily Support)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#D4AF37]" />
+                <span>Format: International Online Academy (Worldwide)</span>
+              </div>
+            </div>
+
+            {contacts.whatsapp && (
+            <a
+              href={contacts.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 rounded-xl font-bold text-sm bg-[#25D366] text-white hover:bg-[#1EBE5D] transition-colors flex items-center justify-center gap-2 shadow-lg"
+            >
+              <Phone className="w-4 h-4" />
+              <span>{language === 'ar' ? 'محادثة فورية على الواتساب' : 'Chat on WhatsApp Now'}</span>
+            </a>
+            )}
+          </div>
+
+          {/* Academic Inquiry Form */}
+          <div className="lg:col-span-7 bg-white rounded-3xl p-8 border border-gray-200/80 shadow-md">
+            <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F] mb-2">
+              {t.contact.formTitle}
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 mb-6">
+              {language === 'ar' 
+                ? 'أرسل لنا استفسارك وسيقوم القسم الأكاديمي بالتواصل معك عبر البريد الإلكتروني أو الواتساب.'
+                : 'Send your academic question and our team will get in touch with you shortly.'
+              }
+            </p>
+
+            {formSubmitted ? (
+              <div className="p-8 rounded-2xl bg-[#FAF8F5] border border-[#25D366]/40 text-center space-y-3">
+                <CheckCircle className="w-12 h-12 text-[#25D366] mx-auto" />
+                <h3 className="font-serif-luxury font-bold text-xl text-[#0A192F]">
+                  {t.contact.formSuccess}
+                </h3>
+                <p className="text-xs text-gray-600">
+                  {language === 'ar' 
+                    ? 'تم استلام بياناتك وسنرد على بريدك الإلكتروني قريباً.' 
+                    : 'We have received your message and will respond promptly.'}
+                </p>
+                <button
+                  onClick={() => {
+                    setFormSubmitted(false);
+                    setFormData({ name: '', email: '', subject: '', message: '' });
+                  }}
+                  className="mt-4 px-4 py-2 rounded-xl text-xs font-bold bg-[#0A192F] text-white"
+                >
+                  {language === 'ar' ? 'إرسال رسالة أخرى' : 'Send Another Message'}
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-[#0A192F] mb-1">
+                      {t.contact.formName} *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#D4AF37] text-sm"
+                      placeholder="e.g., Sarah Al-Ahmad"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#0A192F] mb-1">
+                      {t.contact.formEmail} *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#D4AF37] text-sm"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#0A192F] mb-1">
+                    {t.contact.formSubject}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#D4AF37] text-sm"
+                    placeholder="e.g., Level B1 Schedule & Timetable"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#0A192F] mb-1">
+                    {t.contact.formMessage} *
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#D4AF37] text-sm"
+                    placeholder="Write your questions here..."
+                  ></textarea>
+                </div>
+
+                {sendError && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center">
+                    {sendError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full py-3 rounded-xl font-bold text-sm bg-[#0A192F] text-white hover:bg-[#162B4D] transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                >
+                  <Send className="w-4 h-4 text-[#D4AF37]" />
+                  <span>{sending ? (language === 'ar' ? 'جارٍ الإرسال...' : 'Sending...') : t.contact.formSend}</span>
+                </button>
+              </form>
+            )}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};

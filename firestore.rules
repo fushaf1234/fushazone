@@ -1,0 +1,741 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Deny all reads and writes by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // الحساب المسجّل وغير المحظور (البريد المحظور لا يصل لأي بيانات داخل المنصة)
+    function isSignedIn() {
+      return request.auth != null &&
+        (!('email' in request.auth.token) ||
+          !exists(/databases/$(database)/documents/blocked_emails/$(request.auth.token.email.lower())));
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Admin: server-verified Custom Claims OR a document created manually from the Firebase Console
+    function isAdminDoc() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Teacher document: /teachers is writable only by admins
+    function isTeacherDoc() {
+      return isSignedIn() && exists(/databases/$(database)/documents/teachers/$(request.auth.uid));
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.role in ['super-admin', 'super_admin'] ||
+        (
+          isAdminDoc() && (
+            get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.get('role', '') in ['super-admin', 'super_admin'] ||
+            get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.get('isSuperAdmin', false) == true
+          )
+        )
+      );
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.role in ['super-admin', 'super_admin', 'admin'] ||
+        request.auth.token.admin == true ||
+        isAdminDoc()
+      );
+    }
+
+    function isTeacher() {
+      return isSignedIn() && (
+        isAdmin() ||
+        request.auth.token.role == 'teacher' ||
+        isTeacherDoc()
+      );
+    }
+
+    // مجموعة الطالب الحالي من وثيقته في users (فارغة إن لم تُحدد)
+    function myGroupId() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('groupId', '');
+    }
+
+    // وثيقة الطالب الحالي في users
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // كل من له ملف في المنصة (مسجّلة مجانًا أو طالبة)
+    function isMember() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    // طالب اشتراكه مفعّل
+    function isActiveStudent() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        myProfile().get('subscriptionStatus', '') == 'active';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // --- System Initialization Lock ---
+    match /system_config/{configId} {
+      allow get: if configId == 'initialization_lock';
+      allow list: if isAdmin();
+      allow write: if false;
+    }
+
+    // --- Users Profiles ---
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isTeacher() || isAdmin();
+      allow list: if isAdmin() || (isTeacher() && resource.data.teacherId == request.auth.uid);
+
+      allow create: if isAdmin() || (
+        isOwner(userId) &&
+        request.resource.data.id == userId &&
+        request.resource.data.role == 'student' &&
+        request.resource.data.points == 0 &&
+        request.resource.data.subscriptionStatus == 'pending' &&
+        request.resource.data.email.lower() == request.auth.token.email.lower() &&
+        // الحساب الذي حذفته الإدارة لا يعود بإنشاء ملف جديد
+        !exists(/databases/$(database)/documents/blocked_users/$(userId)) &&
+        request.resource.data.keys().hasOnly([
+          'id', 'email', 'fullName', 'role', 'phone', 'country', 'age',
+          'avatarUrl', 'avatarConfig', 'createdAt', 'points', 'mainLevel',
+          'currentStage', 'subscriptionStatus', 'learningFormat',
+          'starOfTheWeekCount', 'starOfTheMonthCount', 'accountType'
+        ]) &&
+        (!('accountType' in request.resource.data) || request.resource.data.accountType in ['visitor', 'registrant'])
+      );
+
+      // المعلم يغيّر نقاط طلابه فقط
+      allow update: if isAdmin() || (
+        isTeacherDoc() && resource.data.get('teacherId', '') == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['points', 'lessonsAttended', 'updatedAt'])
+      ) || (
+        isOwner(userId) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'fullName', 'phone', 'country', 'age', 'avatarUrl', 'avatarConfig', 'updatedAt', 'placementLevel', 'placementAt', 'gender', 'bio', 'nameConfirmed', 'showCountry', 'showAge'
+        ]) &&
+        (!('gender' in request.resource.data) || request.resource.data.gender in ['male', 'female']) &&
+        (!('placementLevel' in request.resource.data) || request.resource.data.placementLevel in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // --- Admins collection: no client can write; documents are created from the Firebase Console only ---
+    match /admins/{adminId} {
+      allow get: if isOwner(adminId) || isAdmin();
+      allow list: if isAdmin();
+      allow write: if false;
+    }
+
+    // --- Teachers collection ---
+    match /teachers/{teacherId} {
+      allow get, list: if isTeacher() || isAdmin();
+      allow write: if isAdmin();
+      // المعلم يعدّل بياناته الشخصية وصورته فقط
+      allow update: if isOwner(teacherId) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['fullName', 'phone', 'bio', 'photo', 'updatedAt']);
+    }
+
+    // --- Admission Registration Requests ---
+    match /registration_requests/{requestId} {
+      allow create:
+        if request.resource.data.status == 'pending' &&
+        isValidId(requestId) &&
+        request.resource.data.keys().hasOnly([
+          'id', 'fullName', 'age', 'country', 'whatsappNumber', 'email',
+          'mainLevel', 'learningGoal', 'learningFormat', 'notes', 'status', 'submittedAt',
+          'type', 'selectedTrack', 'currentEnglishLevel', 'timestamp', 'studentId', 'referralCode'
+        ]) &&
+        (!('referralCode' in request.resource.data) || (request.resource.data.referralCode is string && request.resource.data.referralCode.size() <= 20)) &&
+        (!('studentId' in request.resource.data) || (isSignedIn() && request.resource.data.studentId == request.auth.uid)) &&
+        request.resource.data.fullName is string && request.resource.data.fullName.size() <= 100 &&
+        request.resource.data.email is string && request.resource.data.email.size() <= 150 &&
+        request.resource.data.whatsappNumber is string && request.resource.data.whatsappNumber.size() <= 40;
+
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    // --- Student Grades and Test Records ---
+    match /grades/{gradeId} {
+      allow get, list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isTeacher());
+      allow create, update, delete: if isTeacher();
+    }
+
+    // --- English Zone Stars Audit Log ---
+    // الطالب يرى سجله، وسجل مجموعته فقط (where groupId == مجموعته)
+    match /points_log/{pointsId} {
+      allow get, list: if isSignedIn() && (
+        resource.data.studentId == request.auth.uid ||
+        isTeacher() ||
+        (myGroupId() != '' && resource.data.groupId == myGroupId())
+      );
+      allow create, update, delete: if isTeacher();
+    }
+
+    // --- Timetable Sessions ---
+    match /timetable/{sessionId} {
+      allow get, list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isTeacher());
+      allow create, update, delete: if isTeacher();
+    }
+
+    // --- Academy Public Configurations ---
+    match /academy_settings/{settingId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Dynamic Content Management Collections ---
+    match /website_content/{contentId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    match /courses/{courseId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // المكتبة والمجلة: «للعامة» يراها الجميع، «للمسجّلين» لكل حساب، «للطلاب» للطلاب المفعّلين والمعلمين، و«مخفية» للإدارة
+    match /library_materials/{materialId} {
+      // «members»: لكل من سجّل حسابًا مجانيًا (زائر أو طالب)
+      allow get, list: if resource.data.get('audience', '') == 'public' || isAdmin() || isTeacher() ||
+        (isSignedIn() && resource.data.get('audience', '') in ['public', 'members']) ||
+        (isActiveStudent() && resource.data.get('audience', '') in ['public', 'members', 'students']);
+      allow write: if isAdmin();
+    }
+
+    match /promotions_offers/{offerId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    match /testimonials/{testimonialId} {
+      allow get, list: if resource.data.isApproved == true || isAdmin();
+
+      // فقط طالب مشترك (اشتراكه مفعّل) يكتب تقييمًا باسمه، فيظهر «تقييم موثّق»
+      allow create: if isActiveStudent() &&
+        request.resource.data.isApproved == false &&
+        request.resource.data.studentId == request.auth.uid &&
+        request.resource.data.keys().hasOnly([
+          'id', 'studentNameEn', 'studentNameAr', 'roleEn', 'roleAr',
+          'level', 'quoteEn', 'quoteAr', 'rating', 'isApproved', 'submittedAt', 'studentId'
+        ]) &&
+        request.resource.data.rating >= 1 && request.resource.data.rating <= 5 &&
+        request.resource.data.quoteEn is string && request.resource.data.quoteEn.size() <= 1000;
+
+      allow update, delete: if isAdmin();
+    }
+
+    function isValidFeedbackScreenshot(data) {
+      return data.keys().hasOnly([
+        'id', 'imageDataUrl', 'category', 'captionEn', 'captionAr',
+        'orderIndex', 'isPublished', 'hasPrivacyMask', 'createdAt', 'updatedAt', 'createdBy'
+      ]) &&
+      data.id is string && data.id.size() > 0 && data.id.size() <= 128 &&
+      data.imageDataUrl is string && data.imageDataUrl.size() > 0 && data.imageDataUrl.size() <= 950000 &&
+      data.category is string && data.category in ['none', 'student_reviews', 'parents_feedback', 'lecture_feedback', 'course_experience'] &&
+      (!('captionEn' in data) || (data.captionEn is string && data.captionEn.size() <= 200)) &&
+      (!('captionAr' in data) || (data.captionAr is string && data.captionAr.size() <= 200)) &&
+      (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 60)) &&
+      (!('createdBy' in data) || (data.createdBy is string && data.createdBy.size() <= 120)) &&
+      data.orderIndex is number &&
+      data.isPublished is bool &&
+      data.hasPrivacyMask is bool &&
+      data.createdAt is string && data.createdAt.size() <= 60;
+    }
+
+    match /feedback_screenshots/{screenshotId} {
+      allow get, list: if resource.data.isPublished == true || isAdmin();
+      allow create: if isAdmin() && isValidId(screenshotId) && isValidFeedbackScreenshot(request.resource.data);
+      allow update: if isAdmin() && isValidId(screenshotId) && isValidFeedbackScreenshot(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // --- Study groups (المجموعات) ---
+    match /groups/{groupId} {
+      allow get, list: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // --- Group leaderboard: الاسم والنقاط فقط لكل طالب، يراها زملاء المجموعة ---
+    // حسابات حذفتها الإدارة (لا يمكن حذف حساب الدخول نفسه بالخطة المجانية)
+    match /blocked_users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list, write: if isAdmin();
+    }
+
+    match /group_members/{memberId} {
+      allow get, list: if isSignedIn() && (
+        memberId == request.auth.uid ||
+        isTeacher() ||
+        (myGroupId() != '' && resource.data.groupId == myGroupId())
+      );
+      allow write: if isAdmin() || (
+        isTeacherDoc() && request.resource != null &&
+        get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.get('teacherId', '') == request.auth.uid
+      );
+    }
+
+    // --- Rating criteria (معايير التقييم) ---
+    match /rating_criteria/{criterionId} {
+      allow get, list: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // --- Pricing (الأسعار) ---
+    // الأسعار للمسجّلين فقط، والمعلمون لا يرونها
+    match /pricing_levels/{levelId} {
+      allow get, list: if isAdmin() || (isMember() && !isTeacherDoc() && myProfile().get('role', '') != 'teacher');
+      allow write: if isAdmin();
+    }
+
+    match /pricing_stages/{stageId} {
+      allow get, list: if isAdmin() || (isMember() && !isTeacherDoc() && myProfile().get('role', '') != 'teacher');
+      allow write: if isAdmin();
+    }
+
+    // --- Blog (الزائر يرى المنشور فقط) ---
+    match /blog_posts/{postId} {
+      allow get, list: if resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // --- Contact messages: زائر من صفحة التواصل، أو طالب من لوحته (ويرى رسائله وردود الإدارة) ---
+    match /contact_messages/{messageId} {
+      // المعلمة أو الأكاديمية ترسل رسالة في محادثة طالبة
+      allow create: if isValidId(messageId) && isSignedIn() &&
+        request.resource.data.keys().hasOnly(['id', 'name', 'email', 'subject', 'message', 'status', 'submittedAt', 'studentId', 'teacherId', 'audioParts', 'audioSeconds', 'from']) &&
+        request.resource.data.studentId is string && request.resource.data.studentId.size() > 0 &&
+        request.resource.data.status == 'new' &&
+        request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 3000 &&
+        (!('audioParts' in request.resource.data) || (request.resource.data.audioParts is int && request.resource.data.audioParts >= 1 && request.resource.data.audioParts <= 6)) &&
+        (
+          (request.resource.data.get('from', '') == 'academy' && isAdmin()) ||
+          (request.resource.data.get('from', '') == 'teacher' && isTeacherDoc() &&
+            request.resource.data.get('teacherId', '') == request.auth.uid &&
+            get(/databases/$(database)/documents/users/$(request.resource.data.studentId)).data.get('teacherId', '') == request.auth.uid)
+        );
+      // الزائرة من صفحة التواصل، أو الطالبة في محادثتها
+      allow create: if isValidId(messageId) &&
+        request.resource.data.get('from', 'student') == 'student' &&
+        request.resource.data.keys().hasOnly(['id', 'name', 'email', 'subject', 'message', 'status', 'submittedAt', 'studentId', 'teacherId', 'audioParts', 'audioSeconds', 'from']) &&
+        (!('audioParts' in request.resource.data) || (request.resource.data.audioParts is int && request.resource.data.audioParts >= 1 && request.resource.data.audioParts <= 6 && 'studentId' in request.resource.data)) &&
+        (!('teacherId' in request.resource.data) || (isSignedIn() && request.resource.data.teacherId == myProfile().get('teacherId', ''))) &&
+        request.resource.data.status == 'new' &&
+        (!('studentId' in request.resource.data) || (isSignedIn() && request.resource.data.studentId == request.auth.uid)) &&
+        request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 &&
+        request.resource.data.email is string && request.resource.data.email.size() > 0 && request.resource.data.email.size() <= 150 &&
+        request.resource.data.subject is string && request.resource.data.subject.size() <= 200 &&
+        request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 3000;
+      allow get, list: if isAdmin() ||
+        (isSignedIn() && resource.data.studentId == request.auth.uid) ||
+        (isTeacherDoc() && resource.data.teacherId == request.auth.uid);
+      // المعلم يرد على رسائل طلابه (كتابةً أو صوتيًا) ويبلّغ؛ الطالبة تبلّغ عن رسالتها فقط؛ الحذف للأكاديمية فقط
+      allow update: if isAdmin() || (
+        isTeacherDoc() && resource.data.get('teacherId', '') == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reply', 'repliedAt', 'status', 'repliedBy', 'replyAudioParts', 'replyAudioSeconds', 'reported', 'reportReason', 'reportedBy', 'reportedAt']) &&
+        request.resource.data.get('repliedBy', 'teacher') == 'teacher' &&
+        request.resource.data.get('reportedBy', 'teacher') == 'teacher'
+      ) || (
+        isSignedIn() && resource.data.get('studentId', '') == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reported', 'reportReason', 'reportedBy', 'reportedAt']) &&
+        request.resource.data.reported == true && request.resource.data.reportedBy == 'student' &&
+        request.resource.data.reportReason is string && request.resource.data.reportReason.size() <= 500
+      ) || (
+        // الطالبة تعلّم رسائل المعلمة/الأكاديمية مقروءة
+        isSignedIn() && resource.data.get('studentId', '') == request.auth.uid &&
+        resource.data.get('from', 'student') != 'student' &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+        request.resource.data.status == 'read'
+      );
+      allow delete: if isAdmin();
+    }
+
+    // --- البريد المحظور: الإدارة تضيف وتحذف، وصاحبة البريد تقرأ مستندها فقط (لتعرف أنها محظورة) ---
+    match /blocked_emails/{email} {
+      allow get: if request.auth != null && ('email' in request.auth.token) && email == request.auth.token.email.lower();
+      allow get, list, write: if isAdmin();
+    }
+
+    // --- متابعة الدعوات ومكافآت السفيرات: الإدارة فقط ---
+    match /referral_status/{regId} {
+      allow read, write: if isAdmin();
+    }
+
+    // --- الورش المجانية والشهادات ---
+    // الورشة: قراءة عامة (صفحة التسجيل)، والإدارة فقط تنشئ وتعدّل
+    match /workshops/{workshopId} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // التسجيل والتقييم: أي زائرة تنشئه مرة واحدة لورشة مفتوحة، والإدارة فقط تقرأ وتحذف
+    match /workshop_regs/{serial} {
+      allow create: if serial.matches('^EZ-[0-9]{4}-[A-Z0-9]{6}$') &&
+        request.resource.data.keys().hasOnly(['serial', 'workshopId', 'workshopTitle', 'name', 'email', 'phone', 'country', 'rating', 'benefit', 'feedback', 'createdAt']) &&
+        request.resource.data.serial == serial &&
+        get(/databases/$(database)/documents/workshops/$(request.resource.data.workshopId)).data.active == true &&
+        request.resource.data.name is string && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 80 &&
+        request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 150 &&
+        request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5 &&
+        request.resource.data.benefit is int && request.resource.data.benefit >= 1 && request.resource.data.benefit <= 10 &&
+        request.resource.data.feedback is string && request.resource.data.feedback.size() <= 2000;
+      allow get, list, delete: if isAdmin();
+    }
+
+    // الشهادة: بيانات التحقق العامة (الاسم والورشة والتاريخ)، تُنشأ مع التسجيل نفسه ولا تُعدّل
+    match /certificates/{serial} {
+      allow create: if serial.matches('^EZ-[0-9]{4}-[A-Z0-9]{6}$') &&
+        request.resource.data.keys().hasOnly(['serial', 'workshopId', 'workshopTitle', 'name', 'issuedAt']) &&
+        request.resource.data.serial == serial &&
+        exists(/databases/$(database)/documents/workshop_regs/$(serial)) &&
+        get(/databases/$(database)/documents/workshop_regs/$(serial)).data.name == request.resource.data.name &&
+        get(/databases/$(database)/documents/workshop_regs/$(serial)).data.workshopId == request.resource.data.workshopId &&
+        request.resource.data.issuedAt is string && request.resource.data.issuedAt.size() == 10;
+      allow get: if true;
+      allow list, delete: if isAdmin();
+    }
+
+    // --- سجل تنبيهات البريد: بريد واحد يوميًا لكل مستلم (الإنشاء مرة واحدة فقط، ولا تعديل) ---
+    match /mail_log/{logId} {
+      allow create: if isSignedIn() && isValidId(logId) &&
+        request.resource.data.keys().hasOnly(['day', 'createdAt']) &&
+        request.resource.data.day is string && request.resource.data.day.size() == 10;
+      allow get: if isSignedIn();
+      allow list, delete: if isAdmin();
+    }
+
+    // --- Voice messages: أجزاء التسجيل الصوتي للرسائل (الطالبة ↔ المعلمة، والأكاديمية ترى الكل وتحذف) ---
+    match /message_audio/{audioId} {
+      allow create: if isSignedIn() && isValidId(audioId) &&
+        request.resource.data.keys().hasOnly(['messageId', 'kind', 'part', 'parts', 'mime', 'data', 'studentId', 'teacherId', 'createdAt']) &&
+        request.resource.data.data is string && request.resource.data.data.size() <= 950000 &&
+        request.resource.data.mime is string && request.resource.data.mime.matches('^audio/[a-z0-9.+-]+$') &&
+        request.resource.data.parts is int && request.resource.data.parts >= 1 && request.resource.data.parts <= 6 &&
+        request.resource.data.kind in ['msg', 'reply'] &&
+        (
+          (request.resource.data.kind == 'msg' && request.resource.data.studentId == request.auth.uid &&
+            (!('teacherId' in request.resource.data) || request.resource.data.teacherId == myProfile().get('teacherId', ''))) ||
+          isAdmin() ||
+          (isTeacherDoc() && request.resource.data.get('teacherId', '') == request.auth.uid)
+        );
+      allow get: if isAdmin() ||
+        (isSignedIn() && resource.data.studentId == request.auth.uid) ||
+        (isTeacherDoc() && resource.data.get('teacherId', '') == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    // --- Attendance (الحضور): الطالب يقرأ حضوره فقط ---
+    // --- المحادثات: شات المجموعة (يُحذف بعد أسبوع) والمحادثة الخاصة بين الإدارة والمعلم ---
+    // group_<groupId>: طلاب المجموعة ومعلمها والإدارة. staff_<teacherId>: المعلم والإدارة فقط
+    match /chats/{threadId}/messages/{msgId} {
+      function threadKey() {
+        return threadId.split('_')[1];
+      }
+      function canChat() {
+        return isAdmin() ||
+          (threadId.matches('group_.+') && (
+            (isTeacherDoc() && get(/databases/$(database)/documents/groups/$(threadKey())).data.get('teacherId', '') == request.auth.uid) ||
+            (isMember() && myGroupId() == threadKey())
+          )) ||
+          (threadId.matches('staff_.+') && isTeacherDoc() && threadKey() == request.auth.uid);
+      }
+      allow get, list: if isSignedIn() && canChat();
+      allow create: if isSignedIn() && canChat() &&
+        request.resource.data.senderId == request.auth.uid &&
+        request.resource.data.keys().hasOnly(['senderId', 'senderName', 'senderRole', 'kind', 'text', 'data', 'durSec', 'createdAtMs']) &&
+        request.resource.data.kind in ['text', 'image', 'voice'] &&
+        request.resource.data.createdAtMs is int &&
+        math.abs(request.resource.data.createdAtMs - request.time.toMillis()) < 600000 &&
+        ((isAdmin() && request.resource.data.senderRole == 'admin') ||
+          (!isAdmin() && isTeacherDoc() && request.resource.data.senderRole == 'teacher') ||
+          (!isAdmin() && !isTeacherDoc() && request.resource.data.senderRole == 'student')) &&
+        request.resource.data.get('text', '').size() <= 2000 &&
+        request.resource.data.get('data', '').size() <= 950000;
+      // لا يحذف أحد الرسائل إلا الإدارة؛ والحذف التلقائي لرسائل المجموعة بعد أسبوع
+      allow delete: if isAdmin() || (
+        isSignedIn() && canChat() && threadId.matches('group_.+') &&
+        resource.data.createdAtMs < request.time.toMillis() - 604800000
+      );
+      allow update: if false;
+    }
+
+    match /attendance/{recordId} {
+      allow get, list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isTeacher());
+      allow create, update, delete: if isTeacher();
+    }
+
+    // --- Course materials (روابط المنهج): لطلاب نفس المستوى المفعّلين فقط ---
+    match /course_materials/{courseId} {
+      allow get, list: if isTeacher() || (isActiveStudent() && resource.data.level == myProfile().get('mainLevel', ''));
+      allow write: if isAdmin();
+    }
+
+    // --- English Zone community (مجتمع الطلاب) ---
+    match /community_posts/{postId} {
+      allow get, list: if isTeacher() || isMember();
+
+      // النشر والتعليق للطالبات المشتركات والمعلمين، والمشاهدة والإعجاب لكل مسجّلة
+      allow create: if (isTeacher() || isActiveStudent()) &&
+        isValidId(postId) &&
+        request.resource.data.keys().hasOnly(['id', 'authorId', 'authorName', 'authorRole', 'authorAvatar', 'text', 'imageDataUrl', 'audioDataUrl', 'videoUrl', 'likes', 'createdAt']) &&
+        request.resource.data.authorId == request.auth.uid &&
+        (request.resource.data.authorRole == 'student' || (request.resource.data.authorRole == 'admin' && isAdmin()) || (request.resource.data.authorRole == 'teacher' && isTeacher())) &&
+        request.resource.data.likes.size() == 0 &&
+        request.resource.data.text is string && request.resource.data.text.size() <= 3000 &&
+        (!('imageDataUrl' in request.resource.data) || (request.resource.data.imageDataUrl is string && request.resource.data.imageDataUrl.size() <= 750000)) &&
+        (!('audioDataUrl' in request.resource.data) || (request.resource.data.audioDataUrl is string && request.resource.data.audioDataUrl.size() <= 750000)) &&
+        (!('videoUrl' in request.resource.data) || (request.resource.data.videoUrl is string && request.resource.data.videoUrl.size() <= 500));
+
+      // الإدارة: تعديل اسم/أفاتار الكاتبة أو حذف صورة/صوت من المنشور
+      allow update: if isAdmin();
+      // الإعجاب: يضيف أو يحذف المستخدم معرّفه فقط
+      allow update: if (isTeacher() || isMember()) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes']) &&
+        request.resource.data.likes.toSet().difference(resource.data.likes.toSet()).hasOnly([request.auth.uid]) &&
+        resource.data.likes.toSet().difference(request.resource.data.likes.toSet()).hasOnly([request.auth.uid]);
+
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.authorId == request.auth.uid);
+
+      match /comments/{commentId} {
+        allow get, list: if isTeacher() || isMember();
+        allow create: if (isTeacher() || isActiveStudent()) &&
+          isValidId(commentId) &&
+          request.resource.data.keys().hasOnly(['id', 'authorId', 'authorName', 'authorRole', 'authorAvatar', 'text', 'createdAt']) &&
+          request.resource.data.authorId == request.auth.uid &&
+          (request.resource.data.authorRole == 'student' || (request.resource.data.authorRole == 'admin' && isAdmin()) || (request.resource.data.authorRole == 'teacher' && isTeacher())) &&
+          request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000;
+        allow delete: if isAdmin() || (isSignedIn() && resource.data.authorId == request.auth.uid);
+      }
+    }
+
+
+    // المساعد الآلي في الموقع: يقرؤه الجميع، وتكتبه الإدارة
+    match /chat_faq/{faqId} {
+      allow get, list: if true;
+      allow write: if isAdmin() && isValidId(faqId) &&
+        request.resource.data.questionAr is string && request.resource.data.questionAr.size() <= 200 &&
+        request.resource.data.answerAr is string && request.resource.data.answerAr.size() <= 3000;
+      allow delete: if isAdmin();
+    }
+
+    // ===== الغرف الصوتية (مثل HelloTalk) =====
+    function vrRoom(roomId) {
+      return get(/databases/$(database)/documents/voice_rooms/$(roomId)).data;
+    }
+    function vrIsFemale() {
+      return isMember() && myProfile().get('gender', '') == 'female';
+    }
+    // من يرى الغرفة: كل من سجّل في المنصة، وغرف «البنات فقط» للمشتركات فقط
+    // غرف المعلم (audience == 'teacher') لا يراها إلا المعلم صاحبها وطلابه (users.teacherId)،
+    // والمعلم لا يرى الغرف العامة.
+    function vrCanSee(r) {
+      return isAdmin() ||
+        (isSignedIn() && r.ownerId == request.auth.uid) ||
+        (r.audience == 'teacher'
+          ? (isMember() && myProfile().get('teacherId', '') == r.ownerId)
+          : (isMember() && !isTeacherDoc() && (r.girlsOnly == false || vrIsFemale())));
+    }
+    function vrIsMod(roomId) {
+      return isAdmin() || (isSignedIn() && vrRoom(roomId).ownerId == request.auth.uid);
+    }
+    function vrMyStatus(roomId) {
+      return exists(/databases/$(database)/documents/voice_rooms/$(roomId)/members/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/voice_rooms/$(roomId)/members/$(request.auth.uid)).data.get('status', '')
+        : '';
+    }
+    function vrIsIn(roomId) {
+      return isSignedIn() && vrCanSee(vrRoom(roomId)) && vrMyStatus(roomId) == 'in';
+    }
+    function vrValidRoom(d) {
+      return d.keys().hasOnly(['title', 'topic', 'level', 'ownerId', 'ownerName', 'privacy', 'girlsOnly', 'maxSpeakers', 'status', 'createdAt', 'lastActiveAt', 'liveCount', 'chatSince', 'bg', 'audience', 'official', 'scheduledAt', 'weekly']) &&
+        (!('official' in d) || d.official is bool) &&
+        (!('scheduledAt' in d) || d.scheduledAt is int) &&
+        (!('weekly' in d) || d.weekly is bool) &&
+        (!('audience' in d) || d.audience in ['all', 'teacher']) &&
+        d.title is string && d.title.size() > 0 && d.title.size() <= 80 &&
+        d.topic is string && d.topic.size() <= 300 &&
+        d.level is string && d.level.size() <= 20 &&
+        d.ownerName is string && d.ownerName.size() <= 80 &&
+        d.privacy in ['public', 'approval', 'private'] &&
+        d.girlsOnly is bool &&
+        d.maxSpeakers is int && d.maxSpeakers >= 2 && d.maxSpeakers <= 12 &&
+        d.status in ['open', 'closed'] &&
+        d.liveCount is int &&
+        (!('bg' in d) || (d.bg is string && d.bg.size() <= 30));
+    }
+
+    match /voice_rooms/{roomId} {
+      allow get, list: if isSignedIn() && vrCanSee(resource.data);
+      allow create: if isSignedIn() &&
+        request.resource.data.ownerId == request.auth.uid &&
+        vrValidRoom(request.resource.data) &&
+        request.resource.data.status == 'open' &&
+        (request.resource.data.get('official', false) == false || isAdmin()) &&
+        (
+          (request.resource.data.audience == 'all' && isAdmin()) ||
+          (request.resource.data.audience == 'all' && isMember() && !isTeacherDoc() &&
+            (request.resource.data.girlsOnly == false || vrIsFemale())) ||
+          (request.resource.data.audience == 'teacher' && isTeacherDoc() && request.resource.data.girlsOnly == false)
+        );
+      allow update: if isAdmin() ||
+        (isSignedIn() && resource.data.ownerId == request.auth.uid &&
+          request.resource.data.ownerId == resource.data.ownerId &&
+          request.resource.data.get('audience', 'all') == resource.data.get('audience', 'all') &&
+          request.resource.data.get('official', false) == resource.data.get('official', false) &&
+          vrValidRoom(request.resource.data) &&
+          (request.resource.data.girlsOnly == false || (vrIsFemale() && request.resource.data.get('audience', 'all') == 'all'))) ||
+        (vrIsIn(roomId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastActiveAt', 'liveCount', 'chatSince']) &&
+          request.resource.data.liveCount is int &&
+          (!('chatSince' in request.resource.data) || request.resource.data.chatSince is int));
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.ownerId == request.auth.uid);
+
+      match /members/{uid} {
+        allow get, list: if isSignedIn() && (uid == request.auth.uid || vrIsMod(roomId) || vrIsIn(roomId));
+
+        // الدخول: المستمعة تدخل مباشرة في الغرفة العامة، وتنتظر الموافقة في غيرها
+        allow create: if isSignedIn() && uid == request.auth.uid &&
+          vrCanSee(vrRoom(roomId)) && vrRoom(roomId).status == 'open' &&
+          request.resource.data.keys().hasOnly(['uid', 'name', 'photo', 'gender', 'role', 'status', 'hand', 'muted', 'canScreen', 'pub', 'screen', 'cam', 'joinedAt', 'seenAt']) &&
+          request.resource.data.get('cam', null) == null &&
+          request.resource.data.uid == uid &&
+          request.resource.data.name is string && request.resource.data.name.size() <= 60 &&
+          request.resource.data.photo is string && request.resource.data.photo.size() <= 500 &&
+          request.resource.data.hand == false &&
+          request.resource.data.pub == null && request.resource.data.screen == null &&
+          (
+            (vrRoom(roomId).ownerId == uid && request.resource.data.role == 'owner' && request.resource.data.status == 'in' && request.resource.data.canScreen == true) ||
+            (vrRoom(roomId).ownerId != uid && request.resource.data.role == 'listener' && request.resource.data.canScreen == false &&
+              (request.resource.data.status == 'pending' ||
+                (request.resource.data.status == 'in' && (vrRoom(roomId).privacy == 'public' || isAdmin()))))
+          );
+
+        allow update: if
+          // صاحبة الغرفة أو الإدارة: الموافقة، رفع/إنزال المتحدثات، الكتم، الطرد، السماح بمشاركة الشاشة
+          (vrIsMod(roomId) && uid != request.auth.uid &&
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role', 'status', 'muted', 'canScreen', 'canBoard', 'hand', 'pub', 'screen', 'cam']) &&
+            (!('canBoard' in request.resource.data) || request.resource.data.canBoard is bool) &&
+            (request.resource.data.get('cam', null) == resource.data.get('cam', null) || request.resource.data.get('cam', null) == null) &&
+            (request.resource.data.role == resource.data.role || (resource.data.role != 'owner' && request.resource.data.role in ['speaker', 'listener'])) &&
+            request.resource.data.status in ['in', 'pending', 'left', 'kicked'] &&
+            request.resource.data.canScreen is bool &&
+            (request.resource.data.muted == resource.data.muted || request.resource.data.muted == true) &&
+            (request.resource.data.pub == resource.data.pub || request.resource.data.pub == null) &&
+            (request.resource.data.screen == resource.data.screen || request.resource.data.screen == null)) ||
+          // العضو نفسه: اليد، الميكروفون، النشر، الخروج والعودة (والمطرود لا يغيّر شيئًا)
+          (uid == request.auth.uid && resource.data.status != 'kicked' &&
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hand', 'muted', 'pub', 'screen', 'cam', 'seenAt', 'joinedAt', 'status', 'name', 'role']) &&
+            (request.resource.data.get('cam', null) == null ||
+              (request.resource.data.cam is string && request.resource.data.status == 'in' && resource.data.canScreen == true)) &&
+            (request.resource.data.role == resource.data.role || (resource.data.role == 'speaker' && request.resource.data.role == 'listener')) &&
+            request.resource.data.name is string && request.resource.data.name.size() <= 60 &&
+            request.resource.data.hand is bool && request.resource.data.muted is bool &&
+            (request.resource.data.pub == null ||
+              (request.resource.data.pub is string && request.resource.data.status == 'in' && request.resource.data.role in ['owner', 'speaker'])) &&
+            (request.resource.data.screen == null ||
+              (request.resource.data.screen is string && request.resource.data.status == 'in' && resource.data.role == 'owner')) &&
+            (request.resource.data.status == resource.data.status ||
+              request.resource.data.status in ['left', 'pending'] ||
+              (request.resource.data.status == 'in' &&
+                (resource.data.role == 'owner' || isAdmin() || (vrRoom(roomId).privacy == 'public' && vrRoom(roomId).status == 'open')))));
+
+        allow delete: if vrIsMod(roomId);
+      }
+
+      // تبادل إعداد الاتصال المباشر (عرض وجواب) بين مشاركَين داخل الغرفة
+      match /signals/{sigId} {
+        allow get, list: if vrIsIn(roomId) && (resource.data.to == request.auth.uid || resource.data.from == request.auth.uid);
+        allow create: if vrIsIn(roomId) &&
+          request.resource.data.keys().hasOnly(['from', 'to', 'kind', 'nonce', 'offer', 'answer', 'createdAt']) &&
+          request.resource.data.from == request.auth.uid &&
+          request.resource.data.to is string && request.resource.data.to != request.auth.uid &&
+          request.resource.data.kind in ['mic', 'screen', 'cam', 'pair'] &&
+          request.resource.data.nonce is string && request.resource.data.nonce.size() <= 64 &&
+          request.resource.data.offer is string && request.resource.data.offer.size() <= 30000 &&
+          request.resource.data.answer == null &&
+          request.resource.data.createdAt is int;
+        allow update: if vrIsIn(roomId) && resource.data.to == request.auth.uid &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['answer']) &&
+          request.resource.data.answer is string && request.resource.data.answer.size() <= 30000;
+        allow delete: if isSignedIn() && (resource.data.from == request.auth.uid || resource.data.to == request.auth.uid || vrIsMod(roomId));
+      }
+
+      match /chat/{msgId} {
+        allow get, list: if vrIsMod(roomId) || vrIsIn(roomId);
+        allow create: if vrIsIn(roomId) &&
+          request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'createdAt']) &&
+          request.resource.data.uid == request.auth.uid &&
+          request.resource.data.name is string && request.resource.data.name.size() <= 60 &&
+          request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 500 &&
+          request.resource.data.createdAt is int;
+        allow delete: if vrIsMod(roomId) || (isSignedIn() && resource.data.uid == request.auth.uid);
+      }
+    }
+
+    // إعدادات خادم TURN للغرف الصوتية: يقرؤها المسجّلون، وتكتبها الإدارة
+    match /voice_config/{cfgId} {
+      allow get: if isMember() || isAdmin() || isTeacherDoc();
+      allow write: if isAdmin();
+    }
+
+    // مفاتيح خاصة بالإدارة (مثل مفتاح Gemini لتوليد تحدّي اليوم)
+    match /admin_secrets/{secretId} {
+      allow read, write: if isAdmin();
+    }
+
+    // ===== تحدّي اليوم =====
+    match /daily_challenges/{date} {
+      allow get, list: if isMember() || isAdmin() || isTeacherDoc();
+      allow delete: if isAdmin();
+      allow create, update: if isAdmin() &&
+        request.resource.data.keys().hasOnly(['date', 'question', 'options', 'answer', 'explanation', 'createdAt']) &&
+        request.resource.data.date == date &&
+        request.resource.data.question is string && request.resource.data.question.size() > 0 && request.resource.data.question.size() <= 400 &&
+        request.resource.data.options is list && request.resource.data.options.size() >= 2 && request.resource.data.options.size() <= 4 &&
+        request.resource.data.answer is int && request.resource.data.answer >= 0 && request.resource.data.answer < request.resource.data.options.size() &&
+        request.resource.data.explanation is string && request.resource.data.explanation.size() <= 600;
+    }
+
+    match /challenge_progress/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create, update: if isOwner(userId) &&
+        request.resource.data.keys().hasOnly(['lastDate', 'lastChoice', 'lastCorrect', 'streak', 'best', 'total', 'correct', 'updatedAt']) &&
+        request.resource.data.lastDate is string && request.resource.data.lastDate.size() == 10 &&
+        // إجابة واحدة في اليوم
+        (resource == null || resource.data.lastDate != request.resource.data.lastDate) &&
+        request.resource.data.lastChoice is int && request.resource.data.lastCorrect is bool &&
+        request.resource.data.streak is int && request.resource.data.streak >= 1 &&
+        request.resource.data.best is int && request.resource.data.total is int && request.resource.data.correct is int &&
+        request.resource.data.correct <= request.resource.data.total &&
+        (resource == null || request.resource.data.total == resource.data.total + 1);
+    }
+
+    // البلاغات من داخل الغرف: الإدارة فقط تقرؤها
+    match /voice_reports/{reportId} {
+      allow create: if isSignedIn() &&
+        request.resource.data.keys().hasOnly(['roomId', 'roomTitle', 'reportedUid', 'reportedName', 'reporterUid', 'reporterName', 'reason', 'createdAt']) &&
+        request.resource.data.reporterUid == request.auth.uid &&
+        request.resource.data.reason is string && request.resource.data.reason.size() <= 500 &&
+        request.resource.data.roomTitle is string && request.resource.data.roomTitle.size() <= 80 &&
+        request.resource.data.reportedName is string && request.resource.data.reportedName.size() <= 60 &&
+        request.resource.data.reporterName is string && request.resource.data.reporterName.size() <= 60;
+      allow read, delete: if isAdmin();
+    }
+
+    // --- Connection test collection: read for signed-in users, write for admins only ---
+    match /test/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

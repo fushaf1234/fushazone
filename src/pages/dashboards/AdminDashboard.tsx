@@ -53,6 +53,7 @@ import { AdminChatFaq } from '../../components/admin/AdminChatFaq';
 import { AdminVisitors } from '../../components/admin/AdminVisitors';
 import { CURRENCIES } from '../../hooks/useAcademySettings';
 import { useUnreadMessages } from '../../hooks/useUnreadMessages';
+import { AdminPackagesManager } from '../../components/admin/AdminPackagesManager';
 import { AdminWorkshops } from '../../components/admin/AdminWorkshops';
 import { AdminReferrals } from '../../components/admin/AdminReferrals';
 import { AdminVoiceRooms } from '../../components/admin/AdminVoiceRooms';
@@ -708,7 +709,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigate }) => {
     { id: 'feedback_reviews', labelEn: 'Student Reviews Gallery', labelAr: 'آراء وتقييمات الطلاب' },
     { id: 'content_cms', labelEn: 'Content & Curricula', labelAr: 'إدارة المحتوى والمناهج' },
     { id: 'blog', labelEn: 'Blog', labelAr: 'المدونة' },
-    { id: 'pricing', labelEn: 'Tuition & Stages', labelAr: 'الأسعار والمراحل' },
+    { id: 'pricing', labelEn: 'Packages & prices', labelAr: 'الباقات والأسعار' },
     { id: 'english_club', labelEn: 'English Club Config', labelAr: 'إعدادات نادي الإنجليزية' },
     { id: 'stars_audit', labelEn: 'Stars Audit Ledger', labelAr: 'سجل تدقيق النجوم' },
     { id: 'workshops', labelEn: 'Workshops & Certificates', labelAr: 'الورش والشهادات' },
@@ -1034,69 +1035,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigate }) => {
         {/* STUDENTS */}
         {activeTab === 'students' && <AdminStudentsManager onNotice={(msg) => notify(msg, 4000)} />}
 
-        {/* PRICING */}
-        {activeTab === 'pricing' && (
-          <div className={cardCls}>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">
-                  {tr('Tuition by Stage', 'أسعار المراحل')}
-                </h2>
-                <p className="text-xs text-gray-500">
-                  {tr('Monthly prices in USD. Edit any value, then save.', 'الأسعار الشهرية بالدولار. عدّل أي قيمة ثم احفظ.')}
-                </p>
-              </div>
-              <button onClick={handleSavePricing} disabled={isPricingSaving} className={primaryBtn}>
-                <Save className="w-4 h-4 text-[#D4AF37]" />
-                <span>{isPricingSaving ? tr('Saving...', 'جارٍ الحفظ...') : tr('Save Pricing', 'حفظ الأسعار')}</span>
-              </button>
-            </div>
-
-            {!pricingPublished && (
-              <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
-                {tr(
-                  'These prices are not published yet. Review them, then press "Save Pricing" to show them on the website.',
-                  'هذه الأسعار غير منشورة بعد في الموقع. راجعيها ثم اضغطي «حفظ الأسعار» لتظهر للزوار.'
-                )}
-              </div>
-            )}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left rtl:text-right border-collapse text-xs sm:text-sm">
-                <thead>
-                  <tr className="bg-[#FAF8F5] text-xs font-semibold text-gray-500 border-b border-gray-200">
-                    <th className={thCls}>{tr('Stage', 'المرحلة')}</th>
-                    <th className={thCls}>{tr('Group (now)', 'جماعي (الحالي)')}</th>
-                    <th className={thCls}>{tr('Group (original, optional)', 'جماعي (قبل الخصم، اختياري)')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {stageRows.map((row) => (
-                    <tr key={row.stage} className="hover:bg-[#FAF8F5]">
-                      <td className="py-2 px-4 font-mono font-bold text-[#0A192F]">{row.stage}</td>
-                      {(['groupPrice', 'groupOriginalPrice'] as (keyof StagePricing)[]).map((f) => (
-                        <td key={f} className="py-2 px-4">
-                          <input
-                            type="number"
-                            min="0"
-                            value={(row as any)[f] ?? 0}
-                            onChange={(e) => updateStageField(row.stage, f, Number(e.target.value) || 0)}
-                            className="w-24 px-2 py-1.5 rounded-lg border border-gray-300 text-xs font-bold text-[#0A192F]"
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="flex justify-end pt-4">
-              <button onClick={handleSavePricing} disabled={isPricingSaving} className={primaryBtn}>
-                <Save className="w-4 h-4 text-[#D4AF37]" />
-                <span>{isPricingSaving ? tr('Saving...', 'جارٍ الحفظ...') : tr('Save Pricing', 'حفظ الأسعار')}</span>
-              </button>
-            </div>
-          </div>
-        )}
+        {/* PACKAGES & PRICES */}
+        {activeTab === 'pricing' && <AdminPackagesManager isAr={isAr} onNotice={(msg) => notify(msg, 4000)} />}
 
         {/* STARS AUDIT */}
         {activeTab === 'stars_audit' && <AdminStarsLedger onNotice={(msg) => notify(msg, 4000)} />}
@@ -1186,7 +1126,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigate }) => {
                         className="mt-2 w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm"
                       />
                     )}
-                    <p className="text-[11px] text-gray-500 mt-1">{tr('Write prices in this currency in Pricing & Stages.', 'اكتبي الأسعار في «الأسعار والمراحل» بهذه العملة نفسها.')}</p>
+                    <p className="text-[11px] text-gray-500 mt-1">{tr('Write prices in this currency in Packages & prices.', 'اكتبي الأسعار في «الباقات والأسعار» بهذه العملة نفسها.')}</p>
                   </div>
                   {settingFields.map((f) => (
                     <div key={f.key as string}>

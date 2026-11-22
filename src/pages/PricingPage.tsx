@@ -1,292 +1,153 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { usePricing } from '../hooks/usePricing';
+import { usePackages } from '../hooks/usePackages';
 import { useAcademySettings, formatMoney } from '../hooks/useAcademySettings';
-import { CEFRLevel } from '../types';
-import { 
-  Check, 
-  Clock,
-  Users,
-  GraduationCap,
-  Info,
-  CalendarCheck,
-  Award
-} from 'lucide-react';
+import { PROGRAMS, ProgramId, PricePackage, unitLabel } from '../services/packagesService';
+import { Clock, CalendarDays, User, Users, GraduationCap } from 'lucide-react';
 
 interface PricingPageProps {
-  navigate: (route: string, state?: { preselectedLevel?: CEFRLevel }) => void;
+  navigate: (route: string, state?: any) => void;
 }
 
+// صفحة الأسعار: كل الباقات من لوحة الإدارة (لا أسعار ثابتة في الكود)
 export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
-  const { t, language, dir } = useLanguage();
-  const [levelFilter, setLevelFilter] = useState<'ALL' | CEFRLevel>('ALL');
-
-  const { cards: levelCards, loading: pricingLoading, locked } = usePricing();
-
+  const { language } = useLanguage();
+  const isAr = language === 'ar';
+  const tr = (en: string, ar: string) => (isAr ? ar : en);
+  const { packages, loading, locked } = usePackages();
   const { currency } = useAcademySettings();
+  const [filter, setFilter] = useState<'ALL' | ProgramId>('ALL');
 
-  const filteredLevels = levelCards.filter((item) => {
-    if (levelFilter === 'ALL') return true;
-    return item.level === levelFilter;
-  });
+  const programs = PROGRAMS.filter((p) => packages.some((x) => x.program === p.id));
+  const shown = packages.filter((p) => filter === 'ALL' || p.program === filter);
+
+  const PriceRow = ({ icon: Icon, label, amount, unit, dark }: { icon: any; label: string; amount: number; unit: string; dark: boolean }) => (
+    <div className="flex items-center justify-between gap-3">
+      <span className={`flex items-center gap-1.5 text-xs ${dark ? 'text-gray-300' : 'text-gray-500'}`}>
+        <Icon className="w-4 h-4 text-[#D4AF37]" />
+        {label}
+      </span>
+      <span className="flex items-baseline gap-1">
+        <span className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0A192F]'}`} dir="ltr">
+          {formatMoney(amount, currency)}
+        </span>
+        <span className={`text-[11px] ${dark ? 'text-gray-300' : 'text-gray-500'}`}>{unit}</span>
+      </span>
+    </div>
+  );
+
+  const Card = ({ p }: { p: PricePackage }) => {
+    const dark = !!p.featured;
+    const unit = unitLabel(p.unit, isAr);
+    return (
+      <div className={`relative rounded-3xl p-7 flex flex-col justify-between shadow-lg border-2 ${dark ? 'bg-[#0A192F] border-[#D4AF37] text-white' : 'bg-white border-[#D4AF37]/30'}`}>
+        {p.featured && (
+          <span className="absolute -top-3 start-6 px-3 py-1 rounded-lg bg-[#D4AF37] text-[#0A192F] text-[11px] font-bold">
+            {tr('Most chosen', 'الأكثر اختيارًا')}
+          </span>
+        )}
+        <div className="space-y-3">
+          <span className={`text-[11px] font-bold ${dark ? 'text-[#F3E5AB]' : 'text-[#AA820A]'}`}>
+            {isAr ? PROGRAMS.find((x) => x.id === p.program)?.ar : PROGRAMS.find((x) => x.id === p.program)?.en}
+          </span>
+          <h2 className={`font-serif-luxury font-bold text-xl ${dark ? 'text-[#F3E5AB]' : 'text-[#0A192F]'}`}>{isAr ? p.titleAr : p.titleEn}</h2>
+          <div className={`flex flex-wrap gap-3 text-xs font-bold ${dark ? 'text-[#D4AF37]' : 'text-[#AA820A]'}`}>
+            {!!p.sessionsPerMonth && (
+              <span className="flex items-center gap-1">
+                <CalendarDays className="w-4 h-4" />
+                {tr(`${p.sessionsPerMonth} lessons / month`, `${p.sessionsPerMonth} حصص / شهر`)}
+              </span>
+            )}
+            {!!p.minutes && (
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {tr(`${p.minutes} min per lesson`, `${p.minutes} دقيقة للحصة`)}
+              </span>
+            )}
+          </div>
+          {(isAr ? p.descAr : p.descEn) && (
+            <p className={`text-sm leading-relaxed ${dark ? 'text-gray-300' : 'text-gray-600'}`}>{isAr ? p.descAr : p.descEn}</p>
+          )}
+        </div>
+
+        <div className={`mt-6 pt-5 border-t space-y-3 ${dark ? 'border-white/15' : 'border-gray-200'}`}>
+          {p.free ? (
+            <div className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0A192F]'}`}>{tr('Free', 'مجانًا')}</div>
+          ) : (
+            <>
+              {p.individualPrice !== undefined && (
+                <PriceRow icon={User} label={tr('Individual', 'فردي')} amount={p.individualPrice} unit={unit} dark={dark} />
+              )}
+              {p.groupPrice !== undefined && (
+                <PriceRow icon={Users} label={tr('Group (per student)', 'مجموعة (للطالب)')} amount={p.groupPrice} unit={unit} dark={dark} />
+              )}
+            </>
+          )}
+          <button
+            onClick={() => navigate('register')}
+            className={`w-full mt-2 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all ${
+              dark ? 'bg-[#D4AF37] text-[#0A192F]' : 'bg-[#0A192F] text-[#F3E5AB]'
+            }`}
+          >
+            <GraduationCap className="w-4 h-4" />
+            {p.free ? tr('Book now', 'احجز الآن') : tr('Enroll now', 'سجّل الآن')}
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] py-12">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
-            Academy Tuition & Plan
-          </span>
-          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F] mt-2">
-            {t.pricing.sectionTitle}
-          </h1>
-          <p className="text-base sm:text-lg text-gray-600 mt-4 leading-relaxed">
-            {t.pricing.sectionSubtitle}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F]">{tr('Packages & prices', 'الباقات والأسعار')}</h1>
+          <p className="text-base text-gray-600 mt-4 leading-relaxed">
+            {tr(
+              'Live lessons with native Arabic-speaking teachers, individually or in groups.',
+              'حصص مباشرة مع معلمين ناطقين بالعربية، فردية أو في مجموعات.'
+            )}
           </p>
         </div>
 
-        {/* Level Quick Filter */}
-        <div className="flex items-center justify-center flex-wrap gap-2 mt-8">
-          {(['ALL', ...levelCards.map((c) => c.level)] as ('ALL' | CEFRLevel)[]).map((lvl) => (
-            <button
-              key={lvl}
-              onClick={() => setLevelFilter(lvl)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                levelFilter === lvl
-                  ? 'bg-[#D4AF37] text-[#0A192F] font-bold shadow-sm'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
-              }`}
-            >
-              {lvl === 'ALL' ? (language === 'ar' ? `جميع المستويات (${levelCards.length})` : `All Levels (${levelCards.length})`) : `Level ${lvl}`}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Group Format Overview Banner */}
-        <div className="mb-10 bg-gradient-to-r from-[#0A192F] to-[#102445] text-white rounded-3xl p-6 sm:p-8 border border-[#D4AF37]/30 shadow-lg">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-[#D4AF37] text-[#0A192F] text-xs font-bold">
-                  90 MIN / LESSON
-                </span>
-                <span className="font-serif-luxury font-bold text-xl text-[#F3E5AB]">
-                  {t.formats.groupTitle}
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
-                {t.formats.groupDesc}
-              </p>
-            </div>
-
-            <div className="bg-white/5 border border-[#D4AF37]/40 rounded-2xl px-6 py-4 flex-shrink-0 text-center md:text-end">
-              <span className="text-[11px] uppercase tracking-wider text-gray-400 block">
-                {language === 'ar' ? 'نظام السداد' : 'Payment Model'}
-              </span>
-              <span className="font-bold text-sm text-[#F3E5AB] block mt-1">
-                {language === 'ar' ? 'شهري لكل مستوى بدون التزام 6 أشهر' : 'Month-by-Month per Level'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* PROMINENT STUDY & PAYMENT PLAN NOTICE DIRECTLY ABOVE A1-C2 CARDS */}
-        <div
-          dir={dir}
-          className="mb-10 relative bg-gradient-to-br from-[#0A192F] via-[#0F2042] to-[#0A192F] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#D4AF37] shadow-xl overflow-hidden"
-        >
-          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37]" />
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/10 border border-[#D4AF37]/50 text-[#D4AF37] flex items-center justify-center flex-shrink-0 shadow-md">
-                <CalendarCheck className="w-6 h-6 sm:w-7 sm:h-7" aria-hidden="true" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h2 className="font-serif-luxury font-bold text-xl sm:text-2xl text-[#F3E5AB]">
-                    {t.pricing.studyPaymentTitle}
-                  </h2>
-                  <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] text-xs sm:text-sm font-extrabold shadow-sm">
-                    {t.pricing.studyPaymentHighlight}
-                  </span>
-                </div>
-                <p className="text-sm sm:text-base text-gray-200 leading-relaxed max-w-4xl">
-                  {t.pricing.studyPaymentDesc}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 6 SEPARATE LEVEL-BASED PRICING CARDS */}
         {locked && (
           <div className="mb-6 p-8 rounded-3xl bg-gradient-to-br from-[#0A192F] to-[#102445] text-center space-y-3 border-2 border-[#D4AF37]/50 shadow-lg">
             <div className="text-3xl">🔒</div>
-            <h3 className="font-serif-luxury font-bold text-xl text-[#F3E5AB]">{language === 'ar' ? 'الأسعار متاحة للمسجّلين' : 'Prices are for registered members'}</h3>
-            <p className="text-sm text-gray-300">{language === 'ar' ? '{سجّل|سجّلي} مجانًا بضغطة واحدة {لترى|لتري} الرسوم وعروض الخصم.' : 'Sign up free in one click to see tuition and discount offers.'}</p>
+            <h3 className="font-serif-luxury font-bold text-xl text-[#F3E5AB]">{tr('Prices are for registered members', 'الأسعار متاحة للمسجّلين')}</h3>
+            <p className="text-sm text-gray-300">{tr('Sign up free in one click to see tuition and offers.', '{سجّل|سجّلي} مجانًا بضغطة واحدة {لترى|لتري} الرسوم والعروض.')}</p>
             <button onClick={() => navigate('join-us')} className="ez-float-glow px-8 py-3 rounded-xl bg-[#D4AF37] text-[#0A192F] font-bold text-sm">
-              {language === 'ar' ? '{سجّل|سجّلي} مجانًا لرؤية الأسعار' : 'Sign up free to see prices'}
+              {tr('Sign up free to see prices', '{سجّل|سجّلي} مجانًا لرؤية الأسعار')}
             </button>
           </div>
         )}
-        {!locked && !pricingLoading && levelCards.length === 0 && (
+
+        {!locked && !loading && packages.length === 0 && (
           <div className="mb-6 p-8 rounded-3xl bg-white border border-gray-200 text-center text-sm text-gray-500">
-            {language === 'ar'
-              ? 'الأسعار غير منشورة حاليًا. تواصل معنا لمعرفة الرسوم.'
-              : 'Prices are not published at the moment. Please contact us for tuition details.'}
+            {tr('Prices are not published at the moment. Please contact us.', 'الأسعار غير منشورة حاليًا. تواصل معنا لمعرفة الرسوم.')}
           </div>
         )}
-        <div className={`grid gap-6 ${
-          filteredLevels.length === 1
-            ? 'grid-cols-1 max-w-md mx-auto'
-            : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-        }`}>
-          {filteredLevels.map((item) => (
-            <div
-              key={item.level}
-              className="bg-white rounded-3xl p-7 border-2 border-[#D4AF37]/30 shadow-lg hover:border-[#D4AF37] transition-all flex flex-col justify-between"
-            >
-              <div>
-                {/* Card Top Header */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-3">
-                    <span className="w-12 h-12 rounded-2xl bg-[#0A192F] text-[#F3E5AB] font-serif-luxury font-bold text-xl flex items-center justify-center shadow">
-                      {item.level}
-                    </span>
-                    <div>
-                      <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">
-                        {language === 'ar' ? `المستوى ${item.level}` : `Level ${item.level}`}
-                      </h2>
-                      <span className="text-xs text-gray-500 font-medium block">
-                        {language === 'ar' ? item.nameAr : item.nameEn}
-                      </span>
-                    </div>
-                  </div>
-                  {item.durationMonths !== undefined && (
-                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#FAF8F5] text-[#AA820A] border border-[#D4AF37]/40">
-                      {item.durationMonths} {language === 'ar' ? 'أشهر' : 'Months'}
-                    </span>
-                  )}
-                </div>
 
-                {/* Format Info */}
-                <div className="space-y-2 text-xs text-gray-600 mb-6">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
-                    <span>{t.formats.groupTime}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4 text-[#D4AF37] flex-shrink-0" />
-                    <span>
-                      {language === 'ar'
-                        ? `منهج أكسفورد التفاعلي • ${item.stagesCount} مراحل`
-                        : `Interactive Oxford curriculum • ${item.stagesCount} Stages`}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Pricing Highlight Box */}
-                <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/35 mb-6">
-                  <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                    <div>
-                      {item.groupOriginal !== undefined && (
-                        <>
-                          <span className="text-[11px] uppercase tracking-wider text-gray-400 font-semibold block">
-                            {t.pricing.originalPrice}
-                          </span>
-                          <span className="text-xl font-semibold text-gray-400 line-through inline-block mt-1" dir="ltr">
-                            {formatMoney(item.groupOriginal, currency)}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="text-end">
-                      <span className="text-[11px] uppercase tracking-wider text-[#AA820A] font-bold block">
-                        {language === 'ar' ? 'جماعي' : 'Group'} • {t.pricing.monthlyPrice}
-                      </span>
-                      <div className="inline-flex items-baseline gap-1 px-3 py-1 rounded-xl bg-[#0A192F] text-[#F3E5AB] mt-1 shadow-sm">
-                        {item.groupVaries && (
-                          <span className="text-xs text-gray-300 font-normal">{language === 'ar' ? 'من' : 'from'}</span>
-                        )}
-                        <span className="font-serif-luxury font-bold text-3xl" dir="ltr">
-                          {formatMoney(item.groupPrice, currency)}
-                        </span>
-                        <span className="text-xs text-gray-300 font-normal">
-                          {t.programs.perMonth}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* Enroll Button */}
+        {programs.length > 1 && (
+          <div className="flex items-center justify-center flex-wrap gap-2 mb-10">
+            {(['ALL', ...programs.map((p) => p.id)] as ('ALL' | ProgramId)[]).map((id) => (
               <button
-                onClick={() => navigate('register', { preselectedLevel: item.level })}
-                className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] hover:brightness-110 transition-all shadow flex items-center justify-center gap-2 active:scale-95"
+                key={id}
+                onClick={() => setFilter(id)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  filter === id ? 'bg-[#D4AF37] text-[#0A192F] shadow-sm' : 'bg-white text-gray-600 border border-gray-200'
+                }`}
               >
-                <GraduationCap className="w-4 h-4" />
-                <span>
-                  {language === 'ar' ? `سجّل في المستوى ${item.level}` : `Enroll Level ${item.level}`}
-                </span>
+                {id === 'ALL' ? tr('All', 'الكل') : isAr ? PROGRAMS.find((p) => p.id === id)?.ar : PROGRAMS.find((p) => p.id === id)?.en}
               </button>
-            </div>
+            ))}
+          </div>
+        )}
+
+        <div className={`grid gap-8 ${shown.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
+          {shown.map((p) => (
+            <Card key={p.id} p={p} />
           ))}
         </div>
-
-        {/* PRICING POLICIES & NOTICES */}
-        <div className="mt-12 bg-white rounded-3xl p-8 border border-gray-200/80 shadow-sm">
-          <h3 className="font-serif-luxury font-bold text-xl text-[#0A192F] flex items-center gap-2 mb-4">
-            <Info className="w-5 h-5 text-[#D4AF37]" />
-            <span>{t.pricing.noticeTitle}</span>
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-600">
-            <div className="flex items-start gap-2.5">
-              <Check className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-              <span>{t.pricing.notice1}</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <Check className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-              <span>{t.pricing.notice2}</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <Check className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-              <span>{t.pricing.notice3}</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <Check className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-              <span>{t.pricing.notice4}</span>
-            </div>
-          </div>
-
-          {/* Highlighted Free Certificates Benefit at the End of Academy Fees Policy */}
-          <div
-            dir={dir}
-            className="mt-6 pt-6 border-t border-gray-200/80"
-          >
-            <div className="bg-gradient-to-r from-[#0A192F] to-[#102445] text-white rounded-2xl p-5 sm:p-6 border border-[#D4AF37]/50 shadow-md flex flex-col sm:flex-row items-start gap-4">
-              <div className="w-11 h-11 rounded-xl bg-white/10 border border-[#D4AF37]/40 text-[#D4AF37] flex items-center justify-center flex-shrink-0">
-                <Award className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <div className="space-y-1.5">
-                <h4 className="font-serif-luxury font-bold text-base sm:text-lg text-[#F3E5AB]">
-                  {t.pricing.freeCertificatesTitle}
-                </h4>
-                <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
-                  {t.pricing.freeCertificatesDesc}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

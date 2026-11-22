@@ -6,7 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 import { studentHubService } from '../../services/studentHubService';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAcademySettings, whatsappWithText, formatMoney } from '../../hooks/useAcademySettings';
-import { usePricing, LevelPriceCard } from '../../hooks/usePricing';
+import { usePackages } from '../../hooks/usePackages';
+import { PricePackage, unitLabel, programName } from '../../services/packagesService';
 import { chatFaqService, ChatFaq, PRICES_TOKEN } from '../../services/chatFaqService';
 
 interface Msg {
@@ -16,10 +17,10 @@ interface Msg {
   offer?: boolean;
 }
 
-const pricesText = (cards: LevelPriceCard[], isAr: boolean, currency = 'USD', locked = false): string => {
+const pricesText = (cards: PricePackage[], isAr: boolean, currency = 'USD', locked = false): string => {
   if (locked)
     return isAr
-      ? 'الأسعار متاحة للمسجّلين فقط 🔒 {سجّل|سجّلي} مجانًا بضغطة واحدة من زر «انضم الآن» {لترى|لتري} الرسوم وعروض الخصم.'
+      ? 'الأسعار متاحة للمسجّلين فقط 🔒 {سجّل|سجّلي} مجانًا بضغطة واحدة من زر «انضم الآن» {لترى|لتري} الرسوم والعروض.'
       : 'Prices are for registered members 🔒 Sign up free with one click from “Join now” to see tuition and offers.';
   if (!cards.length)
     return isAr
@@ -27,9 +28,13 @@ const pricesText = (cards: LevelPriceCard[], isAr: boolean, currency = 'USD', lo
       : 'Prices are not published right now. Tap WhatsApp or “Message the academy” below and we will send them.';
   return cards
     .map((c) => {
-      const from = c.groupVaries ? (isAr ? 'من ' : 'from ') : '';
-      const name = isAr ? c.nameAr : c.nameEn;
-      return `• ${c.level}${name ? ` (${name})` : ''}: ${from}${formatMoney(c.groupPrice, currency)} ${isAr ? 'شهريًا للمجموعات' : 'per month (groups)'}`;
+      const name = `${programName(c.program, isAr)} – ${isAr ? c.titleAr : c.titleEn}`;
+      if (c.free) return `• ${name}: ${isAr ? 'مجانًا' : 'free'}`;
+      const unit = unitLabel(c.unit, isAr);
+      const parts: string[] = [];
+      if (c.individualPrice !== undefined) parts.push(`${isAr ? 'فردي' : 'individual'} ${formatMoney(c.individualPrice, currency)}`);
+      if (c.groupPrice !== undefined) parts.push(`${isAr ? 'مجموعة' : 'group'} ${formatMoney(c.groupPrice, currency)}`);
+      return `• ${name}: ${parts.join('، ')} ${unit}`;
     })
     .join('\n');
 };
@@ -93,7 +98,7 @@ export const ChatAssistant: React.FC<{ hidden: boolean }> = ({ hidden }) => {
   const { tawkUrl, whatsapp, currency } = useAcademySettings();
   const currencyRef = useRef(currency);
   currencyRef.current = currency;
-  const { cards, locked: pricesLocked } = usePricing();
+  const { packages: cards, locked: pricesLocked } = usePackages();
   const lockedRef = useRef(pricesLocked);
   lockedRef.current = pricesLocked;
   const [open, setOpen] = useState(false);

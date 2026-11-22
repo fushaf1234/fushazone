@@ -302,6 +302,17 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // --- الباقات والأسعار (تديرها الإدارة؛ يراها المسجّلون ما عدا المعلمين) ---
+    match /packages/{packageId} {
+      allow get, list: if isAdmin() || (isMember() && !isTeacherDoc() && myProfile().get('role', '') != 'teacher');
+      allow write: if isAdmin() && isValidId(packageId) &&
+        request.resource.data.titleAr is string && request.resource.data.titleAr.size() <= 120 &&
+        request.resource.data.titleEn is string && request.resource.data.titleEn.size() <= 120 &&
+        request.resource.data.program in ['arabic', 'conversation', 'quran', 'single'] &&
+        request.resource.data.unit in ['month', 'session', 'hour'];
+      allow delete: if isAdmin();
+    }
+
     // --- Blog (الزائر يرى المنشور فقط) ---
     match /blog_posts/{postId} {
       allow get, list: if resource.data.isPublished == true || isAdmin();

@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
   };
 
   return (
-    <footer className="bg-[#060D1A] text-gray-300 border-t border-[#D4AF37]/30 pt-16 pb-12">
+    <footer className="bg-[#062419] text-gray-300 border-t border-[#C9A04F]/30 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           
@@ -42,8 +42,8 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
             <p className="text-sm text-gray-400 leading-relaxed max-w-md">
               {t.footer.aboutText}
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0A192F] border border-[#D4AF37]/30 text-xs text-[#F3E5AB]">
-              <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0B3B2C] border border-[#C9A04F]/30 text-xs text-[#F3E3B8]">
+              <ShieldCheck className="w-4 h-4 text-[#C9A04F]" />
               <span>{t.brand.cefrStandard}</span>
             </div>
 
@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                   href={contacts.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#0A192F] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#25D366] hover:border-[#25D366] transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#0B3B2C] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#25D366] hover:border-[#25D366] transition-all"
                   title="WhatsApp"
                 >
                   <Phone className="w-4 h-4" />
@@ -67,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                 {contacts.email && (
                 <a
                   href={`mailto:${contacts.email}`}
-                  className="w-9 h-9 rounded-lg bg-[#0A192F] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#0B3B2C] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#C9A04F] hover:border-[#C9A04F] transition-all"
                   title="Email"
                 >
                   <Mail className="w-4 h-4" />
@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                   href={contacts.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#0A192F] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#FF0000] hover:border-[#FF0000] transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#0B3B2C] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#FF0000] hover:border-[#FF0000] transition-all"
                   title="YouTube"
                 >
                   <Youtube className="w-4 h-4" />
@@ -89,7 +89,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                   href={contacts.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#0A192F] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#E4405F] hover:border-[#E4405F] transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#0B3B2C] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#E4405F] hover:border-[#E4405F] transition-all"
                   title="Instagram"
                 >
                   <Instagram className="w-4 h-4" />
@@ -100,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                   href={contacts.discord}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#0A192F] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#5865F2] hover:border-[#5865F2] transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#0B3B2C] border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#5865F2] hover:border-[#5865F2] transition-all"
                   title="Discord"
                 >
                   <MessageSquare className="w-4 h-4" />
@@ -113,33 +113,33 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           {/* Column 2: Academic Programs */}
           <div>
             <h4 className="font-serif-luxury font-bold text-white tracking-wider text-base mb-4 flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[#D4AF37]" />
+              <BookOpen className="w-4 h-4 text-[#C9A04F]" />
               {t.footer.academicPrograms}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <button onClick={() => handleNav('programs')} className="hover:text-[#F3E5AB] transition-colors">
-                  {language === 'ar' ? 'مسارات CEFR (A1–C2)' : 'CEFR Levels (A1–C2)'}
+                <button onClick={() => handleNav('course/arabic-language')} className="hover:text-[#F3E3B8] transition-colors">
+                  {language === 'ar' ? 'اللغة العربية (فُصحى)' : 'Arabic Language (Fusha)'}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('course/small-group-courses')} className="hover:text-[#F3E5AB] transition-colors">
-                  {language === 'ar' ? 'دورات المجموعات (90 دقيقة)' : 'Group Courses (90 min)'}
+                <button onClick={() => handleNav('course/interactive-conversation')} className="hover:text-[#F3E3B8] transition-colors">
+                  {language === 'ar' ? 'المحادثات التفاعلية' : 'Interactive Conversation'}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('course/kids-english')} className="hover:text-[#F3E5AB] transition-colors">
-                  {language === 'ar' ? 'الإنجليزية للأطفال والناشئة' : 'English for Kids'}
+                <button onClick={() => handleNav('course/quran-tajweed')} className="hover:text-[#F3E3B8] transition-colors">
+                  {language === 'ar' ? 'القرآن الكريم والتجويد' : 'Quran & Tajweed'}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('course/business-english')} className="hover:text-[#F3E5AB] transition-colors">
-                  {language === 'ar' ? 'الإنجليزية المهنية للأعمال' : 'Business English'}
+                <button onClick={() => handleNav('course/kids-arabic-quran')} className="hover:text-[#F3E3B8] transition-colors">
+                  {language === 'ar' ? 'العربية والقرآن للأطفال' : 'Arabic & Quran for Kids'}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('curriculum')} className="hover:text-[#F3E5AB] transition-colors">
-                  {language === 'ar' ? 'الخطة والـ 18 مرحلة' : '18 Stage Curriculum'}
+                <button onClick={() => handleNav('curriculum')} className="hover:text-[#F3E3B8] transition-colors">
+                  {language === 'ar' ? 'المستويات والمسارات' : 'Levels & Tracks'}
                 </button>
               </li>
             </ul>
@@ -148,23 +148,23 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           {/* Column 3: Quick Navigation */}
           <div>
             <h4 className="font-serif-luxury font-bold text-white tracking-wider text-base mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+              <Sparkles className="w-4 h-4 text-[#C9A04F]" />
               {t.footer.quickLinks}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <button onClick={() => handleNav('english-club')} className="hover:text-[#F3E5AB] text-[#D4AF37] font-semibold transition-colors flex items-center gap-1">
+                <button onClick={() => handleNav('english-club')} className="hover:text-[#F3E3B8] text-[#C9A04F] font-semibold transition-colors flex items-center gap-1">
                   <span>{t.nav.englishClub}</span>
-                  <span className="text-[10px] bg-[#D4AF37] text-[#0A192F] px-1 rounded font-bold">New</span>
+                  <span className="text-[10px] bg-[#C9A04F] text-[#0B3B2C] px-1 rounded font-bold">New</span>
                 </button>
               </li>
-              {contacts.placementTestUrl && (
+              {(
               <li>
                 <a
                   href={pt.href}
                   target={pt.target}
                   rel={pt.rel}
-                  className="hover:text-[#F3E5AB] text-gray-300 transition-colors inline-flex items-center gap-1"
+                  className="hover:text-[#F3E3B8] text-gray-300 transition-colors inline-flex items-center gap-1"
                 >
                   <span>{t.nav.placementTest}</span>
                   <span className="text-[10px] bg-white/20 text-white px-1 rounded font-bold">Free</span>
@@ -172,32 +172,32 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
               </li>
               )}
               <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('pricing')} className="hover:text-[#F3E3B8] transition-colors">
                   {t.nav.pricing}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('offers')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('offers')} className="hover:text-[#F3E3B8] transition-colors">
                   {t.nav.offers}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('about')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('about')} className="hover:text-[#F3E3B8] transition-colors">
                   {t.nav.about}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('faq')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('faq')} className="hover:text-[#F3E3B8] transition-colors">
                   {t.nav.faq}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('blog')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('blog')} className="hover:text-[#F3E3B8] transition-colors">
                   {t.nav.blog}
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('library')} className="hover:text-[#F3E5AB] transition-colors">
+                <button onClick={() => handleNav('library')} className="hover:text-[#F3E3B8] transition-colors">
                   {language === 'ar' ? 'المكتبة' : 'Library'}
                 </button>
               </li>
@@ -211,7 +211,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
                     }
                     handleNav('library');
                   }}
-                  className="hover:text-[#F3E5AB] transition-colors"
+                  className="hover:text-[#F3E3B8] transition-colors"
                 >
                   {language === 'ar' ? 'مجلة الأكاديمية' : 'Academy magazine'}
                 </button>
@@ -222,13 +222,13 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           {/* Column 4: Official Contact & Verification */}
           <div>
             <h4 className="font-serif-luxury font-bold text-white tracking-wider text-base mb-4 flex items-center gap-2">
-              <Phone className="w-4 h-4 text-[#D4AF37]" />
+              <Phone className="w-4 h-4 text-[#C9A04F]" />
               {t.footer.contactInfo}
             </h4>
             <ul className="space-y-3 text-xs text-gray-400">
               {contacts.whatsapp && (
               <li className="flex items-start gap-2">
-                <span className="text-[#D4AF37] font-semibold">WhatsApp:</span>
+                <span className="text-[#C9A04F] font-semibold">WhatsApp:</span>
                 <a href={contacts.whatsapp} target="_blank" rel="noopener noreferrer" className="hover:text-white underline">
                   {whatsappDisplay(contacts.whatsapp)}
                 </a>
@@ -236,20 +236,20 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
               )}
               {contacts.email && (
               <li className="flex items-start gap-2">
-                <span className="text-[#D4AF37] font-semibold">Email:</span>
+                <span className="text-[#C9A04F] font-semibold">Email:</span>
                 <a href={`mailto:${contacts.email}`} className="hover:text-white break-all">
                   {contacts.email}
                 </a>
               </li>
               )}
               <li className="flex items-start gap-2">
-                <span className="text-[#D4AF37] font-semibold">Format:</span>
+                <span className="text-[#C9A04F] font-semibold">Format:</span>
                 <span>Online Live Classes (Zoom / Classroom)</span>
               </li>
               <li className="pt-2">
                 <button
                   onClick={() => handleNav('join-us')}
-                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] font-bold text-center text-xs shadow hover:brightness-110"
+                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#C9A04F] to-[#9A772E] text-[#0B3B2C] font-bold text-center text-xs shadow hover:brightness-110"
                 >
                   {t.nav.register}
                 </button>
@@ -269,12 +269,12 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
           <div className="flex items-center gap-4 text-gray-400">
             <span>{t.footer.disclaimer}</span>
             <span>•</span>
-            <button onClick={() => handleNav('login')} className="hover:text-[#F3E5AB] underline">
+            <button onClick={() => handleNav('login')} className="hover:text-[#F3E3B8] underline">
               {t.nav.studentPortal}
             </button>
             <span>•</span>
-            <button onClick={() => handleNav('admin-login')} className="hover:text-[#D4AF37] flex items-center gap-1 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <button onClick={() => handleNav('admin-login')} className="hover:text-[#C9A04F] flex items-center gap-1 font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#C9A04F]" />
               <span>{language === 'ar' ? 'بوابة الإدارة' : 'Admin Console'}</span>
             </button>
           </div>

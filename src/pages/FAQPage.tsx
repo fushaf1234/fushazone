@@ -23,19 +23,19 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-12">
+    <div className="min-h-screen bg-[#FAF7EF] py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#C9A04F]">
             Knowledge & Admissions Guide
           </span>
-          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F] mt-2">
+          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0B3B2C] mt-2">
             {language === 'ar' ? 'الأسئلة الشائعة وإجاباتها' : 'Frequently Asked Questions'}
           </h1>
           <p className="text-base sm:text-lg text-gray-600 mt-4 leading-relaxed">
             {language === 'ar'
               ? 'إجابات واضحة ومباشرة حول نظام الدراسة، المستويات، الأسعار، ومواعيد الحصص.'
-              : 'Clear, transparent answers about our programs, scheduling, CEFR levels, and monthly tuition.'}
+              : 'Clear answers about our programs, schedules, levels and monthly fees.'}
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={language === 'ar' ? 'ابحث في الأسئلة الشائعة...' : 'Search questions or keywords...'}
-            className="w-full pl-12 pr-4 rtl:pl-4 rtl:pr-12 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#D4AF37] shadow-sm text-sm"
+            className="w-full pl-12 pr-4 rtl:pl-4 rtl:pr-12 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#C9A04F] shadow-sm text-sm"
           />
         </div>
 
@@ -57,7 +57,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
             { id: 'all', labelEn: 'All Questions', labelAr: 'جميع الأسئلة' },
             { id: 'general', labelEn: 'General & Academy', labelAr: 'عام وعن الأكاديمية' },
             { id: 'format', labelEn: 'Learning Formats', labelAr: 'أنظمة الحصص والمواعيد' },
-            { id: 'programs', labelEn: 'CEFR & Programs', labelAr: 'المستويات والمنهج' },
+            { id: 'programs', labelEn: 'Levels & Programs', labelAr: 'المستويات والمنهج' },
             { id: 'pricing', labelEn: 'Tuition & Payment', labelAr: 'الرسوم وطرق السداد' },
             { id: 'tests', labelEn: 'Placement & Tests', labelAr: 'تحديد المستوى والاختبارات' }
           ].map((cat) => (
@@ -66,7 +66,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
               onClick={() => setActiveCategory(cat.id)}
               className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 activeCategory === cat.id
-                  ? 'bg-[#0A192F] text-[#F3E5AB] shadow'
+                  ? 'bg-[#0B3B2C] text-[#F3E3B8] shadow'
                   : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
               }`}
             >
@@ -91,21 +91,21 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
               >
                 <button
                   onClick={() => setOpenId(isOpen ? null : faq.id)}
-                  className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 hover:bg-[#FAF8F5] transition-colors"
+                  className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 hover:bg-[#FAF7EF] transition-colors"
                 >
-                  <span className="font-serif-luxury font-bold text-base sm:text-lg text-[#0A192F] flex items-center gap-2.5">
-                    <HelpCircle className="w-5 h-5 text-[#D4AF37] flex-shrink-0" />
+                  <span className="font-serif-luxury font-bold text-base sm:text-lg text-[#0B3B2C] flex items-center gap-2.5">
+                    <HelpCircle className="w-5 h-5 text-[#C9A04F] flex-shrink-0" />
                     <span>{language === 'ar' ? faq.questionAr : faq.questionEn}</span>
                   </span>
                   <ChevronDown
                     className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
-                      isOpen ? 'rotate-180 text-[#D4AF37]' : ''
+                      isOpen ? 'rotate-180 text-[#C9A04F]' : ''
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-2 border-t border-gray-100 text-sm text-gray-600 leading-relaxed bg-[#FAF8F5]/50">
+                  <div className="px-6 pb-6 pt-2 border-t border-gray-100 text-sm text-gray-600 leading-relaxed bg-[#FAF7EF]/50">
                     <p className="pl-7 rtl:pl-0 rtl:pr-7 whitespace-pre-line">
                       {language === 'ar' ? faq.answerAr : faq.answerEn}
                     </p>
@@ -117,8 +117,8 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
         )}
 
         {/* Still have questions banner */}
-        <div className="mt-12 p-8 rounded-3xl bg-[#0A192F] text-white text-center space-y-4">
-          <h3 className="font-serif-luxury font-bold text-xl text-[#F3E5AB]">
+        <div className="mt-12 p-8 rounded-3xl bg-[#0B3B2C] text-white text-center space-y-4">
+          <h3 className="font-serif-luxury font-bold text-xl text-[#F3E3B8]">
             {language === 'ar' ? 'هل لديك سؤال آخر لم تجد إجابته هنا؟' : 'Have a Question Not Listed Here?'}
           </h3>
           <p className="text-xs sm:text-sm text-gray-300 max-w-xl mx-auto">
@@ -129,7 +129,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ navigate }) => {
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               onClick={() => navigate('contact')}
-              className="px-6 py-2.5 rounded-xl font-bold text-xs bg-[#D4AF37] text-[#0A192F] hover:bg-[#F3E5AB] transition-colors"
+              className="px-6 py-2.5 rounded-xl font-bold text-xs bg-[#C9A04F] text-[#0B3B2C] hover:bg-[#F3E3B8] transition-colors"
             >
               {t.nav.contact}
             </button>

@@ -4,7 +4,7 @@ import { useAcademySettings, whatsappWithText } from '../hooks/useAcademySetting
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { GoogleSignInButton, OrDivider, googleErrorMessage } from '../components/common/GoogleSignInButton';
-import { EnglishZoneEmblem } from '../components/common/Logo';
+import { FushaZoneEmblem } from '../components/common/Logo';
 
 // «سجّلي الآن»: تسجيل مجاني كامل، تظهر صاحبته عند الإدارة في «المسجّلون المحتملون»،
 // ومن لوحتها تضغط «للاشتراك في الكورس» متى أرادت
@@ -28,9 +28,9 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
   }, [isAuthenticated]);
 
   const benefits = [
-    { icon: Mic, text: tr('Live English voice rooms: practise speaking with other learners', 'غرف محادثة صوتية مباشرة بالإنجليزية: {تدرّب|تدرّبي} على الكلام مع متعلمين آخرين') },
+    { icon: Mic, text: tr('Live Arabic voice rooms: practise speaking with other learners', 'غرف محادثة صوتية مباشرة بالعربية: {تدرّب|تدرّبي} على الكلام مع متعلمين آخرين') },
     { icon: Target, text: tr('Free placement test to know your exact level', 'تحديد {مستواك|مستواكِ} مجانًا باختبار دقيق') },
-    { icon: Users, text: tr('Join a community of English learners like you', 'مشاركة مجتمع من {يشاركنك|يشاركنكِ} الاهتمام بالإنجليزية') },
+    { icon: Users, text: tr('Join a community of Arabic learners like you', 'مشاركة مجتمع من {يشاركنك|يشاركنكِ} الاهتمام بالعربية') },
     { icon: BookOpen, text: tr('Free books and academy magazine issues', 'كتب ومجلات مجانية من الأكاديمية') },
     { icon: Megaphone, text: tr('First to hear about free workshops', 'إعلانات الورش المجانية أولًا بأول') },
     { icon: BadgePercent, text: tr('Discounted offers for members', 'عروض وخصومات خاصة بالمسجّلات') }
@@ -73,13 +73,13 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
     else setError(errText(r.code));
   };
 
-  const inp = 'w-full px-4 py-3 rounded-xl border border-gray-300 text-sm bg-white focus:outline-none focus:border-[#D4AF37]';
+  const inp = 'w-full px-4 py-3 rounded-xl border border-gray-300 text-sm bg-white focus:outline-none focus:border-[#C9A04F]';
 
   if (isAuthenticated) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 p-6 text-center" dir={isAr ? 'rtl' : 'ltr'}>
-        <p className="text-sm text-[#0A192F] font-bold">{tr('You are already signed in.', '{أنت|أنتِ} مسجّلة الدخول بالفعل.')}</p>
-        <button onClick={() => navigate('portal')} className="px-5 py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-sm font-bold">
+        <p className="text-sm text-[#0B3B2C] font-bold">{tr('You are already signed in.', '{أنت|أنتِ} مسجّلة الدخول بالفعل.')}</p>
+        <button onClick={() => navigate('portal')} className="px-5 py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-sm font-bold">
           {tr('Go to my page', '{اذهب|اذهبي} إلى صفحتي')}
         </button>
       </div>
@@ -87,13 +87,13 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-10 px-4" dir={isAr ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-[#FAF7EF] py-10 px-4" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* المزايا */}
-        <div className="bg-gradient-to-br from-[#0A192F] to-[#102445] text-white rounded-3xl p-7 sm:p-9 border border-[#D4AF37]/40 shadow-xl space-y-6">
-          <EnglishZoneEmblem sizeClass="w-16 h-16" glow={true} />
+        <div className="bg-gradient-to-br from-[#0B3B2C] to-[#11503A] text-white rounded-3xl p-7 sm:p-9 border border-[#C9A04F]/40 shadow-xl space-y-6">
+          <FushaZoneEmblem sizeClass="w-16 h-16" glow={true} />
           <div className="space-y-2">
-            <h1 className="font-serif-luxury font-bold text-3xl text-[#F3E5AB]">{tr('Join English Zone', '{انضم|انضمي} إلى English Zone')}</h1>
+            <h1 className="font-serif-luxury font-bold text-3xl text-[#F3E3B8]">{tr('Join Fusha Zone', '{انضم|انضمي} إلى Fusha Zone')}</h1>
             <p className="text-sm text-gray-300">{tr('Free registration in one minute, and you get:', '{سجّل|سجّلي} مجانًا في دقيقة، {واحصل|واحصلي} على:')}</p>
           </div>
           <ul className="space-y-3">
@@ -101,8 +101,8 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
               const Icon = b.icon;
               return (
                 <li key={b.text} className="flex items-center gap-3 text-sm">
-                  <span className="w-9 h-9 rounded-xl bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
-                    <Icon className="w-5 h-5 text-[#D4AF37]" />
+                  <span className="w-9 h-9 rounded-xl bg-[#C9A04F]/15 border border-[#C9A04F]/40 flex items-center justify-center shrink-0">
+                    <Icon className="w-5 h-5 text-[#C9A04F]" />
                   </span>
                   {b.text}
                 </li>
@@ -111,7 +111,7 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
           </ul>
           {whatsapp && !hideWhatsapp && (
             <a
-              href={whatsappWithText(whatsapp, tr('Hello English Zone, I would like to know more.', 'مرحبًا English Zone، أريد معرفة المزيد عن الأكاديمية.'))}
+              href={whatsappWithText(whatsapp, tr('Hello Fusha Zone, I would like to know more.', 'مرحبًا Fusha Zone، أريد معرفة المزيد عن الأكاديمية.'))}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white text-sm font-bold shadow-lg hover:brightness-105"
@@ -121,7 +121,7 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
             </a>
           )}
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-gray-300 flex items-start gap-2">
-            <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-[#C9A04F] shrink-0 mt-0.5" />
             {tr(
               'Want to study with us? After signing up, one tap on "Subscribe to the course" in your page.',
               '{تريد|تريدين} الدراسة معنا؟ بعد التسجيل {تضغط|تضغطين} زر «للاشتراك في الكورس» في {صفحتك|صفحتكِ}.'
@@ -131,7 +131,7 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
 
         {/* النموذج */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-4">
-          <h2 className="font-bold text-xl text-[#0A192F]">{tr('Sign up now – free', '{سجّل|سجّلي} الآن مجانًا')}</h2>
+          <h2 className="font-bold text-xl text-[#0B3B2C]">{tr('Sign up now – free', '{سجّل|سجّلي} الآن مجانًا')}</h2>
           <p className="text-xs text-gray-500">{tr('One step: Google or email. We ask for your name and WhatsApp inside.', 'خطوة واحدة: بحساب Google أو بالبريد. {اسمك|اسمكِ} ورقم الواتساب نطلبهما داخل المنصة.')}</p>
           {error && <p className="text-xs font-bold text-red-600 text-center p-2 rounded-lg bg-red-50 border border-red-100">{error}</p>}
           {inApp ? (
@@ -151,13 +151,13 @@ export const VisitorJoinPage: React.FC<{ navigate: (route: string) => void; hide
           <form onSubmit={viaEmail} className="space-y-3">
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} dir="ltr" placeholder={tr('Email', 'البريد الإلكتروني')} className={inp} />
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} dir="ltr" placeholder={tr('Password (6+ characters)', 'كلمة المرور (6 أحرف على الأقل)')} className={inp} />
-            <button type="submit" disabled={busy} className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] text-sm font-bold disabled:opacity-50 shadow-lg">
+            <button type="submit" disabled={busy} className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C9A04F] to-[#9A772E] text-[#0B3B2C] text-sm font-bold disabled:opacity-50 shadow-lg">
               {busy ? '...' : tr('Create my free account', 'إنشاء حسابي المجاني')}
             </button>
           </form>
           <p className="text-xs text-gray-500 text-center">
             {tr('Already have an account?', '{عندك|عندكِ} حساب؟')}{' '}
-            <button onClick={() => navigate('login')} className="font-bold text-[#0A192F] underline">
+            <button onClick={() => navigate('login')} className="font-bold text-[#0B3B2C] underline">
               {tr('Log in', '{سجّل|سجّلي} الدخول')}
             </button>
           </p>

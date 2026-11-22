@@ -24,11 +24,11 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
   const PriceRow = ({ icon: Icon, label, amount, unit, dark }: { icon: any; label: string; amount: number; unit: string; dark: boolean }) => (
     <div className="flex items-center justify-between gap-3">
       <span className={`flex items-center gap-1.5 text-xs ${dark ? 'text-gray-300' : 'text-gray-500'}`}>
-        <Icon className="w-4 h-4 text-[#D4AF37]" />
+        <Icon className="w-4 h-4 text-[#C9A04F]" />
         {label}
       </span>
       <span className="flex items-baseline gap-1">
-        <span className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0A192F]'}`} dir="ltr">
+        <span className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0B3B2C]'}`} dir="ltr">
           {formatMoney(amount, currency)}
         </span>
         <span className={`text-[11px] ${dark ? 'text-gray-300' : 'text-gray-500'}`}>{unit}</span>
@@ -40,18 +40,18 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
     const dark = !!p.featured;
     const unit = unitLabel(p.unit, isAr);
     return (
-      <div className={`relative rounded-3xl p-7 flex flex-col justify-between shadow-lg border-2 ${dark ? 'bg-[#0A192F] border-[#D4AF37] text-white' : 'bg-white border-[#D4AF37]/30'}`}>
+      <div className={`relative rounded-3xl p-7 flex flex-col justify-between shadow-lg border-2 ${dark ? 'bg-[#0B3B2C] border-[#C9A04F] text-white' : 'bg-white border-[#C9A04F]/30'}`}>
         {p.featured && (
-          <span className="absolute -top-3 start-6 px-3 py-1 rounded-lg bg-[#D4AF37] text-[#0A192F] text-[11px] font-bold">
+          <span className="absolute -top-3 start-6 px-3 py-1 rounded-lg bg-[#C9A04F] text-[#0B3B2C] text-[11px] font-bold">
             {tr('Most chosen', 'الأكثر اختيارًا')}
           </span>
         )}
         <div className="space-y-3">
-          <span className={`text-[11px] font-bold ${dark ? 'text-[#F3E5AB]' : 'text-[#AA820A]'}`}>
+          <span className={`text-[11px] font-bold ${dark ? 'text-[#F3E3B8]' : 'text-[#9A772E]'}`}>
             {isAr ? PROGRAMS.find((x) => x.id === p.program)?.ar : PROGRAMS.find((x) => x.id === p.program)?.en}
           </span>
-          <h2 className={`font-serif-luxury font-bold text-xl ${dark ? 'text-[#F3E5AB]' : 'text-[#0A192F]'}`}>{isAr ? p.titleAr : p.titleEn}</h2>
-          <div className={`flex flex-wrap gap-3 text-xs font-bold ${dark ? 'text-[#D4AF37]' : 'text-[#AA820A]'}`}>
+          <h2 className={`font-serif-luxury font-bold text-xl ${dark ? 'text-[#F3E3B8]' : 'text-[#0B3B2C]'}`}>{isAr ? p.titleAr : p.titleEn}</h2>
+          <div className={`flex flex-wrap gap-3 text-xs font-bold ${dark ? 'text-[#C9A04F]' : 'text-[#9A772E]'}`}>
             {!!p.sessionsPerMonth && (
               <span className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
@@ -72,7 +72,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
 
         <div className={`mt-6 pt-5 border-t space-y-3 ${dark ? 'border-white/15' : 'border-gray-200'}`}>
           {p.free ? (
-            <div className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0A192F]'}`}>{tr('Free', 'مجانًا')}</div>
+            <div className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0B3B2C]'}`}>{tr('Free', 'مجانًا')}</div>
           ) : (
             <>
               {p.individualPrice !== undefined && (
@@ -86,7 +86,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
           <button
             onClick={() => navigate('register')}
             className={`w-full mt-2 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all ${
-              dark ? 'bg-[#D4AF37] text-[#0A192F]' : 'bg-[#0A192F] text-[#F3E5AB]'
+              dark ? 'bg-[#C9A04F] text-[#0B3B2C]' : 'bg-[#0B3B2C] text-[#F3E3B8]'
             }`}
           >
             <GraduationCap className="w-4 h-4" />
@@ -98,10 +98,10 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-12">
+    <div className="min-h-screen bg-[#FAF7EF] py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F]">{tr('Packages & prices', 'الباقات والأسعار')}</h1>
+          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0B3B2C]">{tr('Packages & prices', 'الباقات والأسعار')}</h1>
           <p className="text-base text-gray-600 mt-4 leading-relaxed">
             {tr(
               'Live lessons with native Arabic-speaking teachers, individually or in groups.',
@@ -111,11 +111,11 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
         </div>
 
         {locked && (
-          <div className="mb-6 p-8 rounded-3xl bg-gradient-to-br from-[#0A192F] to-[#102445] text-center space-y-3 border-2 border-[#D4AF37]/50 shadow-lg">
+          <div className="mb-6 p-8 rounded-3xl bg-gradient-to-br from-[#0B3B2C] to-[#11503A] text-center space-y-3 border-2 border-[#C9A04F]/50 shadow-lg">
             <div className="text-3xl">🔒</div>
-            <h3 className="font-serif-luxury font-bold text-xl text-[#F3E5AB]">{tr('Prices are for registered members', 'الأسعار متاحة للمسجّلين')}</h3>
+            <h3 className="font-serif-luxury font-bold text-xl text-[#F3E3B8]">{tr('Prices are for registered members', 'الأسعار متاحة للمسجّلين')}</h3>
             <p className="text-sm text-gray-300">{tr('Sign up free in one click to see tuition and offers.', '{سجّل|سجّلي} مجانًا بضغطة واحدة {لترى|لتري} الرسوم والعروض.')}</p>
-            <button onClick={() => navigate('join-us')} className="ez-float-glow px-8 py-3 rounded-xl bg-[#D4AF37] text-[#0A192F] font-bold text-sm">
+            <button onClick={() => navigate('join-us')} className="ez-float-glow px-8 py-3 rounded-xl bg-[#C9A04F] text-[#0B3B2C] font-bold text-sm">
               {tr('Sign up free to see prices', '{سجّل|سجّلي} مجانًا لرؤية الأسعار')}
             </button>
           </div>
@@ -134,7 +134,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
                 key={id}
                 onClick={() => setFilter(id)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                  filter === id ? 'bg-[#D4AF37] text-[#0A192F] shadow-sm' : 'bg-white text-gray-600 border border-gray-200'
+                  filter === id ? 'bg-[#C9A04F] text-[#0B3B2C] shadow-sm' : 'bg-white text-gray-600 border border-gray-200'
                 }`}
               >
                 {id === 'ALL' ? tr('All', 'الكل') : isAr ? PROGRAMS.find((p) => p.id === id)?.ar : PROGRAMS.find((p) => p.id === id)?.en}

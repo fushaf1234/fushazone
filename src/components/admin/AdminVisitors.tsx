@@ -51,7 +51,7 @@ export const AdminVisitors: React.FC<Props> = ({ users, isAr, enrolledIds = [], 
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-5" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{tr('Potential registrants', 'المسجّلون المحتملون')}</h2>
+          <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{tr('Potential registrants', 'المسجّلون المحتملون')}</h2>
           <p className="text-xs text-gray-500">
             {tr(
               'Everyone who signed up and is not an enrolled student yet. After you talk with her, press Activate to make her a student.',
@@ -59,7 +59,7 @@ export const AdminVisitors: React.FC<Props> = ({ users, isAr, enrolledIds = [], 
             )}
           </p>
         </div>
-        <button onClick={exportExcel} disabled={!visitors.length} className="self-start px-3 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-1.5 disabled:opacity-50">
+        <button onClick={exportExcel} disabled={!visitors.length} className="self-start px-3 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-1.5 disabled:opacity-50">
           <Download className="w-4 h-4" />
           {tr('Download Excel', 'تحميل Excel')}
         </button>
@@ -73,15 +73,15 @@ export const AdminVisitors: React.FC<Props> = ({ users, isAr, enrolledIds = [], 
       <p className="text-xs font-bold text-gray-700">{tr(`Total: ${visitors.length}`, `العدد: ${visitors.length}`)}</p>
 
       {visitors.length === 0 ? (
-        <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">{tr('No sign-ups yet.', 'لا توجد مسجّلات بعد.')}</div>
+        <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">{tr('No sign-ups yet.', 'لا توجد مسجّلات بعد.')}</div>
       ) : (
         <div className="space-y-2">
           {visitors.map((u) => (
-            <div key={u.id} className="p-3 rounded-xl bg-[#FAF8F5] border border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div key={u.id} className="p-3 rounded-xl bg-[#FAF7EF] border border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
               <div>
-                <span className="font-bold text-[#0A192F]">{u.fullName}</span>
+                <span className="font-bold text-[#0B3B2C]">{u.fullName}</span>
                 {enrolledIds.includes(u.id) && (
-                  <span className="ms-1.5 px-1.5 py-0.5 rounded bg-[#F3E5AB] text-[#0A192F] text-[10px] font-bold">{tr('Asked to subscribe', 'طلبت الاشتراك')}</span>
+                  <span className="ms-1.5 px-1.5 py-0.5 rounded bg-[#F3E3B8] text-[#0B3B2C] text-[10px] font-bold">{tr('Asked to subscribe', 'طلبت الاشتراك')}</span>
                 )}
                 <span className="text-gray-400">
                   {u.placementLevel ? ` • ${tr('Level', 'المستوى')} ${u.placementLevel}` : ''}
@@ -94,7 +94,7 @@ export const AdminVisitors: React.FC<Props> = ({ users, isAr, enrolledIds = [], 
                 </div>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                <button onClick={() => setProfileOf(u)} className="px-2.5 py-1.5 rounded-lg border border-[#D4AF37] text-[#7A5C00] font-bold">
+                <button onClick={() => setProfileOf(u)} className="px-2.5 py-1.5 rounded-lg border border-[#C9A04F] text-[#6E5418] font-bold">
                   {tr('Profile', 'صفحتها')}
                 </button>
                 {onActivate && (
@@ -106,7 +106,7 @@ export const AdminVisitors: React.FC<Props> = ({ users, isAr, enrolledIds = [], 
                       await onActivate(u.id);
                       setBusy('');
                     }}
-                    className="px-2.5 py-1.5 rounded-lg bg-[#0A192F] text-[#F3E5AB] font-bold flex items-center gap-1 disabled:opacity-50"
+                    className="px-2.5 py-1.5 rounded-lg bg-[#0B3B2C] text-[#F3E3B8] font-bold flex items-center gap-1 disabled:opacity-50"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     {tr('Activate', 'تفعيل')}

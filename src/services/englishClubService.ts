@@ -19,9 +19,9 @@ export const DEFAULT_ENGLISH_CLUB_SETTINGS: EnglishClubSettings = {
   tracks: {
     'A1-A2': {
       trackId: 'A1-A2',
-      titleEn: 'Foundations Club (A1–A2)',
-      titleAr: 'مسار التأسيس والمبتدئين (A1–A2)',
-      cefrRange: 'CEFR A1–A2',
+      titleEn: 'Beginner Conversation Track',
+      titleAr: 'مسار المبتدئين',
+      cefrRange: 'Beginner',
       suitableForEn: 'Beginner & Elementary learners developing speaking habits and basic daily communication.',
       suitableForAr: 'للمبتدئين لتأسيس عادة التحدث اليومية وكسر حاجز الخوف في بيئة داعمة ومريحة.',
       isConfigured: false,
@@ -29,9 +29,9 @@ export const DEFAULT_ENGLISH_CLUB_SETTINGS: EnglishClubSettings = {
     },
     'B1-B2': {
       trackId: 'B1-B2',
-      titleEn: 'Intermediate Fluency Club (B1–B2)',
-      titleAr: 'مسار الطلاقة المتوسطة (B1–B2)',
-      cefrRange: 'CEFR B1–B2',
+      titleEn: 'Intermediate Conversation Track',
+      titleAr: 'مسار المتوسط',
+      cefrRange: 'Intermediate',
       suitableForEn: 'Intermediate speakers looking to speak smoothly, debate engaging topics, and expand active vocabulary.',
       suitableForAr: 'للمتحدثين في المستوى المتوسط لتطوير الطلاقة، ومناقشة مواضيع متنوعة، واكتساب مفردات متقدمة.',
       isConfigured: false,
@@ -39,9 +39,9 @@ export const DEFAULT_ENGLISH_CLUB_SETTINGS: EnglishClubSettings = {
     },
     'C1-C2': {
       trackId: 'C1-C2',
-      titleEn: 'Advanced Mastery Club (C1–C2)',
-      titleAr: 'مسار الإتقان والاحتراف (C1–C2)',
-      cefrRange: 'CEFR C1–C2',
+      titleEn: 'Advanced Conversation Track',
+      titleAr: 'مسار المتقدم',
+      cefrRange: 'Advanced',
       suitableForEn: 'Upper-intermediate & advanced speakers sharpening nuance, idiomatic speech, and professional conversation.',
       suitableForAr: 'للمستويات المتقدمة لإتقان التعبير الدقيق، والمصطلحات الاحترافية، والخطابة ومناقشة الأفكار المعقدة.',
       isConfigured: false,

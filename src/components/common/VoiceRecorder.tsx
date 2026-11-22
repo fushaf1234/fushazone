@@ -108,7 +108,7 @@ export const VoiceRecorder: React.FC<{ isAr: boolean; value: RecordedAudio | nul
 
   if (value && previewUrl) {
     return (
-      <div className="flex flex-wrap items-center gap-2 p-2 rounded-xl bg-[#FAF8F5] border border-[#D4AF37]/40">
+      <div className="flex flex-wrap items-center gap-2 p-2 rounded-xl bg-[#FAF7EF] border border-[#C9A04F]/40">
         <audio controls src={previewUrl} className="h-9 max-w-full" />
         <span className="text-[11px] text-gray-500">{fmt(value.seconds)}</span>
         <button type="button" onClick={() => onChange(null)} className="p-1.5 text-gray-400 hover:text-red-600" title={isAr ? 'حذف التسجيل' : 'Remove'}>
@@ -132,7 +132,7 @@ export const VoiceRecorder: React.FC<{ isAr: boolean; value: RecordedAudio | nul
             type="button"
             onClick={start}
             disabled={disabled}
-            className="w-11 h-11 rounded-full bg-[#0A192F] text-[#D4AF37] flex items-center justify-center disabled:opacity-50"
+            className="w-11 h-11 rounded-full bg-[#0B3B2C] text-[#C9A04F] flex items-center justify-center disabled:opacity-50"
             title={isAr ? 'تسجيل صوتي (حتى 10 دقائق)' : 'Voice recording (up to 10 min)'}
           >
             <Mic className="w-5 h-5" />
@@ -156,9 +156,9 @@ export const VoiceRecorder: React.FC<{ isAr: boolean; value: RecordedAudio | nul
           type="button"
           onClick={start}
           disabled={disabled}
-          className="px-4 py-2 rounded-xl text-xs font-bold border border-[#D4AF37] text-[#0A192F] bg-white hover:bg-[#FAF8F5] flex items-center gap-1.5 disabled:opacity-50"
+          className="px-4 py-2 rounded-xl text-xs font-bold border border-[#C9A04F] text-[#0B3B2C] bg-white hover:bg-[#FAF7EF] flex items-center gap-1.5 disabled:opacity-50"
         >
-          <Mic className="w-4 h-4 text-[#AA820A]" />
+          <Mic className="w-4 h-4 text-[#9A772E]" />
           <span>{isAr ? 'تسجيل صوتي' : 'Voice recording'}</span>
         </button>
       )}
@@ -198,7 +198,7 @@ export const MessageAudioPlayer: React.FC<{ messageId: string; kind: 'msg' | 're
   if (url) return <audio controls autoPlay src={url} className="h-9 max-w-full" />;
   return (
     <div className="flex items-center gap-2">
-      <button type="button" onClick={load} disabled={loading} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-[#0A192F] text-[#F3E5AB] flex items-center gap-1.5">
+      <button type="button" onClick={load} disabled={loading} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-[#0B3B2C] text-[#F3E3B8] flex items-center gap-1.5">
         {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
         <span>
           {isAr ? 'تسجيل صوتي' : 'Voice recording'}

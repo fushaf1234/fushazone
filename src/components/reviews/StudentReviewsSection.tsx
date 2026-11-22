@@ -129,16 +129,16 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
     <section
       id="student-reviews"
       dir={dir}
-      className={`py-16 sm:py-20 bg-gradient-to-b from-white via-[#FAF8F5] to-[#F3EDE2]/60 border-t border-[#D4AF37]/25 ${className}`}
+      className={`py-16 sm:py-20 bg-gradient-to-b from-white via-[#FAF7EF] to-[#F3EDE2]/60 border-t border-[#C9A04F]/25 ${className}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {showHeader && (
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0A192F] text-[#F3E5AB] border border-[#D4AF37]/40 text-xs font-bold tracking-wide mb-3 shadow-sm">
-              <MessageSquareQuote className="w-3.5 h-3.5 text-[#D4AF37]" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0B3B2C] text-[#F3E3B8] border border-[#C9A04F]/40 text-xs font-bold tracking-wide mb-3 shadow-sm">
+              <MessageSquareQuote className="w-3.5 h-3.5 text-[#C9A04F]" aria-hidden="true" />
               <span>{t.reviewsSection.eyebrow}</span>
             </div>
-            <h2 className="font-serif-luxury font-bold text-3xl sm:text-4xl text-[#0A192F]">
+            <h2 className="font-serif-luxury font-bold text-3xl sm:text-4xl text-[#0B3B2C]">
               {t.reviewsSection.title}
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mt-3 leading-relaxed">
@@ -158,8 +158,8 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
               }}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 selectedCategory === 'all'
-                  ? 'bg-[#0A192F] text-[#F3E5AB] shadow-md border border-[#D4AF37]/50'
-                  : 'bg-white text-gray-700 border border-[#D4AF37]/30 hover:border-[#D4AF37]'
+                  ? 'bg-[#0B3B2C] text-[#F3E3B8] shadow-md border border-[#C9A04F]/50'
+                  : 'bg-white text-gray-700 border border-[#C9A04F]/30 hover:border-[#C9A04F]'
               }`}
             >
               {t.reviewsSection.categories.all} ({reviews.length})
@@ -176,8 +176,8 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                   }}
                   className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     selectedCategory === cat
-                      ? 'bg-[#0A192F] text-[#F3E5AB] shadow-md border border-[#D4AF37]/50'
-                      : 'bg-white text-gray-700 border border-[#D4AF37]/30 hover:border-[#D4AF37]'
+                      ? 'bg-[#0B3B2C] text-[#F3E3B8] shadow-md border border-[#C9A04F]/50'
+                      : 'bg-white text-gray-700 border border-[#C9A04F]/30 hover:border-[#C9A04F]'
                   }`}
                 >
                   {getCategoryLabel(cat)} ({count})
@@ -193,7 +193,7 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-80 rounded-3xl bg-white border border-[#D4AF37]/20 animate-pulse p-4 flex flex-col justify-between"
+                className="h-80 rounded-3xl bg-white border border-[#C9A04F]/20 animate-pulse p-4 flex flex-col justify-between"
               >
                 <div className="w-full h-full rounded-2xl bg-[#F3EDE2]/60" />
               </div>
@@ -201,11 +201,11 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
           </div>
         ) : filteredReviews.length === 0 ? (
           /* Dignified Empty State (until administrator explicitly publishes screenshots) */
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl p-8 sm:p-10 border-2 border-[#D4AF37]/30 shadow-md text-center space-y-3">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#0A192F] text-[#D4AF37] border border-[#D4AF37]/40 flex items-center justify-center shadow">
+          <div className="max-w-2xl mx-auto bg-white rounded-3xl p-8 sm:p-10 border-2 border-[#C9A04F]/30 shadow-md text-center space-y-3">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#0B3B2C] text-[#C9A04F] border border-[#C9A04F]/40 flex items-center justify-center shadow">
               <Images className="w-7 h-7" aria-hidden="true" />
             </div>
-            <h3 className="font-serif-luxury font-bold text-xl text-[#0A192F]">
+            <h3 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">
               {t.reviewsSection.title}
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
@@ -229,9 +229,9 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                     type="button"
                     onClick={() => setLightboxIndex(idx)}
                     aria-label={`${t.reviewsSection.clickToZoom}${caption ? `: ${caption}` : ''}`}
-                    className="group text-start bg-white rounded-3xl p-3.5 sm:p-4 border-2 border-[#D4AF37]/30 shadow-md hover:border-[#D4AF37] hover:shadow-xl transition-all flex flex-col justify-between overflow-hidden focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    className="group text-start bg-white rounded-3xl p-3.5 sm:p-4 border-2 border-[#C9A04F]/30 shadow-md hover:border-[#C9A04F] hover:shadow-xl transition-all flex flex-col justify-between overflow-hidden focus:outline-none focus:ring-2 focus:ring-[#C9A04F]"
                   >
-                    <div className="relative w-full h-72 sm:h-80 rounded-2xl bg-[#F8F6F1] border border-[#D4AF37]/15 overflow-hidden flex items-center justify-center p-2">
+                    <div className="relative w-full h-72 sm:h-80 rounded-2xl bg-[#F8F6F1] border border-[#C9A04F]/15 overflow-hidden flex items-center justify-center p-2">
                       <img
                         src={item.imageDataUrl}
                         alt={caption || getCategoryLabel(item.category) || t.reviewsSection.title}
@@ -241,9 +241,9 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                       />
 
                       {/* Hover Zoom Overlay */}
-                      <div className="absolute inset-0 bg-[#0A192F]/0 group-hover:bg-[#0A192F]/25 transition-colors flex items-center justify-center">
-                        <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3.5 py-2 rounded-xl bg-[#0A192F]/90 text-[#F3E5AB] border border-[#D4AF37]/50 text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                          <ZoomIn className="w-4 h-4 text-[#D4AF37]" aria-hidden="true" />
+                      <div className="absolute inset-0 bg-[#0B3B2C]/0 group-hover:bg-[#0B3B2C]/25 transition-colors flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3.5 py-2 rounded-xl bg-[#0B3B2C]/90 text-[#F3E3B8] border border-[#C9A04F]/50 text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                          <ZoomIn className="w-4 h-4 text-[#C9A04F]" aria-hidden="true" />
                           <span>{t.reviewsSection.clickToZoom}</span>
                         </span>
                       </div>
@@ -252,12 +252,12 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                     {(hasCategory || caption) && (
                       <div className="pt-3.5 px-1.5 space-y-1.5">
                         {hasCategory && (
-                          <span className="inline-block px-2.5 py-0.5 rounded-lg bg-[#0A192F]/5 border border-[#D4AF37]/30 text-[#AA820A] text-[11px] font-bold">
+                          <span className="inline-block px-2.5 py-0.5 rounded-lg bg-[#0B3B2C]/5 border border-[#C9A04F]/30 text-[#9A772E] text-[11px] font-bold">
                             {getCategoryLabel(item.category)}
                           </span>
                         )}
                         {caption && (
-                          <p className="text-xs sm:text-sm font-medium text-[#0A192F] leading-snug line-clamp-2">
+                          <p className="text-xs sm:text-sm font-medium text-[#0B3B2C] leading-snug line-clamp-2">
                             {caption}
                           </p>
                         )}
@@ -275,9 +275,9 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                   <button
                     type="button"
                     onClick={onViewAllNavigate}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-[#0A192F] text-[#F3E5AB] border border-[#D4AF37]/50 hover:bg-[#162B4D] shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-[#0B3B2C] text-[#F3E3B8] border border-[#C9A04F]/50 hover:bg-[#14523C] shadow-lg transition-all"
                   >
-                    <Images className="w-4 h-4 text-[#D4AF37]" aria-hidden="true" />
+                    <Images className="w-4 h-4 text-[#C9A04F]" aria-hidden="true" />
                     <span>
                       {t.reviewsSection.viewAll} ({filteredReviews.length})
                     </span>
@@ -286,18 +286,18 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowAll((prev) => !prev)}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-[#0A192F] text-[#F3E5AB] border border-[#D4AF37]/50 hover:bg-[#162B4D] shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-[#0B3B2C] text-[#F3E3B8] border border-[#C9A04F]/50 hover:bg-[#14523C] shadow-lg transition-all"
                   >
-                    <Images className="w-4 h-4 text-[#D4AF37]" aria-hidden="true" />
+                    <Images className="w-4 h-4 text-[#C9A04F]" aria-hidden="true" />
                     <span>
                       {showAll
                         ? t.reviewsSection.showLess
                         : `${t.reviewsSection.viewAll} (${filteredReviews.length})`}
                     </span>
                     {showAll ? (
-                      <ChevronUp className="w-4 h-4 text-[#D4AF37]" aria-hidden="true" />
+                      <ChevronUp className="w-4 h-4 text-[#C9A04F]" aria-hidden="true" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-[#D4AF37]" aria-hidden="true" />
+                      <ChevronDown className="w-4 h-4 text-[#C9A04F]" aria-hidden="true" />
                     )}
                   </button>
                 )}
@@ -314,7 +314,7 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
           aria-modal="true"
           aria-label={t.reviewsSection.title}
           onClick={() => setLightboxIndex(null)}
-          className="fixed inset-0 z-50 bg-[#060D1A]/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6"
+          className="fixed inset-0 z-50 bg-[#062419]/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -323,11 +323,11 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
             {/* Top Bar */}
             <div className="w-full flex items-center justify-between gap-4 mb-3 px-1">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-lg bg-[#0A192F] text-[#F3E5AB] border border-[#D4AF37]/40 text-xs font-bold font-mono">
+                <span className="px-3 py-1 rounded-lg bg-[#0B3B2C] text-[#F3E3B8] border border-[#C9A04F]/40 text-xs font-bold font-mono">
                   {lightboxIndex + 1} / {filteredReviews.length}
                 </span>
                 {activeLightboxItem.category && activeLightboxItem.category !== 'none' && (
-                  <span className="px-3 py-1 rounded-lg bg-[#D4AF37] text-[#0A192F] text-xs font-bold">
+                  <span className="px-3 py-1 rounded-lg bg-[#C9A04F] text-[#0B3B2C] text-xs font-bold">
                     {getCategoryLabel(activeLightboxItem.category)}
                   </span>
                 )}
@@ -337,7 +337,7 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                 type="button"
                 onClick={() => setLightboxIndex(null)}
                 aria-label={t.reviewsSection.lightboxClose}
-                className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#F3E5AB] border border-[#D4AF37]/50 hover:bg-[#D4AF37] hover:text-[#0A192F] transition-colors flex items-center justify-center shadow-lg"
+                className="w-10 h-10 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] border border-[#C9A04F]/50 hover:bg-[#C9A04F] hover:text-[#0B3B2C] transition-colors flex items-center justify-center shadow-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -350,13 +350,13 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                   type="button"
                   onClick={dir === 'rtl' ? goToNextLightbox : goToPrevLightbox}
                   aria-label={dir === 'rtl' ? t.reviewsSection.lightboxNext : t.reviewsSection.lightboxPrev}
-                  className="absolute start-1 sm:-start-4 z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0A192F]/90 text-[#F3E5AB] border border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:text-[#0A192F] transition-colors flex items-center justify-center shadow-xl"
+                  className="absolute start-1 sm:-start-4 z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0B3B2C]/90 text-[#F3E3B8] border border-[#C9A04F]/60 hover:bg-[#C9A04F] hover:text-[#0B3B2C] transition-colors flex items-center justify-center shadow-xl"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
               )}
 
-              <div className="bg-white rounded-2xl p-2 sm:p-3 border-2 border-[#D4AF37]/50 shadow-2xl max-h-[78vh] flex items-center justify-center overflow-auto">
+              <div className="bg-white rounded-2xl p-2 sm:p-3 border-2 border-[#C9A04F]/50 shadow-2xl max-h-[78vh] flex items-center justify-center overflow-auto">
                 <img
                   src={activeLightboxItem.imageDataUrl}
                   alt={
@@ -374,7 +374,7 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
                   type="button"
                   onClick={dir === 'rtl' ? goToPrevLightbox : goToNextLightbox}
                   aria-label={dir === 'rtl' ? t.reviewsSection.lightboxPrev : t.reviewsSection.lightboxNext}
-                  className="absolute end-1 sm:-end-4 z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0A192F]/90 text-[#F3E5AB] border border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:text-[#0A192F] transition-colors flex items-center justify-center shadow-xl"
+                  className="absolute end-1 sm:-end-4 z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0B3B2C]/90 text-[#F3E3B8] border border-[#C9A04F]/60 hover:bg-[#C9A04F] hover:text-[#0B3B2C] transition-colors flex items-center justify-center shadow-xl"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -383,8 +383,8 @@ export const StudentReviewsSection: React.FC<StudentReviewsSectionProps> = ({
 
             {/* Optional Caption */}
             {(activeLightboxItem.captionEn?.trim() || activeLightboxItem.captionAr?.trim()) && (
-              <div className="mt-3 px-5 py-2.5 rounded-xl bg-[#0A192F]/95 border border-[#D4AF37]/35 text-center max-w-2xl">
-                <p className="text-sm text-[#F3E5AB] font-medium">
+              <div className="mt-3 px-5 py-2.5 rounded-xl bg-[#0B3B2C]/95 border border-[#C9A04F]/35 text-center max-w-2xl">
+                <p className="text-sm text-[#F3E3B8] font-medium">
                   {language === 'ar'
                     ? activeLightboxItem.captionAr?.trim() || activeLightboxItem.captionEn?.trim()
                     : activeLightboxItem.captionEn?.trim() || activeLightboxItem.captionAr?.trim()}

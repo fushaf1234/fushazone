@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LogOut, Users, Star, MessageSquare, Globe2, UserRound, Mic, PenLine, MessagesSquare } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
-import { EnglishZoneEmblem } from '../../components/common/Logo';
+import { FushaZoneEmblem } from '../../components/common/Logo';
 import { AdminStudentsManager } from '../../components/admin/AdminStudentsManager';
 import { AdminStarsLedger } from '../../components/admin/AdminStarsLedger';
 import { AdminMessagesManager } from '../../components/admin/AdminMessagesManager';
@@ -45,9 +45,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-8">
+    <div className="min-h-screen bg-[#FAF7EF] py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="bg-white rounded-3xl p-6 border border-[#D4AF37]/30 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-3xl p-6 border border-[#C9A04F]/30 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <label className="relative cursor-pointer group" title={tr('Change my photo', 'تغيير صورتي')}>
               {(user as any)?.avatarConfig ? (
@@ -57,7 +57,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
                   <UserRound className="w-7 h-7" />
                 </span>
               )}
-              <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[9px] font-bold">
+              <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[9px] font-bold">
                 {tr('Photo', 'صورة')}
               </span>
               <input
@@ -78,22 +78,22 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
               />
             </label>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#AA820A]">{tr('Teacher portal', 'بوابة المعلم')}</span>
-              <h1 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{user?.fullName}</h1>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#9A772E]">{tr('Teacher portal', 'بوابة المعلم')}</span>
+              <h1 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{user?.fullName}</h1>
               <p className="text-xs text-gray-500">{user?.email}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 self-start">
           <button
             onClick={() => navigate('rooms')}
-            className="px-4 py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-1.5"
           >
             <Mic className="w-4 h-4" />
             {tr('Voice rooms with my students', 'الغرف الصوتية مع طلابي')}
           </button>
           <button
             onClick={() => navigate('board')}
-            className="px-4 py-2.5 rounded-xl bg-[#D4AF37] text-[#0A192F] text-xs font-bold flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-[#C9A04F] text-[#0B3B2C] text-xs font-bold flex items-center gap-1.5"
           >
             <PenLine className="w-4 h-4" />
             {tr('Whiteboard', 'السبورة')}
@@ -119,7 +119,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={`py-3 rounded-2xl text-xs font-bold flex items-center justify-center gap-1.5 border ${
-                  tab === t.id ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-600 border-gray-200'
+                  tab === t.id ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-600 border-gray-200'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -133,7 +133,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
         </div>
 
         {notice && (
-          <div className="p-3 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-semibold text-center">{notice}</div>
+          <div className="p-3 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-semibold text-center">{notice}</div>
         )}
 
         {tab === 'students' && <AdminStudentsManager onNotice={notify} teacherMode />}

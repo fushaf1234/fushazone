@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getStoredRefCode } from '../services/referralService';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
-import { CEFR_LEVELS_INFO } from '../data/academyData';
+import { CEFR_LEVELS_INFO, LEVEL_CODES, levelLabel } from '../data/academyData';
 import { useAcademySettings, whatsappWithText } from '../hooks/useAcademySettings';
 import { studentDataService } from '../services/studentDataService';
 import { CEFRLevel, LearningFormat, RegistrationFormData } from '../types';
@@ -40,7 +40,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
     country: '',
     whatsappNumber: '',
     email: '',
-    mainLevel: initialLevel || 'A1',
+    mainLevel: initialLevel || 'needs_test',
     learningGoal: '',
     learningFormat: 'group',
     notes: ''
@@ -164,20 +164,22 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
   // Generate WhatsApp prefilled link with enrollment details
   const generateWhatsAppLink = () => {
-    const textEn = `Hello English Zone Admissions! I would like to join the academy. Name: ${formData.fullName || 'Student'}, Main Level: ${formData.mainLevel}, Format: Small Group Lessons (90 min).`;
-    const textAr = `مرحباً فريق قبول أكاديمية English Zone، أود التسجيل في الأكاديمية. الاسم: ${formData.fullName || 'طالب'}، المستوى الرئيسي: ${formData.mainLevel}، نظام الحصص: دورات المجموعات (90 دقيقة).`;
+    const lvl = formData.mainLevel === 'needs_test' ? '' : levelLabel(formData.mainLevel, false);
+    const lvlAr = formData.mainLevel === 'needs_test' ? 'أحتاج جلسة تقييم' : levelLabel(formData.mainLevel, true);
+    const textEn = `Hello Fusha Zone! I would like to join the academy. Name: ${formData.fullName || 'Student'}, Level: ${lvl || 'Needs a free assessment'}, Format: ${formData.learningFormat === 'individual' ? 'Individual' : 'Group'}.`;
+    const textAr = `مرحبًا Fusha Zone، أود التسجيل في الأكاديمية. الاسم: ${formData.fullName || 'طالب'}، المستوى: ${lvlAr}، نظام الحصص: ${formData.learningFormat === 'individual' ? 'فردي' : 'مجموعات'}.`;
     return whatsappWithText(contacts.whatsapp, language === 'ar' ? textAr : textEn);
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-12">
+    <div className="min-h-screen bg-[#FAF7EF] py-12">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
         <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#C9A04F]">
             Official Admissions Application
           </span>
-          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0A192F] mt-2">
+          <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0B3B2C] mt-2">
             {t.register.title}
           </h1>
           <p className="text-sm sm:text-base text-gray-600 mt-3 leading-relaxed">
@@ -190,16 +192,16 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
         
         {isSubmitted ? (
           /* SUCCESS CONFIRMATION MODAL CARD */
-          <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-[#D4AF37]/50 shadow-2xl text-center space-y-6">
-            <div className="w-20 h-20 mx-auto rounded-full bg-[#FAF8F5] border-2 border-[#25D366] flex items-center justify-center text-[#25D366] shadow">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-[#C9A04F]/50 shadow-2xl text-center space-y-6">
+            <div className="w-20 h-20 mx-auto rounded-full bg-[#FAF7EF] border-2 border-[#25D366] flex items-center justify-center text-[#25D366] shadow">
               <CheckCircle2 className="w-12 h-12" />
             </div>
 
-            <span className="text-xs uppercase font-bold tracking-widest text-[#AA820A]">
+            <span className="text-xs uppercase font-bold tracking-widest text-[#9A772E]">
               Application Reference: {submissionId}
             </span>
 
-            <h2 className="font-serif-luxury font-bold text-2xl sm:text-3xl text-[#0A192F]">
+            <h2 className="font-serif-luxury font-bold text-2xl sm:text-3xl text-[#0B3B2C]">
               {t.register.successTitle}
             </h2>
 
@@ -209,7 +211,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
             {/* الخطوة الأخيرة: حساب الدخول بنفس البريد */}
             {!isAuthenticated && (
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] border-2 border-[#D4AF37] text-sm text-[#0A192F] space-y-3" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <div className="p-4 rounded-2xl bg-[#FAF7EF] border-2 border-[#C9A04F] text-sm text-[#0B3B2C] space-y-3" dir={language === 'ar' ? 'rtl' : 'ltr'}>
                 <b className="block">
                   {language === 'ar' ? 'خطوة أخيرة مهمة: {أنشئ|أنشئي} حساب الدخول' : 'One last step: create your login account'}
                 </b>
@@ -220,7 +222,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                 </p>
                 <button
                   onClick={() => navigate('login')}
-                  className="px-6 py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold"
+                  className="px-6 py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold"
                 >
                   {language === 'ar' ? 'إنشاء حساب الدخول الآن' : 'Create my login now'}
                 </button>
@@ -243,16 +245,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
               {formData.mainLevel === 'needs_test' && (
                 <div className="pt-2">
-                  {contacts.placementTestUrl && (
-                  <a
-                    href={contacts.placementTestUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-6 py-2.5 rounded-xl text-xs font-semibold text-[#0A192F] bg-[#FAF8F5] border border-[#D4AF37] hover:bg-[#D4AF37]/10"
-                  >
-                    {t.hero.ctaTest}
-                  </a>
-                  )}
+
                 </div>
               )}
             </div>
@@ -260,7 +253,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
             <div className="pt-6 border-t border-gray-100">
               <button
                 onClick={() => navigate('home')}
-                className="text-xs font-bold text-gray-500 hover:text-[#0A192F]"
+                className="text-xs font-bold text-gray-500 hover:text-[#0B3B2C]"
               >
                 {language === 'ar' ? 'العودة إلى الصفحة الرئيسية' : 'Return to Academy Home'}
               </button>
@@ -268,7 +261,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
           </div>
         ) : (
           /* REGISTRATION FORM */
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#D4AF37]/30 shadow-xl space-y-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#C9A04F]/30 shadow-xl space-y-8">
             
             {/* Top WhatsApp Fast-Track Option */}
             <div className="p-4 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -277,7 +270,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-[#0A192F]">
+                  <h4 className="font-bold text-sm text-[#0B3B2C]">
                     {language === 'ar' ? 'تسجيل مباشر وسريع عبر الواتساب' : 'Fast-Track WhatsApp Registration'}
                   </h4>
                   <p className="text-xs text-gray-600">
@@ -313,7 +306,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {!known.name && (
                 <div className={known.age ? 'sm:col-span-3' : 'sm:col-span-2'}>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                     {t.register.fullName} *
                   </label>
                   <div className="relative">
@@ -324,7 +317,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                       placeholder={t.register.fullNamePlaceholder}
-                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                     />
                   </div>
                 </div>
@@ -332,7 +325,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
                 {!known.age && (
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                     {t.register.age} *
                   </label>
                   <div className="relative">
@@ -345,7 +338,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                       value={formData.age}
                       onChange={(e) => setFormData({ ...formData, age: e.target.value ? parseInt(e.target.value) : '' })}
                       placeholder={t.register.agePlaceholder}
-                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                     />
                   </div>
                 </div>
@@ -358,7 +351,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {!known.country && (
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                     {t.register.country} *
                   </label>
                   <div className="relative">
@@ -369,7 +362,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                       value={formData.country}
                       onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                       placeholder={t.register.countryPlaceholder}
-                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                     />
                   </div>
                 </div>
@@ -377,7 +370,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
                 {!known.phone && (
                 <div className={known.country ? 'sm:col-span-2' : ''}>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                     {t.register.whatsapp} *
                   </label>
                   <div className="relative">
@@ -388,7 +381,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                       value={formData.whatsappNumber}
                       onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
                       placeholder={t.register.whatsappPlaceholder}
-                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                     />
                   </div>
                 </div>
@@ -398,7 +391,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
               {/* Email */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                   {t.register.email} *
                 </label>
                 <div className="relative">
@@ -410,7 +403,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                     value={firebaseUser?.email || formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder={t.register.emailPlaceholder}
-                    className={`w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37] ${firebaseUser ? 'bg-gray-50 text-gray-500' : ''}`}
+                    className={`w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F] ${firebaseUser ? 'bg-gray-50 text-gray-500' : ''}`}
                   />
                 </div>
                 {firebaseUser ? (
@@ -419,7 +412,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                   </p>
                 ) : (
                   <div className="mt-3 space-y-2">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F]">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C]">
                       {language === 'ar' ? 'كلمة مرور لحسابك *' : 'Password for your account *'}
                     </label>
                     <input
@@ -428,7 +421,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={language === 'ar' ? '6 أحرف على الأقل' : 'At least 6 characters'}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                     />
                     <p className="text-[11px] text-gray-500">
                       {language === 'ar'
@@ -447,7 +440,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                           setSubmitError(language === 'ar' ? 'تعذر الدخول بحساب Google، {حاول|حاولي} مرة أخرى.' : 'Google sign-in failed, please try again.');
                         }
                       }}
-                      className="w-full py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-bold text-[#0A192F] disabled:opacity-50"
+                      className="w-full py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-bold text-[#0B3B2C] disabled:opacity-50"
                     >
                       {language === 'ar' ? 'أو {استعمل|استعملي} حساب Google بدل كلمة المرور' : 'Or use your Google account instead'}
                     </button>
@@ -455,30 +448,20 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                 )}
               </div>
 
-              {/* CRITICAL ENROLLMENT RULE: Main CEFR Level A1–C2 ONLY (Sections 8 & 17) */}
-              <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-gray-200">
+              {/* المستوى أو المسار، أو «أحتاج جلسة تقييم مجانية» */}
+              <div className="p-5 rounded-2xl bg-[#FAF7EF] border border-gray-200">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F]">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C]">
                     {t.register.levelLabel} *
                   </label>
-                  {contacts.placementTestUrl && (
-                  <a
-                    href={contacts.placementTestUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-[#AA820A] font-semibold hover:underline flex items-center gap-1"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>{t.hero.ctaTest}</span>
-                  </a>
-                  )}
+
                 </div>
                 <p className="text-[11px] text-gray-500 mb-4">
                   {t.register.levelHint}
                 </p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                  {(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as CEFRLevel[]).map((levelCode) => {
+                  {LEVEL_CODES.map((levelCode) => {
                     const isSelected = formData.mainLevel === levelCode;
                     return (
                       <button
@@ -487,11 +470,11 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                         onClick={() => setFormData({ ...formData, mainLevel: levelCode })}
                         className={`p-3 rounded-xl text-center font-bold text-sm border-2 transition-all ${
                           isSelected
-                            ? 'bg-[#0A192F] text-[#F3E5AB] border-[#D4AF37] shadow'
+                            ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#C9A04F] shadow'
                             : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        Level {levelCode}
+                        {levelLabel(levelCode, language === 'ar')}
                       </button>
                     );
                   })}
@@ -504,11 +487,11 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                     onClick={() => setFormData({ ...formData, mainLevel: 'needs_test' })}
                     className={`w-full p-3 rounded-xl text-xs font-bold border-2 transition-all flex items-center justify-center gap-2 ${
                       formData.mainLevel === 'needs_test'
-                        ? 'bg-[#0A192F] text-[#F3E5AB] border-[#D4AF37] shadow'
+                        ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#C9A04F] shadow'
                         : 'bg-white text-gray-600 border-dashed border-gray-300 hover:border-gray-400'
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#C9A04F]" />
                     <span>{t.register.levelNeedsTest}</span>
                   </button>
                 </div>
@@ -516,22 +499,31 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
 
               {/* Learning Format: Small Group Classes (90 min) */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-2">
                   {t.register.formatLabel} *
                 </label>
-                <div className="p-4 rounded-xl text-left rtl:text-right border-2 bg-[#0A192F] text-[#F3E5AB] border-[#D4AF37] shadow">
-                  <div className="font-bold text-sm">{t.register.formatGroup}</div>
-                  <div className="text-xs text-gray-300 mt-1">
-                    {language === 'ar'
-                      ? 'منهج أكسفورد المعتمد والتفاعلي، حصة تفاعلية ممتدة لمدة 90 دقيقة'
-                      : 'Accredited, interactive Oxford curriculum, 90-minute interactive session'}
-                  </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {(['individual', 'group'] as LearningFormat[]).map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, learningFormat: f })}
+                      className={`p-4 rounded-xl text-start border-2 transition-all ${
+                        formData.learningFormat === f ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#C9A04F] shadow' : 'bg-white text-gray-700 border-gray-200'
+                      }`}
+                    >
+                      <div className="font-bold text-sm">{f === 'individual' ? t.register.formatIndividual : t.register.formatGroup}</div>
+                      <div className={`text-xs mt-1 ${formData.learningFormat === f ? 'text-gray-300' : 'text-gray-500'}`}>
+                        {language === 'ar' ? '50 دقيقة للحصة (40 للقرآن)' : '50 min per lesson (40 for Quran)'}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Goal & Notes */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                   {t.register.goalLabel}
                 </label>
                 <input
@@ -539,12 +531,12 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                   value={formData.learningGoal}
                   onChange={(e) => setFormData({ ...formData, learningGoal: e.target.value })}
                   placeholder={t.register.goalPlaceholder}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                   {t.register.notesLabel}
                 </label>
                 <textarea
@@ -552,13 +544,13 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder={t.register.notesPlaceholder}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
                 ></textarea>
               </div>
 
               {/* كود الدعوة: خصم 30% على الشهر الأول */}
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/40">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-1.5">
+              <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/40">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B3B2C] mb-1.5">
                   {language === 'ar' ? '🎁 كود الدعوة (اختياري)' : '🎁 Invitation code (optional)'}
                 </label>
                 <input
@@ -568,7 +560,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
                   onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
                   placeholder="EZXXXXXX"
                   maxLength={20}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm font-mono tracking-widest focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm font-mono tracking-widest focus:outline-none focus:border-[#C9A04F]"
                 />
                 <p className="text-[11px] text-gray-500 mt-1">
                   {language === 'ar' ? 'إن {دعتك|دعتكِ} صديقة، {اكتب|اكتبي} كودها {واحصل|واحصلي} على خصم 30% على {شهرك|شهركِ} الأول.' : 'Invited by a friend? Enter her code and get 30% off your first month.'}
@@ -585,7 +577,7 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ navigate, in
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="disabled:opacity-60 w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] hover:shadow-xl shadow-[#D4AF37]/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="disabled:opacity-60 w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] hover:shadow-xl shadow-[#C9A04F]/20 transition-all active:scale-95 flex items-center justify-center gap-2"
               >
                 <Send className="w-5 h-5" />
                 <span>{isSubmitting ? (language === 'ar' ? 'جارٍ الإرسال...' : 'Sending...') : t.register.submitBtn}</span>

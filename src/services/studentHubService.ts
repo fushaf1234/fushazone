@@ -3,7 +3,7 @@ import { db } from './firebase';
 
 /* ------------------------------------------------------------------ */
 /*  خدمات لوحة الطالب: الحضور، روابط المنهج، المكتبة،        */
-/*  الآراء، الرسائل، ومجتمع English Zone                               */
+/*  الآراء، الرسائل، ومجتمع Fusha Zone                               */
 /* ------------------------------------------------------------------ */
 
 const newId = (prefix: string) =>
@@ -141,7 +141,7 @@ export const sendChatMessage = async (p: {
   const audioParts = p.audio ? await saveMessageAudio(id, 'msg', p.audio, { studentId: p.studentId, teacherId: p.teacherId }) : 0;
   const data: any = {
     id,
-    name: (p.name.trim() || (p.from === 'academy' ? 'English Zone' : '—')).slice(0, 100),
+    name: (p.name.trim() || (p.from === 'academy' ? 'Fusha Zone' : '—')).slice(0, 100),
     email: (p.email.trim() || '—').slice(0, 150),
     subject: '',
     message: (p.text.trim() || '🎙️ رسالة صوتية').slice(0, 3000),

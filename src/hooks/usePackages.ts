@@ -23,7 +23,7 @@ export const resetPackagesCache = () => {
   cached = null;
 };
 
-// الباقات للمسجّلين فقط (والمعلمون لا يرونها)، مثل English Zone
+// الباقات للمسجّلين فقط (والمعلمون لا يرونها)، مثل Fusha Zone
 export const usePackages = (): { packages: PricePackage[]; loading: boolean; locked: boolean } => {
   const { isAuthenticated, isTeacher, isAdmin, isSuperAdmin, isLoading } = useAuth();
   const canSee = isAuthenticated && (!isTeacher || isAdmin || isSuperAdmin);

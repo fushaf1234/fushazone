@@ -1,12 +1,12 @@
 import React from 'react';
 
-// رسومات خاصة بكل ميزة (SVG خفيفة) بألوان English Zone: الكحلي والذهبي
+// رسومات خاصة بكل ميزة (SVG خفيفة) بألوان Fusha Zone: الأخضر والذهبي
 export type FeatureKind = 'all' | 'placement' | 'certs' | 'rooms' | 'package' | 'platform' | 'community';
 
-const NAVY = '#0A192F';
-const NAVY2 = '#102445';
-const GOLD = '#D4AF37';
-const CREAM = '#F3E5AB';
+const NAVY = '#0B3B2C';
+const NAVY2 = '#11503A';
+const GOLD = '#C9A04F';
+const CREAM = '#F3E3B8';
 
 const Frame: React.FC<{ id: string; children: React.ReactNode; tint?: string }> = ({ id, children, tint = '#1E1B4B' }) => (
   <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full block" role="img" aria-hidden="true">
@@ -89,7 +89,7 @@ export const FeatureArt: React.FC<{ kind: FeatureKind }> = ({ kind }) => {
           ))}
           {/* مقياس المستويات */}
           <g transform="translate(50 255)">
-            {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((l, i) => (
+            {['أ', 'ب', 'ت', 'ث', 'ج', 'ح'].map((l, i) => (
               <g key={l} transform={`translate(${i * 50} 0)`}>
                 <rect width="46" height="22" rx="11" fill={i === 2 ? GOLD : 'rgba(255,255,255,0.12)'} stroke={GOLD} strokeOpacity="0.5" />
                 <text x="23" y="15" textAnchor="middle" fontSize="11" fontWeight="700" fill={i === 2 ? NAVY : CREAM} fontFamily="sans-serif">
@@ -115,7 +115,7 @@ export const FeatureArt: React.FC<{ kind: FeatureKind }> = ({ kind }) => {
           {/* ميدالية */}
           <path d="M250 175 l-14 45 l14 -8 l12 10 z" fill="#B91C1C" />
           <path d="M268 175 l14 45 l-14 -8 l-12 10 z" fill="#991B1B" />
-          <circle cx="259" cy="170" r="24" fill={g('ce')} stroke="#AA820A" strokeWidth="3" />
+          <circle cx="259" cy="170" r="24" fill={g('ce')} stroke="#9A772E" strokeWidth="3" />
           <path d="M259 158 l4 8 l9 1 l-7 6 l2 9 l-8 -5 l-8 5 l2 -9 l-7 -6 l9 -1 z" fill={NAVY} />
           {/* ثلاث نجوم = ثلاث شهادات */}
           {[150, 200, 250].map((x, i) => (
@@ -154,7 +154,7 @@ export const FeatureArt: React.FC<{ kind: FeatureKind }> = ({ kind }) => {
             <rect width="70" height="30" rx="15" fill="#fff" />
             <path d="M14 28 l-6 12 l14 -10 z" fill="#fff" />
             <text x="35" y="20" textAnchor="middle" fontSize="13" fontWeight="700" fill={NAVY} fontFamily="sans-serif">
-              Hello!
+              مرحبا!
             </text>
           </g>
         </Frame>
@@ -165,7 +165,7 @@ export const FeatureArt: React.FC<{ kind: FeatureKind }> = ({ kind }) => {
           {/* حقيبة */}
           <rect x="110" y="95" width="180" height="140" rx="18" fill={g('pk')} />
           <path d="M165 95 v-18 a10 10 0 0 1 10 -10 h50 a10 10 0 0 1 10 10 v18" stroke={GOLD} strokeWidth="8" fill="none" />
-          <rect x="110" y="140" width="180" height="10" fill="#AA820A" opacity="0.6" />
+          <rect x="110" y="140" width="180" height="10" fill="#9A772E" opacity="0.6" />
           <rect x="188" y="134" width="24" height="22" rx="4" fill={NAVY} />
           {/* عناصر تخرج من الحقيبة */}
           <g transform="translate(60 40) rotate(-12)">
@@ -174,7 +174,7 @@ export const FeatureArt: React.FC<{ kind: FeatureKind }> = ({ kind }) => {
             <rect x="8" y="24" width="38" height="4" rx="2" fill="#CBD5E1" />
             <rect x="8" y="34" width="42" height="4" rx="2" fill="#CBD5E1" />
             <text x="31" y="66" textAnchor="middle" fontSize="16" fontWeight="800" fill={GOLD} fontFamily="serif">
-              ABC
+              أ ب ت
             </text>
           </g>
           <g transform="translate(290 50)">

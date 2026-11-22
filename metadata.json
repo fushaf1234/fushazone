@@ -1,6 +1,8 @@
 {
-  "name": "English Zone - International Academy",
-  "description": "Premium bilingual online English academy platform offering structured CEFR programs, interactive learning, and personalized progress.",
+  "name": "Fusha Zone - Arabic & Quran Academy",
+  "description": "Online academy for learning Arabic and the Holy Quran for non-Arabic speakers: Fusha Arabic, interactive conversation, Quran recitation, Tajweed and memorization.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

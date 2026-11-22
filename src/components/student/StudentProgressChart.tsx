@@ -16,8 +16,8 @@ export const StudentProgressChart: React.FC<Props> = ({ isAr, lessonsAttended, l
 
   return (
     <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-5">
-      <h3 className="font-bold text-[#0A192F] flex items-center gap-2">
-        <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
+      <h3 className="font-bold text-[#0B3B2C] flex items-center gap-2">
+        <TrendingUp className="w-5 h-5 text-[#C9A04F]" />
         {tr('My progress', 'تقدّمي')}
       </h3>
 
@@ -25,10 +25,10 @@ export const StudentProgressChart: React.FC<Props> = ({ isAr, lessonsAttended, l
         <div>
           <div className="flex justify-between text-xs font-bold text-gray-600 mb-1">
             <span>{tr('Lessons attended', 'الحصص المنجزة')}</span>
-            <span className="text-[#0A192F]">{lessonsAttended || 0} / {lessonsTotal}</span>
+            <span className="text-[#0B3B2C]">{lessonsAttended || 0} / {lessonsTotal}</span>
           </div>
           <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
-            <div className="h-full rounded-full bg-gradient-to-r from-[#0A192F] to-[#1E3A6B]" style={{ width: `${lessonPct}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-[#0B3B2C] to-[#1D6B4F]" style={{ width: `${lessonPct}%` }} />
           </div>
         </div>
 

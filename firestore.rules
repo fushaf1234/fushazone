@@ -308,7 +308,7 @@ service cloud.firestore {
       allow write: if isAdmin() && isValidId(packageId) &&
         request.resource.data.titleAr is string && request.resource.data.titleAr.size() <= 120 &&
         request.resource.data.titleEn is string && request.resource.data.titleEn.size() <= 120 &&
-        request.resource.data.program in ['arabic', 'conversation', 'quran', 'single'] &&
+        request.resource.data.program in ['arabic', 'conversation', 'quran', 'kids', 'single'] &&
         request.resource.data.unit in ['month', 'session', 'hour'];
       allow delete: if isAdmin();
     }

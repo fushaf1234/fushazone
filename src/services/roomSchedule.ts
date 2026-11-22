@@ -34,7 +34,7 @@ export function calendarLink(r: VoiceRoom, t: number, link: string): string {
   const f = (x: number) => new Date(x).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const p = new URLSearchParams({
     action: 'TEMPLATE',
-    text: `English Zone — ${r.title}`,
+    text: `Fusha Zone — ${r.title}`,
     dates: `${f(t)}/${f(t + 3600 * 1000)}`,
     details: `${r.topic || ''}\n${link}`.trim(),
   });

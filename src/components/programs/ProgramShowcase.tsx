@@ -26,19 +26,19 @@ export const ProgramShowcase: React.FC<Props> = ({ prog, language, dark }) => {
   }, [open, imgs.length]);
 
   if (!imgs.length && !vids.length) return null;
-  const head = dark ? 'text-[#F3E5AB]' : 'text-[#0A192F]';
+  const head = dark ? 'text-[#F3E3B8]' : 'text-[#0B3B2C]';
 
   return (
     <div className="space-y-8">
       {vids.length > 0 && (
         <div>
           <h4 className={`flex items-center gap-2 font-bold text-base sm:text-lg mb-3 ${head}`}>
-            <PlayCircle className="w-5 h-5 text-[#D4AF37]" />
+            <PlayCircle className="w-5 h-5 text-[#C9A04F]" />
             {ar ? 'فيديوهات تعريفية بالبرنامج' : 'Program introduction videos'}
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {vids.map((id) => (
-              <div key={id} className="rounded-2xl overflow-hidden border border-[#D4AF37]/30 bg-black shadow aspect-video">
+              <div key={id} className="rounded-2xl overflow-hidden border border-[#C9A04F]/30 bg-black shadow aspect-video">
                 <iframe
                   src={`https://drive.google.com/file/d/${id}/preview`}
                   className="w-full h-full"
@@ -56,7 +56,7 @@ export const ProgramShowcase: React.FC<Props> = ({ prog, language, dark }) => {
       {imgs.length > 0 && (
         <div>
           <h4 className={`flex items-center gap-2 font-bold text-base sm:text-lg mb-3 ${head}`}>
-            <Images className="w-5 h-5 text-[#D4AF37]" />
+            <Images className="w-5 h-5 text-[#C9A04F]" />
             {ar ? 'لقطات من دروس البرنامج' : 'A look inside our lessons'}
           </h4>
           <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-1 px-1" style={{ scrollbarWidth: 'thin' }}>
@@ -64,7 +64,7 @@ export const ProgramShowcase: React.FC<Props> = ({ prog, language, dark }) => {
               <button
                 key={src}
                 onClick={() => setOpen(i)}
-                className="snap-start flex-shrink-0 w-[78%] sm:w-[46%] lg:w-[31%] rounded-2xl overflow-hidden border border-[#D4AF37]/30 bg-white shadow hover:shadow-lg hover:border-[#D4AF37] transition-all"
+                className="snap-start flex-shrink-0 w-[78%] sm:w-[46%] lg:w-[31%] rounded-2xl overflow-hidden border border-[#C9A04F]/30 bg-white shadow hover:shadow-lg hover:border-[#C9A04F] transition-all"
               >
                 <img src={src} alt="" loading="lazy" className="w-full aspect-[16/10] object-cover object-top" />
               </button>

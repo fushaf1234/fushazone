@@ -175,7 +175,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
       from: role,
       studentId: activeId,
       teacherId: studentTeacher || undefined,
-      name: teacherMode ? (user as any)?.fullName || tr('Teacher', 'المعلم') : 'English Zone Academy',
+      name: teacherMode ? (user as any)?.fullName || tr('Teacher', 'المعلم') : 'Fusha Zone Academy',
       email: firebaseUser?.email || '',
       text,
       audio
@@ -184,7 +184,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
     notifyNewMessage({
       toEmail: p?.email,
       toName: p?.name,
-      fromName: teacherMode ? (user as any)?.fullName || 'معلمتك' : 'English Zone Academy',
+      fromName: teacherMode ? (user as any)?.fullName || 'معلمتك' : 'Fusha Zone Academy',
       preview: text.trim() || '🎙️ رسالة صوتية'
     });
   };
@@ -243,7 +243,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
     <div className="bg-white rounded-3xl p-4 sm:p-6 border border-gray-200 shadow-sm space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{teacherMode ? tr('Student chats', 'محادثات طلابي') : tr('Messages', 'الرسائل')}</h2>
+          <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{teacherMode ? tr('Student chats', 'محادثات طلابي') : tr('Messages', 'الرسائل')}</h2>
           <p className="text-xs text-gray-500">
             {teacherMode
               ? tr('The academy can see all chats; only the academy deletes. You can report a message.', 'الأكاديمية تطّلع على كل المحادثات وهي وحدها تحذف، ويمكنكِ الإبلاغ عن أي رسالة.')
@@ -252,14 +252,14 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
         </div>
         {!teacherMode && (
           <div className="flex gap-2">
-            <button onClick={() => setView('chats')} className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${view === 'chats' ? 'bg-[#0A192F] text-[#F3E5AB]' : 'border border-gray-200 text-gray-600'}`}>
+            <button onClick={() => setView('chats')} className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${view === 'chats' ? 'bg-[#0B3B2C] text-[#F3E3B8]' : 'border border-gray-200 text-gray-600'}`}>
               <MessageCircle className="w-3.5 h-3.5" />
               {tr('Chats', 'المحادثات')}
             </button>
-            <button onClick={() => setView('contact')} className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${view === 'contact' ? 'bg-[#0A192F] text-[#F3E5AB]' : 'border border-gray-200 text-gray-600'}`}>
+            <button onClick={() => setView('contact')} className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${view === 'contact' ? 'bg-[#0B3B2C] text-[#F3E3B8]' : 'border border-gray-200 text-gray-600'}`}>
               <Inbox className="w-3.5 h-3.5" />
               {tr('Contact page', 'رسائل صفحة التواصل')}
-              {contactNew > 0 && <span className="px-1.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[10px]">{contactNew}</span>}
+              {contactNew > 0 && <span className="px-1.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[10px]">{contactNew}</span>}
             </button>
           </div>
         )}
@@ -273,7 +273,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* قائمة المحادثات */}
           <div className={`${activeId ? 'hidden md:block' : ''} md:col-span-1 border border-gray-200 rounded-2xl overflow-hidden`}>
-            <div className="p-2 border-b border-gray-100 space-y-2 bg-[#FAF8F5]">
+            <div className="p-2 border-b border-gray-100 space-y-2 bg-[#FAF7EF]">
               <div className="relative">
                 <Search className="w-3.5 h-3.5 text-gray-400 absolute top-1/2 -translate-y-1/2 start-3" />
                 <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={tr('Search a student...', 'ابحثي عن طالبة...')} className="w-full ps-8 pe-3 py-2 rounded-xl border border-gray-200 text-xs" />
@@ -297,11 +297,11 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
             <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100">
               {threads.length === 0 && <div className="p-6 text-center text-xs text-gray-500">{tr('No chats yet.', 'لا توجد محادثات بعد.')}</div>}
               {threads.map((t) => (
-                <button key={t.id} onClick={() => setActiveId(t.id)} className={`w-full text-start p-3 flex items-center gap-2 hover:bg-[#FAF8F5] ${activeId === t.id ? 'bg-[#FAF8F5]' : ''}`}>
+                <button key={t.id} onClick={() => setActiveId(t.id)} className={`w-full text-start p-3 flex items-center gap-2 hover:bg-[#FAF7EF] ${activeId === t.id ? 'bg-[#FAF7EF]' : ''}`}>
                   <AvatarRenderer config={people[t.id]?.avatarConfig} size={36} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-bold text-xs text-[#0A192F] truncate">
+                      <span className="font-bold text-xs text-[#0B3B2C] truncate">
                         {t.name}
                         {people[t.id]?.potential && <span className="ms-1 text-[9px] font-semibold text-gray-400">{tr('(potential)', '(محتمل)')}</span>}
                       </span>
@@ -326,7 +326,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
           <div className={`${activeId ? '' : 'hidden md:block'} md:col-span-2`}>
             {activeId ? (
               <div className="space-y-2">
-                <button onClick={() => setActiveId('')} className="md:hidden text-xs font-bold text-[#0A192F] flex items-center gap-1">
+                <button onClick={() => setActiveId('')} className="md:hidden text-xs font-bold text-[#0B3B2C] flex items-center gap-1">
                   <ArrowRight className="w-4 h-4 ltr:rotate-180" />
                   {tr('All chats', 'كل المحادثات')}
                 </button>
@@ -346,7 +346,7 @@ export const AdminMessagesManager: React.FC<Props> = ({ onNotice, teacherMode = 
                 />
               </div>
             ) : (
-              <div className="h-full min-h-[300px] rounded-2xl bg-[#FAF8F5] border border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-500">
+              <div className="h-full min-h-[300px] rounded-2xl bg-[#FAF7EF] border border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-500">
                 {tr('Choose a chat from the list.', 'اختاري محادثة من القائمة.')}
               </div>
             )}
@@ -375,16 +375,16 @@ const ContactList: React.FC<{ items: StudentMessage[]; isAr: boolean; onNotice: 
       onNotice(`${tr('Could not delete:', 'تعذر الحذف:')} ${err?.code || ''}`);
     }
   };
-  if (items.length === 0) return <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">{tr('No messages yet.', 'لا توجد رسائل بعد.')}</div>;
+  if (items.length === 0) return <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">{tr('No messages yet.', 'لا توجد رسائل بعد.')}</div>;
   return (
     <div className="space-y-3">
       {items.map((m) => (
-        <div key={m.id} className={`p-4 rounded-xl border bg-white space-y-2 ${m.status === 'new' ? 'border-[#D4AF37]' : 'border-gray-200'}`}>
+        <div key={m.id} className={`p-4 rounded-xl border bg-white space-y-2 ${m.status === 'new' ? 'border-[#C9A04F]' : 'border-gray-200'}`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              {m.status === 'new' && <span className="px-2 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[10px] font-bold">{tr('New', 'جديدة')}</span>}
-              <span className="font-bold text-xs text-[#0A192F]">{m.name}</span>
-              <a href={`mailto:${m.email}`} className="text-[11px] text-[#AA820A] underline" dir="ltr">
+              {m.status === 'new' && <span className="px-2 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[10px] font-bold">{tr('New', 'جديدة')}</span>}
+              <span className="font-bold text-xs text-[#0B3B2C]">{m.name}</span>
+              <a href={`mailto:${m.email}`} className="text-[11px] text-[#9A772E] underline" dir="ltr">
                 {m.email}
               </a>
             </div>
@@ -393,7 +393,7 @@ const ContactList: React.FC<{ items: StudentMessage[]; isAr: boolean; onNotice: 
           {m.subject && <div className="text-xs font-semibold text-gray-700">{m.subject}</div>}
           <p className="text-xs text-gray-600 whitespace-pre-line">{m.message}</p>
           <div className="flex justify-end gap-2">
-            <a href={`mailto:${m.email}?subject=${encodeURIComponent(m.subject || 'English Zone Academy')}`} className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0A192F] text-[#F3E5AB] flex items-center gap-1">
+            <a href={`mailto:${m.email}?subject=${encodeURIComponent(m.subject || 'Fusha Zone Academy')}`} className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] flex items-center gap-1">
               <Mail className="w-3.5 h-3.5" />
               <span>{tr('Reply', 'رد')}</span>
             </a>

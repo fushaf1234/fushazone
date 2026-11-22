@@ -5,12 +5,13 @@ import { db } from './firebase';
 /*  الباقات والأسعار: تُدار بالكامل من لوحة الإدارة (مجموعة packages)  */
 /* ------------------------------------------------------------------ */
 
-export type ProgramId = 'arabic' | 'conversation' | 'quran' | 'single';
+export type ProgramId = 'arabic' | 'conversation' | 'quran' | 'kids' | 'single';
 
 export const PROGRAMS: { id: ProgramId; ar: string; en: string }[] = [
   { id: 'arabic', ar: 'اللغة العربية (فُصحى)', en: 'Arabic Language (Fusha)' },
   { id: 'conversation', ar: 'المحادثات التفاعلية', en: 'Interactive Conversation' },
   { id: 'quran', ar: 'القرآن الكريم والتجويد', en: 'Quran & Tajweed' },
+  { id: 'kids', ar: 'العربية والقرآن للأطفال', en: 'Arabic & Quran for Kids' },
   { id: 'single', ar: 'جلسات منفردة', en: 'Single Sessions' }
 ];
 

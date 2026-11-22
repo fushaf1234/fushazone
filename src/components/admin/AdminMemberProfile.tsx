@@ -65,7 +65,7 @@ export const AdminMemberProfile: React.FC<{ member: any; isAr: boolean; onClose:
 
   if (editing) {
     return (
-      <div className="fixed inset-0 z-[60] bg-[#FAF8F5] overflow-y-auto">
+      <div className="fixed inset-0 z-[60] bg-[#FAF7EF] overflow-y-auto">
         <AvatarStudioPage
           navigate={() => setEditing(false)}
           editUser={m}
@@ -87,7 +87,7 @@ export const AdminMemberProfile: React.FC<{ member: any; isAr: boolean; onClose:
           <div className="flex items-center gap-3 min-w-0">
             <AvatarRenderer config={cfg} size={72} />
             <div className="min-w-0">
-              <h3 className="font-serif-luxury font-bold text-lg text-[#0A192F]">{m.fullName || '—'}</h3>
+              <h3 className="font-serif-luxury font-bold text-lg text-[#0B3B2C]">{m.fullName || '—'}</h3>
               <p className="text-[11px] text-gray-500 break-all" dir="ltr">
                 {m.email}
                 {m.phone ? ` • ${m.phone}` : ''}
@@ -103,8 +103,8 @@ export const AdminMemberProfile: React.FC<{ member: any; isAr: boolean; onClose:
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => setEditing(true)} className="px-4 py-2 rounded-xl text-xs font-bold bg-[#0A192F] text-[#F3E5AB] flex items-center gap-1.5">
-            <Edit3 className="w-4 h-4 text-[#D4AF37]" />
+          <button onClick={() => setEditing(true)} className="px-4 py-2 rounded-xl text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] flex items-center gap-1.5">
+            <Edit3 className="w-4 h-4 text-[#C9A04F]" />
             {tr('Edit name, WhatsApp & avatar', 'تعديل الاسم والواتساب والأفاتار')}
           </button>
           {hasPhoto && (
@@ -115,17 +115,17 @@ export const AdminMemberProfile: React.FC<{ member: any; isAr: boolean; onClose:
           )}
         </div>
 
-        {msg && <div className="p-2 rounded-lg bg-[#FAF8F5] text-xs text-[#0A192F]">{msg}</div>}
+        {msg && <div className="p-2 rounded-lg bg-[#FAF7EF] text-xs text-[#0B3B2C]">{msg}</div>}
 
         <div className="space-y-3">
-          <h4 className="font-bold text-sm text-[#0A192F] flex items-center gap-1.5">
-            <UserCircle2 className="w-4 h-4 text-[#AA820A]" />
+          <h4 className="font-bold text-sm text-[#0B3B2C] flex items-center gap-1.5">
+            <UserCircle2 className="w-4 h-4 text-[#9A772E]" />
             {tr('Community posts', 'منشوراتها في المجتمع')} ({posts.length})
           </h4>
           {loading ? (
             <div className="text-xs text-gray-500">{tr('Loading...', 'جارٍ التحميل...')}</div>
           ) : posts.length === 0 ? (
-            <div className="text-xs text-gray-500 bg-[#FAF8F5] rounded-xl p-4 text-center">{tr('No posts.', 'لا توجد منشورات.')}</div>
+            <div className="text-xs text-gray-500 bg-[#FAF7EF] rounded-xl p-4 text-center">{tr('No posts.', 'لا توجد منشورات.')}</div>
           ) : (
             posts.map((p) => (
               <div key={p.id} className="p-3 rounded-2xl border border-gray-200 space-y-2 text-xs">
@@ -137,7 +137,7 @@ export const AdminMemberProfile: React.FC<{ member: any; isAr: boolean; onClose:
                 {p.imageDataUrl && <img src={p.imageDataUrl} alt="" className="max-h-48 rounded-xl border border-gray-100" />}
                 {p.audioDataUrl && <audio controls src={p.audioDataUrl} className="h-9 max-w-full" />}
                 {p.videoUrl && (
-                  <a href={p.videoUrl} target="_blank" rel="noopener noreferrer" className="text-[#AA820A] underline break-all" dir="ltr">
+                  <a href={p.videoUrl} target="_blank" rel="noopener noreferrer" className="text-[#9A772E] underline break-all" dir="ltr">
                     {p.videoUrl}
                   </a>
                 )}

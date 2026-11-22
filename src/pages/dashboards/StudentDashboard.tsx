@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { AvatarRenderer } from '../../components/avatar/AvatarRenderer';
-import { EnglishZoneEmblem } from '../../components/common/Logo';
+import { FushaZoneEmblem } from '../../components/common/Logo';
 import {
   studentDataService,
   PointsLogRecord,
@@ -122,7 +122,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
 
   if (isAuthLoading) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center text-sm text-gray-500">
+      <div className="min-h-screen bg-[#FAF7EF] flex items-center justify-center text-sm text-gray-500">
         {isAr ? 'جارٍ التحميل...' : 'Loading...'}
       </div>
     );
@@ -165,10 +165,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
           : 'Your student profile is not ready yet. Please contact the academy administration.');
 
     return (
-      <div className="min-h-screen bg-[#FAF8F5] py-16 flex items-center justify-center px-4">
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-[#D4AF37]/40 shadow-2xl max-w-lg w-full text-center space-y-6">
+      <div className="min-h-screen bg-[#FAF7EF] py-16 flex items-center justify-center px-4">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-[#C9A04F]/40 shadow-2xl max-w-lg w-full text-center space-y-6">
           <div className="flex justify-center">
-            <EnglishZoneEmblem sizeClass="w-20 h-20" glow={true} />
+            <FushaZoneEmblem sizeClass="w-20 h-20" glow={true} />
           </div>
 
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
@@ -176,10 +176,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
             <span>{isAr ? 'بانتظار الاعتماد الأكاديمي' : 'Pending Academic Approval'}</span>
           </div>
 
-          <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">{title}</h2>
+          <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{title}</h2>
           <p className="text-sm text-gray-600 leading-relaxed">{message}</p>
 
-          <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-200 text-xs text-left rtl:text-right space-y-1.5 font-mono text-gray-700">
+          <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-gray-200 text-xs text-left rtl:text-right space-y-1.5 font-mono text-gray-700">
             <div className="flex justify-between gap-3">
               <span className="text-gray-400 font-sans">{isAr ? 'البريد:' : 'Account Email:'}</span>
               <span className="font-bold break-all">{firebaseUser.email}</span>
@@ -197,7 +197,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             {whatsappLink && (
             <a
-              href={`${whatsappLink}${whatsappLink.includes('?') ? '&' : '?'}text=${encodeURIComponent(`Hello Admissions, I have created my English Zone account (${firebaseUser.email}, UID: ${firebaseUser.uid}). Please activate my student profile.`)}`}
+              href={`${whatsappLink}${whatsappLink.includes('?') ? '&' : '?'}text=${encodeURIComponent(`Hello Admissions, I have created my Fusha Zone account (${firebaseUser.email}, UID: ${firebaseUser.uid}). Please activate my student profile.`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#1EBE5D] transition-colors flex items-center justify-center gap-2 shadow"
@@ -296,7 +296,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-8" onClickCapture={blockInPreview} onKeyDownCapture={blockInPreview} onChangeCapture={blockInPreview}>
+    <div className="min-h-screen bg-[#FAF7EF] py-8" onClickCapture={blockInPreview} onKeyDownCapture={blockInPreview} onChangeCapture={blockInPreview}>
       {preview && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
           <div className="p-3 rounded-2xl bg-amber-100 border border-amber-300 text-amber-900 text-xs sm:text-sm font-bold flex items-center gap-2">
@@ -307,7 +307,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
       )}
       {/* Top Header Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#D4AF37]/30 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#C9A04F]/30 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-6">
 
           <div className="flex items-center gap-4">
             <div
@@ -315,25 +315,25 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
               className="relative cursor-pointer group"
               title="Open Avatar Studio"
             >
-              <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-[#D4AF37] shadow group-hover:scale-105 transition-transform bg-[#0A192F]">
+              <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-[#C9A04F] shadow group-hover:scale-105 transition-transform bg-[#0B3B2C]">
                 {student.avatarConfig ? (
                   <AvatarRenderer config={student.avatarConfig} size={64} showBackground={false} />
                 ) : (
-                  <EnglishZoneEmblem sizeClass="w-full h-full" glow={false} />
+                  <FushaZoneEmblem sizeClass="w-full h-full" glow={false} />
                 )}
               </div>
-              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#D4AF37] text-[#0A192F] flex items-center justify-center shadow">
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#C9A04F] text-[#0B3B2C] flex items-center justify-center shadow">
                 <Edit3 className="w-3 h-3" />
               </div>
             </div>
 
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="font-serif-luxury font-bold text-xl sm:text-2xl text-[#0A192F]">
+                <h1 className="font-serif-luxury font-bold text-xl sm:text-2xl text-[#0B3B2C]">
                   {student.fullName}
                 </h1>
                 {level && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF8F5] text-[#AA820A] border border-[#D4AF37]/40">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF7EF] text-[#9A772E] border border-[#C9A04F]/40">
                     {isAr ? 'المستوى' : 'Level'} {level}
                   </span>
                 )}
@@ -347,11 +347,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
-              <div className="col-span-2 px-4 py-2 rounded-2xl bg-[#0A192F] border border-[#D4AF37]/40 text-[#F3E5AB] flex items-center gap-2 shadow-sm">
-                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+              <div className="col-span-2 px-4 py-2 rounded-2xl bg-[#0B3B2C] border border-[#C9A04F]/40 text-[#F3E3B8] flex items-center gap-2 shadow-sm">
+                <Sparkles className="w-4 h-4 text-[#C9A04F]" />
                 <div className="text-left rtl:text-right">
-                  <span className="text-[10px] text-gray-400 block leading-none">English Zone Stars</span>
-                  <span className="font-bold text-base text-[#F3E5AB]">{student.points || 0} {isAr ? 'نقطة' : 'Points'}</span>
+                  <span className="text-[10px] text-gray-400 block leading-none">Fusha Zone Stars</span>
+                  <span className="font-bold text-base text-[#F3E3B8]">{student.points || 0} {isAr ? 'نقطة' : 'Points'}</span>
                 </div>
               </div>
               {/* الرسائل: زر ظاهر دائمًا تحت النقاط */}
@@ -362,10 +362,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                   setTimeout(() => document.getElementById('ez-tab-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
                 }}
                 className={`relative px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 border shadow-sm transition-all ${
-                  activeTab === 'messages' ? 'bg-[#D4AF37] text-[#0A192F] border-[#D4AF37]' : 'bg-white text-[#0A192F] border-[#D4AF37]/60 hover:bg-[#FAF8F5]'
+                  activeTab === 'messages' ? 'bg-[#C9A04F] text-[#0B3B2C] border-[#C9A04F]' : 'bg-white text-[#0B3B2C] border-[#C9A04F]/60 hover:bg-[#FAF7EF]'
                 }`}
               >
-                <MessageCircle className="w-4 h-4 text-[#AA820A]" />
+                <MessageCircle className="w-4 h-4 text-[#9A772E]" />
                 <span>{isAr ? 'الرسائل' : 'Messages'}</span>
                 {unreadMsgs > 0 && (
                   <span className="absolute -top-2 -end-2 min-w-[20px] h-[20px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center animate-pulse shadow">
@@ -390,19 +390,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                     setTimeout(() => document.getElementById('ez-tab-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
                   }}
                   className={`px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 border shadow-sm transition-all ${
-                    activeTab === b.id ? 'bg-[#D4AF37] text-[#0A192F] border-[#D4AF37]' : 'bg-white text-[#0A192F] border-[#D4AF37]/60 hover:bg-[#FAF8F5]'
+                    activeTab === b.id ? 'bg-[#C9A04F] text-[#0B3B2C] border-[#C9A04F]' : 'bg-white text-[#0B3B2C] border-[#C9A04F]/60 hover:bg-[#FAF7EF]'
                   }`}
                 >
-                  <b.icon className="w-4 h-4 text-[#AA820A]" />
+                  <b.icon className="w-4 h-4 text-[#9A772E]" />
                   <span>{isAr ? b.ar : b.en}</span>
                 </button>
               ))}
               {/* الغرف الصوتية */}
               <button
                 onClick={() => navigate('rooms')}
-                className="col-span-2 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 border shadow-sm bg-white text-[#0A192F] border-[#D4AF37]/60 hover:bg-[#FAF8F5]"
+                className="col-span-2 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 border shadow-sm bg-white text-[#0B3B2C] border-[#C9A04F]/60 hover:bg-[#FAF7EF]"
               >
-                <Mic className="w-4 h-4 text-[#AA820A]" />
+                <Mic className="w-4 h-4 text-[#9A772E]" />
                 <span>{isAr ? 'الغرف الصوتية' : 'Voice rooms'}</span>
               </button>
               {/* العروض: لامعة وعائمة */}
@@ -412,7 +412,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                   setActiveTab('offers');
                   setTimeout(() => document.getElementById('ez-tab-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
                 }}
-                className="ez-float-glow col-span-2 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] border border-[#D4AF37]"
+                className="ez-float-glow col-span-2 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] border border-[#C9A04F]"
               >
                 <Gift className="w-4 h-4" />
                 <span>{isAr ? 'العروض: {ادعُ|ادعي} {واربح|واربحي}' : 'Offers: invite & earn'}</span>
@@ -421,9 +421,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
 
             <button
               onClick={() => navigate('avatar-studio')}
-              className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-[#D4AF37]/50 text-[#0A192F] hover:bg-[#FAF8F5] transition-all flex items-center gap-1.5 shadow-sm"
+              className="px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-[#C9A04F]/50 text-[#0B3B2C] hover:bg-[#FAF7EF] transition-all flex items-center gap-1.5 shadow-sm"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#AA820A]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#9A772E]" />
               <span>{isAr ? 'استوديو الأفاتار' : 'Avatar Studio'}</span>
             </button>
 
@@ -444,7 +444,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
         <div className="flex items-center gap-2 mt-6 overflow-x-auto pb-2">
           {[
             { id: 'overview', labelEn: 'Overview & Lessons', labelAr: 'نظرة عامة والدروس' },
-            { id: 'community', labelEn: 'Community', labelAr: 'مجتمع English Zone' },
+            { id: 'community', labelEn: 'Community', labelAr: 'مجتمع Fusha Zone' },
             { id: 'feedback', labelEn: 'My Feedback', labelAr: 'رأيي' },
             { id: 'subscription', labelEn: 'Tuition & Invoices', labelAr: 'الاشتراك والفواتير' }
           ].map((tab) => (
@@ -454,7 +454,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === tab.id
-                  ? 'bg-[#0A192F] text-[#F3E5AB] shadow-md'
+                  ? 'bg-[#0B3B2C] text-[#F3E3B8] shadow-md'
                   : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
               }`}
             >
@@ -482,10 +482,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
               <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-4 gap-3">
                   <div>
-                    <span className="text-xs uppercase font-bold tracking-wider text-[#AA820A]">
+                    <span className="text-xs uppercase font-bold tracking-wider text-[#9A772E]">
                       {isAr ? 'دورتك' : 'Your Course'}
                     </span>
-                    <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F] mt-0.5">
+                    <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C] mt-0.5">
                       {courseName || notSet}
                     </h2>
                     {(level || stage) && (
@@ -505,11 +505,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                   <div className="space-y-2 mb-6">
                     <div className="flex items-center justify-between text-xs text-gray-500 font-semibold">
                       <span>{isAr ? 'نسبة إنجاز المرحلة:' : 'Stage Progress:'}</span>
-                      <span className="text-[#0A192F] font-bold">{progress}%</span>
+                      <span className="text-[#0B3B2C] font-bold">{progress}%</span>
                     </div>
                     <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#D4AF37] to-[#AA820A] rounded-full"
+                        className="h-full bg-gradient-to-r from-[#C9A04F] to-[#9A772E] rounded-full"
                         style={{ width: `${Math.max(0, Math.min(100, progress))}%` }}
                       ></div>
                     </div>
@@ -521,7 +521,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                     {detailItems.map((item) => (
                       <div key={item.label}>
                         <span className="text-gray-400 block">{item.label}</span>
-                        <span className="font-bold text-sm text-[#0A192F]">{item.value}</span>
+                        <span className="font-bold text-sm text-[#0B3B2C]">{item.value}</span>
                       </div>
                     ))}
                   </div>
@@ -546,8 +546,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
               {/* مواعيد الدرس التي كتبتها الإدارة */}
               {(Array.isArray((student as any).lessonDays) && (student as any).lessonDays.length > 0) || (student as any).lessonTime ? (
                 <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-2">
-                  <h4 className="font-serif-luxury font-bold text-sm text-[#0A192F]">{isAr ? 'مواعيد دروسك' : 'Your lesson times'}</h4>
-                  <p className="text-sm font-bold text-[#0A192F]">
+                  <h4 className="font-serif-luxury font-bold text-sm text-[#0B3B2C]">{isAr ? 'مواعيد دروسك' : 'Your lesson times'}</h4>
+                  <p className="text-sm font-bold text-[#0B3B2C]">
                     {((student as any).lessonDays || [])
                       .map((d: number) => (isAr ? ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])[d])
                       .join(isAr ? ' و' : ', ')}
@@ -575,7 +575,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
             ) : (
               <>
                 <div>
-                  <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">
+                  <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">
                     {myGroup?.name || (isAr ? 'مجموعتي' : 'My Group')}
                   </h2>
                   {(myGroup?.level || myGroup?.teacherName) && (
@@ -591,13 +591,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                     { label: isAr ? 'نجم الأسبوع' : 'Star of the Week', row: groupStarWeek, value: groupStarWeek?.week },
                     { label: isAr ? 'نجم الشهر' : 'Star of the Month', row: groupStarMonth, value: groupStarMonth?.month }
                   ].map((c) => (
-                    <div key={c.label} className="p-4 rounded-2xl bg-[#0A192F] text-center border border-[#D4AF37]/40">
+                    <div key={c.label} className="p-4 rounded-2xl bg-[#0B3B2C] text-center border border-[#C9A04F]/40">
                       <span className="text-[11px] text-gray-400 block">{c.label}</span>
-                      <span className="font-bold text-sm text-[#F3E5AB] block mt-1">
+                      <span className="font-bold text-sm text-[#F3E3B8] block mt-1">
                         {c.row ? c.row.m.fullName : '—'}
                       </span>
                       {c.row && (
-                        <span className="text-xs text-[#D4AF37]">
+                        <span className="text-xs text-[#C9A04F]">
                           {c.value} {isAr ? 'نقطة' : 'pts'}
                         </span>
                       )}
@@ -606,19 +606,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 text-center text-xs">
-                  <div className="p-3 rounded-xl bg-[#FAF8F5] border border-gray-200">
+                  <div className="p-3 rounded-xl bg-[#FAF7EF] border border-gray-200">
                     <span className="text-gray-400 block">{isAr ? 'ترتيبي' : 'My Rank'}</span>
-                    <span className="font-bold text-base text-[#0A192F]">
+                    <span className="font-bold text-base text-[#0B3B2C]">
                       {myRank > 0 ? `${myRank} / ${boardRows.length}` : '—'}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#FAF8F5] border border-gray-200">
+                  <div className="p-3 rounded-xl bg-[#FAF7EF] border border-gray-200">
                     <span className="text-gray-400 block">{isAr ? 'نقاطي هذا الأسبوع' : 'My Week'}</span>
-                    <span className="font-bold text-base text-[#0A192F]">{myWeek}</span>
+                    <span className="font-bold text-base text-[#0B3B2C]">{myWeek}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#FAF8F5] border border-gray-200">
+                  <div className="p-3 rounded-xl bg-[#FAF7EF] border border-gray-200">
                     <span className="text-gray-400 block">{isAr ? 'نقاطي هذا الشهر' : 'My Month'}</span>
-                    <span className="font-bold text-base text-[#0A192F]">{myMonth}</span>
+                    <span className="font-bold text-base text-[#0B3B2C]">{myMonth}</span>
                   </div>
                 </div>
 
@@ -630,7 +630,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                   <div className="overflow-x-auto">
                     <table className="w-full text-left rtl:text-right text-sm border-collapse">
                       <thead>
-                        <tr className="bg-[#FAF8F5] text-xs text-gray-500 border-b border-gray-200">
+                        <tr className="bg-[#FAF7EF] text-xs text-gray-500 border-b border-gray-200">
                           <th className="py-2.5 px-3">#</th>
                           <th className="py-2.5 px-3">{isAr ? 'الطالب' : 'Student'}</th>
                           <th className="py-2.5 px-3">{isAr ? 'الأسبوع' : 'Week'}</th>
@@ -642,10 +642,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                         {boardRows.map((r, i) => (
                           <tr
                             key={r.m.id}
-                            className={r.m.id === firebaseUser.uid ? 'bg-[#D4AF37]/10 font-bold' : ''}
+                            className={r.m.id === firebaseUser.uid ? 'bg-[#C9A04F]/10 font-bold' : ''}
                           >
                             <td className="py-2.5 px-3 text-gray-500">{i + 1}</td>
-                            <td className="py-2.5 px-3 text-[#0A192F]">
+                            <td className="py-2.5 px-3 text-[#0B3B2C]">
                               <span className="inline-flex items-center gap-2 align-middle">
                                 <AvatarRenderer config={(r.m as any).avatar} size={28} />
                               </span>{' '}
@@ -654,7 +654,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                             </td>
                             <td className="py-2.5 px-3">{r.week}</td>
                             <td className="py-2.5 px-3">{r.month}</td>
-                            <td className="py-2.5 px-3 font-bold text-[#AA820A]">{r.total}</td>
+                            <td className="py-2.5 px-3 font-bold text-[#9A772E]">{r.total}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -714,28 +714,28 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
         {/* TAB 3: CURRICULUM */}
         {activeTab === 'curriculum' && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200 shadow-sm space-y-6">
-            <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">
+            <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">
               {isAr ? 'منهجك ومرحلتك' : 'Your Curriculum & Stage'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/50">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#AA820A]">
+              <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/50">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#9A772E]">
                   {isAr ? 'الدورة' : 'Course'}
                 </span>
-                <h4 className="font-bold text-lg text-[#0A192F] mt-1">{courseName || notSet}</h4>
+                <h4 className="font-bold text-lg text-[#0B3B2C] mt-1">{courseName || notSet}</h4>
                 {level && <p className="text-xs text-gray-500 mt-1">{isAr ? 'المستوى' : 'Level'} {level}</p>}
               </div>
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-200">
+              <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-gray-200">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
                   {isAr ? 'المرحلة الحالية' : 'Current Stage'}
                 </span>
-                <h4 className="font-bold text-lg text-[#0A192F] mt-1">{stage || notSet}</h4>
+                <h4 className="font-bold text-lg text-[#0B3B2C] mt-1">{stage || notSet}</h4>
               </div>
-              <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-200">
+              <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-gray-200">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
                   {isAr ? 'نظام الحصة' : 'Instruction Format'}
                 </span>
-                <h4 className="font-bold text-lg text-[#0A192F] mt-1">{formatLabel || notSet}</h4>
+                <h4 className="font-bold text-lg text-[#0B3B2C] mt-1">{formatLabel || notSet}</h4>
               </div>
             </div>
             <StudentCourseMaterials level={level} isAr={isAr} />
@@ -745,19 +745,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
         {/* TAB 5: SUBSCRIPTION */}
         {activeTab === 'subscription' && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200 shadow-sm space-y-6">
-            <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">
+            <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">
               {isAr ? 'الاشتراك والرسوم' : 'Tuition & Subscription'}
             </h2>
-            <div className="p-6 rounded-2xl bg-[#FAF8F5] border border-gray-200 space-y-3">
+            <div className="p-6 rounded-2xl bg-[#FAF7EF] border border-gray-200 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#0A192F]">{isAr ? 'حالة الاشتراك' : 'Subscription Status'}</span>
+                <span className="text-xs font-bold text-[#0B3B2C]">{isAr ? 'حالة الاشتراك' : 'Subscription Status'}</span>
                 <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs uppercase">
                   {isAr ? 'نشط' : 'Active'}
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-3">
                 <span className="text-xs text-gray-600">{isAr ? 'الرسوم الشهرية' : 'Monthly Tuition'}</span>
-                <span className="font-bold text-base text-[#0A192F]">
+                <span className="font-bold text-base text-[#0B3B2C]">
                   {tuition !== undefined ? `${formatMoney(tuition, (student as any).tuitionCurrency || siteCurrency)} / ${isAr ? 'شهر' : 'Month'}` : notSet}
                 </span>
               </div>

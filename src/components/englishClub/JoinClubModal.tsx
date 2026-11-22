@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { englishClubService } from '../../services/englishClubService';
-import { EnglishZoneEmblem } from '../common/Logo';
+import { FushaZoneEmblem } from '../common/Logo';
 import { useAcademySettings } from '../../hooks/useAcademySettings';
 import { 
   X, 
@@ -94,15 +94,15 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
           <div>
             {/* Modal Header */}
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 rounded-2xl bg-[#0A192F] flex items-center justify-center flex-shrink-0 shadow-md">
-                <EnglishZoneEmblem sizeClass="w-9 h-9" glow={false} showBevelBorder={false} />
+              <div className="w-12 h-12 rounded-2xl bg-[#0B3B2C] flex items-center justify-center flex-shrink-0 shadow-md">
+                <FushaZoneEmblem sizeClass="w-9 h-9" glow={false} showBevelBorder={false} />
               </div>
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#D4AF37]/15 text-[#AA820A] text-[11px] font-bold">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#C9A04F]/15 text-[#9A772E] text-[11px] font-bold">
                   <Sparkles className="w-3 h-3" />
                   <span>{c.badge}</span>
                 </div>
-                <h3 className="font-serif-luxury font-bold text-xl sm:text-2xl text-[#0A192F] mt-0.5">
+                <h3 className="font-serif-luxury font-bold text-xl sm:text-2xl text-[#0B3B2C] mt-0.5">
                   {c.modalTitle}
                 </h3>
               </div>
@@ -130,7 +130,7 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder={language === 'ar' ? 'الاسم الثلاثي' : 'e.g. Sarah Mansoor'}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#C9A04F] focus:border-transparent outline-none transition-all"
                 />
               </div>
 
@@ -145,7 +145,7 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                     value={whatsappNumber}
                     onChange={(e) => setWhatsappNumber(e.target.value)}
                     placeholder="+966 5..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#C9A04F] focus:border-transparent outline-none transition-all"
                   />
                 </div>
 
@@ -159,7 +159,7 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="student@example.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#C9A04F] focus:border-transparent outline-none transition-all"
                   />
                 </div>
               </div>
@@ -171,19 +171,19 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                 <select
                   value={selectedTrack}
                   onChange={(e) => setSelectedTrack(e.target.value as any)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none bg-white transition-all font-medium text-gray-800"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#C9A04F] focus:border-transparent outline-none bg-white transition-all font-medium text-gray-800"
                 >
                   <option value="undecided">
                     {language === 'ar' ? '🔍 ساعدني في اختيار المسار (تحديد مستوى مجاني)' : '🔍 Help me choose (Placement Assessment)'}
                   </option>
                   <option value="A1-A2">
-                    {language === 'ar' ? '🌱 المسار التأسيسي (Foundations A1–A2)' : '🌱 Foundations Track (CEFR A1–A2)'}
+                    {language === 'ar' ? '🌱 مسار المبتدئين' : '🌱 Beginner Track'}
                   </option>
                   <option value="B1-B2">
-                    {language === 'ar' ? '🚀 مسار الطلاقة المتوسطة (Intermediate B1–B2)' : '🚀 Intermediate Fluency (CEFR B1–B2)'}
+                    {language === 'ar' ? '🚀 مسار المتوسط' : '🚀 Intermediate Track'}
                   </option>
                   <option value="C1-C2">
-                    {language === 'ar' ? '💎 مسار الإتقان والاحتراف (Mastery C1–C2)' : '💎 Advanced Mastery (CEFR C1–C2)'}
+                    {language === 'ar' ? '💎 مسار المتقدم' : '💎 Advanced Track'}
                   </option>
                 </select>
               </div>
@@ -197,14 +197,14 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder={language === 'ar' ? 'أي أوقات تفضلها أو أهداف خاصة ترغب في التركيز عليها...' : 'Preferred days, times, or speaking goals...'}
-                  className="w-full px-4 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none transition-all resize-none"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm focus:ring-2 focus:ring-[#C9A04F] focus:border-transparent outline-none transition-all resize-none"
                 />
               </div>
 
               {/* Club Policy Badge */}
-              <div className="p-3 rounded-2xl bg-[#FAF8F5] border border-gray-200 text-[11px] text-gray-600">
-                <div className="flex items-center gap-1.5 text-[#0A192F] font-bold">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <div className="p-3 rounded-2xl bg-[#FAF7EF] border border-gray-200 text-[11px] text-gray-600">
+                <div className="flex items-center gap-1.5 text-[#0B3B2C] font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C9A04F]" />
                   <span>{c.practiceNotReplacementBadge}</span>
                 </div>
               </div>
@@ -213,13 +213,13 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#0A192F] via-[#162B4D] to-[#0A192F] text-[#F3E5AB] hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#0B3B2C] via-[#14523C] to-[#0B3B2C] text-[#F3E3B8] hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <span>{c.submitting}</span>
                   ) : (
                     <>
-                      <GraduationCap className="w-4 h-4 text-[#D4AF37]" />
+                      <GraduationCap className="w-4 h-4 text-[#C9A04F]" />
                       <span>{c.submitBtn}</span>
                     </>
                   )}
@@ -235,10 +235,10 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
             </div>
 
             <div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#FAF8F5] border border-gray-200 text-gray-600">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#FAF7EF] border border-gray-200 text-gray-600">
                 Ref: {successRefId}
               </span>
-              <h3 className="font-serif-luxury font-bold text-2xl text-[#0A192F] mt-3">
+              <h3 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C] mt-3">
                 {c.successTitle}
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 mt-2 max-w-sm mx-auto leading-relaxed">
@@ -246,14 +246,14 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/30 text-left text-xs space-y-1.5">
+            <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/30 text-left text-xs space-y-1.5">
               <div className="flex items-center justify-between font-bold text-gray-700">
                 <span>{language === 'ar' ? 'المسار المختار:' : 'Selected Track:'}</span>
-                <span className="text-[#0A192F]">{selectedTrack}</span>
+                <span className="text-[#0B3B2C]">{selectedTrack}</span>
               </div>
               <div className="flex items-center justify-between text-gray-500">
                 <span>{language === 'ar' ? 'مدة اللقاء:' : 'Session Duration:'}</span>
-                <span>60 Minutes (English Only)</span>
+                <span>{language === 'ar' ? '60 دقيقة (بالعربية فقط)' : '60 Minutes (Arabic Only)'}</span>
               </div>
               <div className="flex items-center justify-between text-gray-500">
                 <span>{language === 'ar' ? 'حالة الطلب:' : 'Application Status:'}</span>
@@ -265,7 +265,7 @@ export const JoinClubModal: React.FC<JoinClubModalProps> = ({
               {contacts.whatsapp && (
               <a
                 href={`${contacts.whatsapp}?text=${encodeURIComponent(
-                  `Hello English Zone Academy, I just submitted my registration for English Club! Application Ref: ${successRefId}`
+                  `Hello Fusha Zone, I just registered for the Conversation Club! Ref: ${successRefId}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

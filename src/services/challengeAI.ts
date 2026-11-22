@@ -38,13 +38,14 @@ export async function generateChallenges(
   opts: { level: string; count: number; topic: string; avoid: string[] }
 ): Promise<Omit<Challenge, 'date'>[]> {
   const model = await pickModel(key);
-  const prompt = `You write a daily English challenge for Arabic-speaking adult learners (mostly women) at CEFR level ${opts.level}.
-Create ${opts.count} different multiple-choice questions${opts.topic ? ` about: ${opts.topic}` : ' mixing vocabulary, grammar, everyday expressions and pronunciation'}.
+  const prompt = `You write a daily Arabic (Fusha) challenge for NON-Arabic-speaking learners at the ${opts.level} level (levels: beginner, intermediate, advanced; or Quran tracks: noorani, tajweed, hifz).
+Create ${opts.count} different multiple-choice questions${opts.topic ? ` about: ${opts.topic}` : ' mixing Arabic vocabulary, grammar, everyday expressions, letters and pronunciation (or Quran reading and Tajweed rules for Quran tracks)'}.
 Rules:
-- Each question is short, clear English suitable for level ${opts.level}.
+- Each question is short and clear, written in Arabic with an English hint in brackets where helpful, suitable for the ${opts.level} level.
 - 3 or 4 options, exactly ONE correct. Double-check the correct answer is right and the others are clearly wrong.
 - "answer" is the 0-based index of the correct option. Vary its position.
-- "explanation": one or two short sentences in simple Arabic explaining why the answer is correct (English words may appear inside).
+- "explanation": one or two short sentences in simple Arabic explaining why the answer is correct, followed by a short English translation.
+- Never quote or alter Quranic verses incorrectly; when a question uses a verse, copy it exactly.
 - No two questions alike. Do not repeat these existing questions: ${opts.avoid.slice(0, 40).join(' | ') || 'none'}.`;
   const body = {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],

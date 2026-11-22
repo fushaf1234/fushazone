@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LEVEL_CODES, levelLabel } from '../../data/academyData';
 import { collection, getDocs } from 'firebase/firestore';
 import { Plus, Trash2, Save, ChevronDown, ChevronUp, Crown, Undo2 } from 'lucide-react';
 import { db } from '../../services/firebase';
@@ -30,11 +31,11 @@ interface StudentLite {
 }
 
 const NONE = '__none__';
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LEVELS = LEVEL_CODES;
 const inputCls = 'w-full px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white';
 const labelCls = 'block text-[11px] font-bold text-gray-600 mb-1';
 const primaryBtn =
-  'px-4 py-2 rounded-xl text-xs font-bold bg-[#0A192F] text-[#F3E5AB] hover:bg-[#162B4D] flex items-center gap-1.5 disabled:opacity-50';
+  'px-4 py-2 rounded-xl text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] hover:bg-[#14523C] flex items-center gap-1.5 disabled:opacity-50';
 
 export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = false }) => {
   const { firebaseUser } = useAuth();
@@ -288,20 +289,20 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
   ].filter((t) => !teacherMode || t.id === 'ledger') as any;
 
   const StarCard = ({ title, row, value }: { title: string; row: { s: StudentLite } | null; value?: number }) => (
-    <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/40">
+    <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/40">
       <div className="text-[11px] text-gray-500 font-bold flex items-center gap-1.5">
-        <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+        <Crown className="w-3.5 h-3.5 text-[#C9A04F]" />
         {title}
       </div>
-      <div className="font-bold text-sm text-[#0A192F] mt-1">{row ? row.s.fullName || '—' : tr('No one yet', 'لا أحد بعد')}</div>
-      {row && value !== undefined && <div className="text-xs text-[#AA820A] font-bold">{value} ⭐</div>}
+      <div className="font-bold text-sm text-[#0B3B2C] mt-1">{row ? row.s.fullName || '—' : tr('No one yet', 'لا أحد بعد')}</div>
+      {row && value !== undefined && <div className="text-xs text-[#9A772E] font-bold">{value} ⭐</div>}
     </div>
   );
 
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-6">
       <div>
-        <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{tr('Stars Audit Ledger', 'سجل تدقيق النجوم')}</h2>
+        <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{tr('Stars Audit Ledger', 'سجل تدقيق النجوم')}</h2>
         <p className="text-xs text-gray-500">
           {tr(
             'Each group with its students, points, history and grades. Stars are given from Students Management.',
@@ -316,7 +317,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
             key={t.id}
             onClick={() => setSubTab(t.id)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
-              subTab === t.id ? 'bg-white text-[#0A192F] shadow-sm' : 'text-gray-500 hover:text-gray-900'
+              subTab === t.id ? 'bg-white text-[#0B3B2C] shadow-sm' : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {isAr ? t.ar : t.en}
@@ -343,7 +344,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                     key={g.id}
                     onClick={() => setSelectedGroup(g.id)}
                     className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border ${
-                      selectedGroup === g.id ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      selectedGroup === g.id ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
                     }`}
                   >
                     {g.name} ({students.filter((s) => s.groupId === g.id).length})
@@ -352,7 +353,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                 <button
                   onClick={() => setSelectedGroup(NONE)}
                   className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border ${
-                    selectedGroup === NONE ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    selectedGroup === NONE ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
                   }`}
                 >
                   {tr('No group', 'بدون مجموعة')} ({students.filter((s) => !s.groupId).length})
@@ -360,7 +361,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
               </div>
 
               {groups.length === 0 && (
-                <div className="p-5 rounded-2xl bg-[#FAF8F5] text-xs text-gray-600">
+                <div className="p-5 rounded-2xl bg-[#FAF7EF] text-xs text-gray-600">
                   {tr('No groups yet. Create one from "Manage groups", then assign students from Students Management.', 'لا توجد مجموعات بعد. أنشئ مجموعة من "إدارة المجموعات" ثم عيّن الطلاب من تبويب الطلاب.')}
                 </div>
               )}
@@ -372,7 +373,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
               </div>
 
               {rows.length === 0 ? (
-                <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">
+                <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">
                   {tr('No students in this group.', 'لا يوجد طلاب في هذه المجموعة.')}
                 </div>
               ) : (
@@ -382,12 +383,12 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                     const sGrades = grades.filter((g) => g.studentId === r.s.id);
                     const open = expanded === r.s.id;
                     return (
-                      <div key={r.s.id} className="rounded-xl border border-gray-200 bg-[#FAF8F5]">
+                      <div key={r.s.id} className="rounded-xl border border-gray-200 bg-[#FAF7EF]">
                         <button onClick={() => setExpanded(open ? null : r.s.id)} className="w-full p-4 flex items-center justify-between gap-3 text-start">
                           <div className="flex items-center gap-3 min-w-0">
-                            <span className="w-7 h-7 rounded-full bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center justify-center shrink-0">{i + 1}</span>
+                            <span className="w-7 h-7 rounded-full bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center justify-center shrink-0">{i + 1}</span>
                             <div className="min-w-0">
-                              <div className="font-bold text-sm text-[#0A192F] truncate flex items-center gap-2">
+                              <div className="font-bold text-sm text-[#0B3B2C] truncate flex items-center gap-2">
                                 <AvatarRenderer config={(r.s as any).avatarConfig} size={30} />
                                 {r.s.fullName || '—'}
                               </div>
@@ -397,7 +398,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                             </div>
                           </div>
                           <div className="flex items-center gap-3 shrink-0">
-                            <span className="px-3 py-1 rounded-full bg-amber-50 text-[#AA820A] text-xs font-bold">{r.total} ⭐</span>
+                            <span className="px-3 py-1 rounded-full bg-amber-50 text-[#9A772E] text-xs font-bold">{r.total} ⭐</span>
                             {open ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                           </div>
                         </button>
@@ -406,7 +407,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                           <div className="px-4 pb-4 grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
                             <div className="space-y-2">
                               <div className="flex items-center justify-between gap-2">
-                                <div className="font-bold text-[#0A192F]">{tr('Stars history', 'سجل النجوم')}</div>
+                                <div className="font-bold text-[#0B3B2C]">{tr('Stars history', 'سجل النجوم')}</div>
                                 <button
                                   onClick={() => resetAll(r.s.id)}
                                   disabled={resetting === r.s.id}
@@ -428,7 +429,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                                       </div>
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
-                                      <span className={`font-bold ${e.amount < 0 ? 'text-red-600' : 'text-[#AA820A]'}`}>{e.amount > 0 ? `+${e.amount}` : e.amount}</span>
+                                      <span className={`font-bold ${e.amount < 0 ? 'text-red-600' : 'text-[#9A772E]'}`}>{e.amount > 0 ? `+${e.amount}` : e.amount}</span>
                                       <button
                                         onClick={() => revert(e, r.s.fullName || '')}
                                         disabled={reverting === e.id}
@@ -444,7 +445,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                               )}
                             </div>
                             <div className="space-y-2">
-                              <div className="font-bold text-[#0A192F]">{tr('Grades', 'الدرجات')}</div>
+                              <div className="font-bold text-[#0B3B2C]">{tr('Grades', 'الدرجات')}</div>
                               {sGrades.length === 0 ? (
                                 <div className="text-gray-500">{tr('No grades yet.', 'لا توجد درجات بعد.')}</div>
                               ) : (
@@ -452,7 +453,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                                   <div key={g.id} className="p-2.5 rounded-lg bg-white border border-gray-100 flex items-center justify-between gap-2">
                                     <div>
                                       <div className="text-gray-700">{g.assessmentTitle}</div>
-                                      <div className="text-[10px] text-gray-400">{g.date ? new Date(g.date).toLocaleDateString() : ''} • {g.level}</div>
+                                      <div className="text-[10px] text-gray-400">{g.date ? new Date(g.date).toLocaleDateString() : ''} • {levelLabel(g.level, isAr)}</div>
                                     </div>
                                     <span className={`font-bold ${g.passed ? 'text-emerald-600' : 'text-red-600'}`}>{g.score}</span>
                                   </div>
@@ -480,13 +481,13 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                   )}
                 </p>
                 <button onClick={handleSyncBoards} disabled={syncing} className={primaryBtn}>
-                  <Save className="w-4 h-4 text-[#D4AF37]" />
+                  <Save className="w-4 h-4 text-[#C9A04F]" />
                   <span>{syncing ? tr('Updating...', 'جارٍ التحديث...') : tr('Update student boards', 'تحديث لوحات الطلاب')}</span>
                 </button>
               </div>
 
-              <div className="p-5 rounded-2xl border border-[#D4AF37]/40 bg-[#FAF8F5] space-y-4">
-                <h4 className="font-bold text-xs text-[#0A192F]">{editingGroupId ? tr('Edit group', 'تعديل المجموعة') : tr('New group', 'مجموعة جديدة')}</h4>
+              <div className="p-5 rounded-2xl border border-[#C9A04F]/40 bg-[#FAF7EF] space-y-4">
+                <h4 className="font-bold text-xs text-[#0B3B2C]">{editingGroupId ? tr('Edit group', 'تعديل المجموعة') : tr('New group', 'مجموعة جديدة')}</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className={labelCls}>{tr('Group name', 'اسم المجموعة')}</label>
@@ -497,7 +498,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                     <select value={groupLevel} onChange={(e) => setGroupLevel(e.target.value)} className={inputCls}>
                       <option value="">{tr('— None —', '— بدون —')}</option>
                       {LEVELS.map((l) => (
-                        <option key={l} value={l}>{l}</option>
+                        <option key={l} value={l}>{levelLabel(l, isAr)}</option>
                       ))}
                     </select>
                   </div>
@@ -523,7 +524,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                     </button>
                   )}
                   <button onClick={handleSaveGroup} disabled={!groupName.trim()} className={primaryBtn}>
-                    <Save className="w-4 h-4 text-[#D4AF37]" />
+                    <Save className="w-4 h-4 text-[#C9A04F]" />
                     <span>{tr('Save group', 'حفظ المجموعة')}</span>
                   </button>
                 </div>
@@ -531,14 +532,14 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
 
               <div className="space-y-3">
                 {groups.length === 0 ? (
-                  <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">{tr('No groups yet.', 'لا توجد مجموعات بعد.')}</div>
+                  <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">{tr('No groups yet.', 'لا توجد مجموعات بعد.')}</div>
                 ) : (
                   groups.map((g) => (
                     <div key={g.id} className="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between gap-3">
                       <div>
-                        <div className="font-bold text-sm text-[#0A192F]">{g.name}</div>
+                        <div className="font-bold text-sm text-[#0B3B2C]">{g.name}</div>
                         <div className="text-[11px] text-gray-500">
-                          {g.level ? `${g.level} • ` : ''}
+                          {g.level ? `${levelLabel(g.level, isAr)} • ` : ''}
                           {g.teacherName ? `${g.teacherName} • ` : ''}
                           {students.filter((s) => s.groupId === g.id).length} {tr('students', 'طلاب')}
                         </div>
@@ -577,7 +578,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
               </p>
 
               {criteria.length === 0 && (
-                <div className="p-5 rounded-2xl bg-[#FAF8F5] text-xs text-gray-600 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="p-5 rounded-2xl bg-[#FAF7EF] text-xs text-gray-600 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <span>{tr('No criteria yet.', 'لا توجد معايير بعد.')}</span>
                   <button onClick={handleSeedCriteria} className={primaryBtn}>
                     {tr('Add suggested criteria', 'إضافة المعايير المقترحة')}
@@ -609,7 +610,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                       </div>
                       <div className="col-span-12 sm:col-span-2 flex items-center gap-2 justify-end">
                         <button onClick={() => handleSaveCriterion(d)} className={primaryBtn}>
-                          <Save className="w-3.5 h-3.5 text-[#D4AF37]" />
+                          <Save className="w-3.5 h-3.5 text-[#C9A04F]" />
                           <span>{tr('Save', 'حفظ')}</span>
                         </button>
                         <button onClick={() => handleDeleteCriterion(c.id)} className="p-2 text-gray-400 hover:text-red-600 rounded-lg">
@@ -621,8 +622,8 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                 })}
               </div>
 
-              <div className="p-5 rounded-2xl border border-[#D4AF37]/40 bg-[#FAF8F5] space-y-3">
-                <h4 className="font-bold text-xs text-[#0A192F]">{tr('Add criterion', 'إضافة معيار')}</h4>
+              <div className="p-5 rounded-2xl border border-[#C9A04F]/40 bg-[#FAF7EF] space-y-3">
+                <h4 className="font-bold text-xs text-[#0B3B2C]">{tr('Add criterion', 'إضافة معيار')}</h4>
                 <div className="grid grid-cols-12 gap-2 items-end">
                   <div className="col-span-2 sm:col-span-1">
                     <label className={labelCls}>{tr('Icon', 'رمز')}</label>
@@ -642,7 +643,7 @@ export const AdminStarsLedger: React.FC<Props> = ({ onNotice, teacherMode = fals
                   </div>
                   <div className="col-span-12 sm:col-span-2 flex justify-end">
                     <button onClick={handleAddCriterion} disabled={!newCrit.labelAr.trim()} className={primaryBtn}>
-                      <Plus className="w-4 h-4 text-[#D4AF37]" />
+                      <Plus className="w-4 h-4 text-[#C9A04F]" />
                       <span>{tr('Add', 'إضافة')}</span>
                     </button>
                   </div>

@@ -136,7 +136,7 @@ export const ChatThread: React.FC<Props> = ({
 
   return (
     <div className="rounded-3xl border border-gray-200 overflow-hidden bg-white shadow-sm flex flex-col">
-      <div className="px-4 py-3 bg-[#0A192F] text-[#F3E5AB]">
+      <div className="px-4 py-3 bg-[#0B3B2C] text-[#F3E3B8]">
         <div className="font-bold text-sm">{title}</div>
         {subtitle && <div className="text-[11px] text-gray-300">{subtitle}</div>}
       </div>
@@ -158,7 +158,7 @@ export const ChatThread: React.FC<Props> = ({
                   mine ? 'bg-[#DCF8C6] rounded-ee-sm' : 'bg-white rounded-es-sm'
                 } ${b.msg.reported && !b.isReply ? 'ring-2 ring-red-400' : ''}`}
               >
-                {!mine && <div className={`text-[10px] font-bold ${b.from === 'academy' ? 'text-[#AA820A]' : b.from === 'teacher' ? 'text-indigo-700' : 'text-emerald-700'}`}>{b.from === 'student' ? b.msg.name || who(b.from) : who(b.from)}</div>}
+                {!mine && <div className={`text-[10px] font-bold ${b.from === 'academy' ? 'text-[#9A772E]' : b.from === 'teacher' ? 'text-indigo-700' : 'text-emerald-700'}`}>{b.from === 'student' ? b.msg.name || who(b.from) : who(b.from)}</div>}
                 {mine && me !== 'student' && b.from !== 'student' && <div className="text-[10px] font-bold text-gray-500">{who(b.from)}</div>}
                 {b.audioParts ? (
                   <MessageAudioPlayer messageId={b.msg.id} kind={b.isReply ? 'reply' : 'msg'} parts={b.audioParts} seconds={b.audioSeconds} isAr={isAr} />
@@ -216,8 +216,8 @@ export const ChatThread: React.FC<Props> = ({
             <div className="flex-1">
               <VoiceRecorder isAr={isAr} value={audio} onChange={setAudio} disabled={sending} />
             </div>
-            <button onClick={send} disabled={sending} className="w-11 h-11 rounded-full bg-[#0A192F] text-[#F3E5AB] flex items-center justify-center disabled:opacity-50 shrink-0" title={isAr ? 'إرسال' : 'Send'}>
-              {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 text-[#D4AF37] rtl:rotate-180" />}
+            <button onClick={send} disabled={sending} className="w-11 h-11 rounded-full bg-[#0B3B2C] text-[#F3E3B8] flex items-center justify-center disabled:opacity-50 shrink-0" title={isAr ? 'إرسال' : 'Send'}>
+              {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 text-[#C9A04F] rtl:rotate-180" />}
             </button>
           </div>
         ) : (
@@ -233,11 +233,11 @@ export const ChatThread: React.FC<Props> = ({
                 }
               }}
               placeholder={isAr ? '{اكتب|اكتبي} رسالة...' : 'Type a message...'}
-              className="flex-1 resize-none px-4 py-2.5 rounded-3xl border border-gray-300 text-sm max-h-32 focus:outline-none focus:border-[#D4AF37]"
+              className="flex-1 resize-none px-4 py-2.5 rounded-3xl border border-gray-300 text-sm max-h-32 focus:outline-none focus:border-[#C9A04F]"
             />
             {text.trim() ? (
-              <button onClick={send} disabled={sending} className="w-11 h-11 rounded-full bg-[#0A192F] text-[#F3E5AB] flex items-center justify-center disabled:opacity-50 shrink-0" title={isAr ? 'إرسال' : 'Send'}>
-                {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 text-[#D4AF37] rtl:rotate-180" />}
+              <button onClick={send} disabled={sending} className="w-11 h-11 rounded-full bg-[#0B3B2C] text-[#F3E3B8] flex items-center justify-center disabled:opacity-50 shrink-0" title={isAr ? 'إرسال' : 'Send'}>
+                {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 text-[#C9A04F] rtl:rotate-180" />}
               </button>
             ) : (
               <div className="shrink-0">

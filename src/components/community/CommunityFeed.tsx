@@ -10,7 +10,7 @@ import {
   MAX_MEDIA_CHARS
 } from '../../services/studentHubService';
 import { AvatarRenderer } from '../avatar/AvatarRenderer';
-import { EnglishZoneEmblem } from '../common/Logo';
+import { FushaZoneEmblem } from '../common/Logo';
 
 interface Props {
   uid: string;
@@ -35,7 +35,7 @@ const driveEmbed = (url: string): string | null => {
   return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null;
 };
 
-// مجتمع English Zone: منشورات الطلاب والإدارة، الإعجابات والتعليقات
+// مجتمع Fusha Zone: منشورات الطلاب والإدارة، الإعجابات والتعليقات
 export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, readOnly = false }) => {
   const tr = (en: string, ar: string) => (isAr ? ar : en);
   const isAdmin = role === 'admin';
@@ -241,19 +241,19 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
 
   const AuthorBadge = ({ r }: { r: string }) =>
     r === 'teacher' ? (
-      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#0A192F] text-[10px] font-bold">
+      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#C9A04F] text-[#0B3B2C] text-[10px] font-bold">
         {tr('Teacher', 'معلم')}
       </span>
     ) : r === 'admin' ? (
-      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#0A192F] text-[#F3E5AB] text-[10px] font-bold">
-        <ShieldCheck className="w-3 h-3 text-[#D4AF37]" />
+      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#0B3B2C] text-[#F3E3B8] text-[10px] font-bold">
+        <ShieldCheck className="w-3 h-3 text-[#C9A04F]" />
         {tr('Academy', 'الأكاديمية')}
       </span>
     ) : null;
 
   const Face = ({ r, cfg, size }: { r: string; cfg?: any; size: number }) =>
     r === 'admin' || (r === 'teacher' && !cfg) ? (
-      <EnglishZoneEmblem sizeClass={size > 30 ? 'w-10 h-10' : 'w-7 h-7'} glow={false} />
+      <FushaZoneEmblem sizeClass={size > 30 ? 'w-10 h-10' : 'w-7 h-7'} glow={false} />
     ) : (
       <AvatarRenderer config={cfg} size={size} />
     );
@@ -263,7 +263,7 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
   return (
     <div className="space-y-6">
       {readOnly && (
-        <div className="p-3 rounded-2xl bg-[#F3E5AB]/40 border border-[#D4AF37]/40 text-xs text-[#0A192F] font-bold">
+        <div className="p-3 rounded-2xl bg-[#F3E3B8]/40 border border-[#C9A04F]/40 text-xs text-[#0B3B2C] font-bold">
           {tr('You can read and like posts. Posting and commenting are for enrolled students.', '{تستطيع|تستطيعين} قراءة المنشورات والإعجاب بها. النشر والتعليق للطالبات المشتركات في الكورس.')}
         </div>
       )}
@@ -273,8 +273,8 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
           rows={3}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={tr('Share something with the English Zone community...', 'شارك شيئًا مع مجتمع English Zone...')}
-          className="w-full px-4 py-3 rounded-2xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]"
+          placeholder={tr('Share something with the Fusha Zone community...', 'شارك شيئًا مع مجتمع Fusha Zone...')}
+          className="w-full px-4 py-3 rounded-2xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]"
         />
 
         {image && (
@@ -331,9 +331,9 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
           <button
             onClick={submit}
             disabled={posting || recording || (!text.trim() && !image && !audio && !videoUrl.trim())}
-            className="px-5 py-2 rounded-xl text-xs font-bold bg-[#0A192F] text-[#F3E5AB] hover:bg-[#162B4D] disabled:opacity-50 flex items-center gap-1.5"
+            className="px-5 py-2 rounded-xl text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] hover:bg-[#14523C] disabled:opacity-50 flex items-center gap-1.5"
           >
-            <Send className="w-4 h-4 text-[#D4AF37]" />
+            <Send className="w-4 h-4 text-[#C9A04F]" />
             <span>{posting ? tr('Publishing...', 'جارٍ النشر...') : tr('Publish', 'نشر')}</span>
           </button>
         </div>
@@ -359,7 +359,7 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
                   <Face r={p.authorRole} cfg={p.authorAvatar} size={40} />
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-[#0A192F]">{p.authorName}</span>
+                      <span className="font-bold text-sm text-[#0B3B2C]">{p.authorName}</span>
                       <AuthorBadge r={p.authorRole} />
                     </div>
                     <span className="text-[11px] text-gray-400">{when(p.createdAt)}</span>
@@ -381,7 +381,7 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
                     <iframe src={embed} title="video" className="w-full h-full" allow="encrypted-media; picture-in-picture" allowFullScreen />
                   </div>
                 ) : (
-                  <a href={p.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[#AA820A] underline break-all" dir="ltr">
+                  <a href={p.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[#9A772E] underline break-all" dir="ltr">
                     {p.videoUrl}
                   </a>
                 ))}
@@ -400,11 +400,11 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
               {openComments === p.id && (
                 <div className="space-y-2 pt-1">
                   {(comments[p.id] || []).map((c) => (
-                    <div key={c.id} className="p-3 rounded-xl bg-[#FAF8F5] border border-gray-100 text-xs space-y-1">
+                    <div key={c.id} className="p-3 rounded-xl bg-[#FAF7EF] border border-gray-100 text-xs space-y-1">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
                           <Face r={c.authorRole} cfg={c.authorAvatar} size={28} />
-                          <span className="font-bold text-[#0A192F]">{c.authorName}</span>
+                          <span className="font-bold text-[#0B3B2C]">{c.authorName}</span>
                           <AuthorBadge r={c.authorRole} />
                         </div>
                         {(isAdmin || c.authorId === uid) && (
@@ -425,7 +425,7 @@ export const CommunityFeed: React.FC<Props> = ({ uid, name, role, isAr, avatar, 
                       placeholder={tr('Write a comment...', 'اكتب تعليقًا...')}
                       className="flex-1 px-3 py-2 rounded-xl border border-gray-300 text-xs"
                     />
-                    <button onClick={() => sendComment(p.id)} className="p-2 rounded-xl bg-[#0A192F] text-[#F3E5AB]">
+                    <button onClick={() => sendComment(p.id)} className="p-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8]">
                       <Send className="w-4 h-4" />
                     </button>
                   </div>

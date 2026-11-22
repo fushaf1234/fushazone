@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LEVEL_CODES, levelLabel } from '../../data/academyData';
 import {
   collection,
   getDocs,
@@ -82,7 +83,7 @@ const EMPTY_FORM: FormState = {
   tuitionCurrency: ''
 };
 
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LEVELS = LEVEL_CODES;
 
 const STATUS_LABELS: Record<string, { ar: string; en: string; cls: string }> = {
   pending: { ar: 'بانتظار التفعيل', en: 'Pending', cls: 'bg-amber-50 text-amber-800 border-amber-200' },
@@ -370,7 +371,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">
+          <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">
             {teacherMode ? (isAr ? 'طلابي' : 'My Students') : isAr ? 'إدارة الطلاب' : 'Students Management'}
           </h2>
           <p className="text-xs text-gray-500">
@@ -419,7 +420,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
             onClick={() => setFilter(c.id)}
             className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border transition-all ${
               filter === c.id
-                ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]'
+                ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]'
                 : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
             }`}
           >
@@ -441,7 +442,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
           </div>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">
+        <div className="p-8 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">
           {isAr ? 'لا يوجد طلاب مطابقون.' : 'No matching students.'}
         </div>
       ) : (
@@ -452,13 +453,13 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
             return (
               <div
                 key={s.id}
-                className="p-4 rounded-xl border border-gray-200 bg-[#FAF8F5] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="p-4 rounded-xl border border-gray-200 bg-[#FAF7EF] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="min-w-0 flex items-start gap-3">
                   <AvatarRenderer config={(s as any).avatarConfig} size={44} />
                   <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-sm text-[#0A192F]">{s.fullName || '—'}</span>
+                    <span className="font-bold text-sm text-[#0B3B2C]">{s.fullName || '—'}</span>
                     <span
                       className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                         label ? label.cls : 'bg-gray-100 text-gray-700 border-gray-200'
@@ -467,14 +468,14 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                       {label ? (isAr ? label.ar : label.en) : status}
                     </span>
                     {s.groupId && groupName(s.groupId) && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0A192F] text-[#F3E5AB]">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0B3B2C] text-[#F3E3B8]">
                         {groupName(s.groupId)}
                       </span>
                     )}
                   </div>
                   {!teacherMode && <div className="text-[11px] text-gray-500 break-all">{s.email}</div>}
                   <div className="text-[11px] text-gray-500 mt-0.5">
-                    {s.mainLevel ? `${isAr ? 'المستوى' : 'Level'} ${s.mainLevel}` : isAr ? 'بلا مستوى' : 'No level'}
+                    {s.mainLevel ? levelLabel(s.mainLevel, isAr) : isAr ? 'بلا مستوى' : 'No level'}
                     {' • '}
                     {s.enrolledCourseName || (isAr ? 'بلا دورة' : 'No course')}
                     {' • '}
@@ -484,7 +485,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                 </div>
                 <button
                   onClick={() => openStudent(s)}
-                  className="px-4 py-2 rounded-lg text-xs font-bold bg-[#0A192F] text-[#F3E5AB] hover:bg-[#162B4D] self-start sm:self-auto"
+                  className="px-4 py-2 rounded-lg text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] hover:bg-[#14523C] self-start sm:self-auto"
                 >
                   {isAr ? 'إدارة' : 'Manage'}
                 </button>
@@ -512,11 +513,11 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
               <div className="min-w-0 flex items-center gap-3">
                 <AvatarRenderer config={(selected as any).avatarConfig} size={56} />
                 <div className="min-w-0">
-                <h3 className="font-serif-luxury font-bold text-lg text-[#0A192F]">{selected.fullName || '—'}</h3>
+                <h3 className="font-serif-luxury font-bold text-lg text-[#0B3B2C]">{selected.fullName || '—'}</h3>
                 {!teacherMode && <p className="text-[11px] text-gray-500 break-all">{selected.email}</p>}
                 {!teacherMode && <p className="text-[10px] text-gray-400 font-mono break-all">{selected.id}</p>}
                 {!teacherMode && (
-                  <button onClick={() => setProfileOf(selected)} className="mt-1 px-3 py-1 rounded-lg text-[11px] font-bold bg-[#D4AF37]/20 text-[#7A5C00]">
+                  <button onClick={() => setProfileOf(selected)} className="mt-1 px-3 py-1 rounded-lg text-[11px] font-bold bg-[#C9A04F]/20 text-[#6E5418]">
                     {isAr ? 'صفحتها: الاسم والأفاتار والصور والمنشورات' : 'Profile: name, avatar, photos & posts'}
                   </button>
                 )}
@@ -581,7 +582,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                   <option value="">{isAr ? '— بدون —' : '— None —'}</option>
                   {LEVELS.map((lvl) => (
                     <option key={lvl} value={lvl}>
-                      {lvl}
+                      {levelLabel(lvl, isAr)}
                     </option>
                   ))}
                 </select>
@@ -665,7 +666,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                 )}
               </div>
 
-              <div className="sm:col-span-2 p-3 rounded-xl bg-[#FAF8F5] border border-gray-200 space-y-2">
+              <div className="sm:col-span-2 p-3 rounded-xl bg-[#FAF7EF] border border-gray-200 space-y-2">
                 <label className="block text-[11px] font-bold text-gray-600">{isAr ? 'مواعيد الدرس' : 'Lesson schedule'}</label>
                 <div className="flex flex-wrap gap-1.5">
                   {(isAr ? ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).map((d, i) => {
@@ -675,7 +676,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                         key={i}
                         type="button"
                         onClick={() => setForm((f) => ({ ...f, lessonDays: on ? f.lessonDays.filter((x) => x !== i) : [...f.lessonDays, i] }))}
-                        className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${on ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-600 border-gray-200'}`}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${on ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-600 border-gray-200'}`}
                       >
                         {d}
                       </button>
@@ -762,9 +763,9 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
             <button
               onClick={handleSave}
               disabled={saving}
-              className="w-full py-3 rounded-xl font-bold text-xs bg-[#0A192F] text-[#F3E5AB] hover:bg-[#162B4D] flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 rounded-xl font-bold text-xs bg-[#0B3B2C] text-[#F3E3B8] hover:bg-[#14523C] flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <Save className="w-4 h-4 text-[#D4AF37]" />
+              <Save className="w-4 h-4 text-[#C9A04F]" />
               <span>{saving ? (isAr ? 'جارٍ الحفظ...' : 'Saving...') : isAr ? 'حفظ بيانات الطالب' : 'Save student'}</span>
             </button>
 
@@ -793,7 +794,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
             {!teacherMode && (selected as any).role !== 'teacher' && (
               <button
                 onClick={() => window.open(`/#/student-preview/${selected.id}`, '_blank')}
-                className="w-full py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold hover:bg-[#162B4D]"
+                className="w-full py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold hover:bg-[#14523C]"
               >
                 {isAr ? '👁️ عرض صفحة الطالب كما يراها (للعرض فقط)' : '👁️ View the student page as they see it (view only)'}
               </button>
@@ -812,7 +813,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                     onNotice((isAr ? 'تعذّر التحويل: ' : 'Failed: ') + errText(err));
                   }
                 }}
-                className="w-full py-2 rounded-xl border border-dashed border-[#D4AF37] text-xs font-bold text-[#0A192F] hover:bg-[#FAF8F5]"
+                className="w-full py-2 rounded-xl border border-dashed border-[#C9A04F] text-xs font-bold text-[#0B3B2C] hover:bg-[#FAF7EF]"
               >
                 {isAr ? 'تعيين هذا الحساب كمعلم' : 'Make this account a teacher'}
               </button>
@@ -820,8 +821,8 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
 
             {/* Rating */}
             <div className="border-t border-gray-100 pt-4 space-y-3">
-              <h4 className="font-bold text-sm text-[#0A192F] flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#AA820A]" />
+              <h4 className="font-bold text-sm text-[#0B3B2C] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#9A772E]" />
                 <span>
                   {isAr ? 'تقييم الطالب' : 'Rate student'} — {isAr ? 'الرصيد الحالي:' : 'Current:'} {selected.points || 0}
                 </span>
@@ -879,7 +880,7 @@ export const AdminStudentsManager: React.FC<AdminStudentsManagerProps> = ({ onNo
                 <button
                   onClick={handleCustomStars}
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#C9A04F] to-[#9A772E] text-[#0B3B2C] disabled:opacity-50"
                 >
                   {isAr ? 'تسجيل النجوم' : 'Record stars'}
                 </button>

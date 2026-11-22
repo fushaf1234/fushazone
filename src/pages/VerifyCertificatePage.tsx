@@ -23,9 +23,9 @@ export const VerifyCertificatePage: React.FC<{ serial: string; navigate: (r: str
   }, [serial]);
 
   return (
-    <div className="min-h-[70vh] bg-[#FAF8F5] py-12">
+    <div className="min-h-[70vh] bg-[#FAF7EF] py-12">
       <div className="max-w-xl mx-auto px-4 space-y-6">
-        <h1 className="font-serif-luxury font-bold text-2xl text-center text-[#0A192F]">{tr('Certificate verification', 'التحقق من الشهادة')}</h1>
+        <h1 className="font-serif-luxury font-bold text-2xl text-center text-[#0B3B2C]">{tr('Certificate verification', 'التحقق من الشهادة')}</h1>
 
         <form
           onSubmit={(e) => {
@@ -35,19 +35,19 @@ export const VerifyCertificatePage: React.FC<{ serial: string; navigate: (r: str
           className="flex gap-2"
         >
           <input value={q} onChange={(e) => setQ(e.target.value)} dir="ltr" placeholder="EZ-2026-XXXXXX" className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-sm font-mono" />
-          <button className="px-4 rounded-xl bg-[#0A192F] text-[#F3E5AB]" title={tr('Check', 'تحقق')}>
+          <button className="px-4 rounded-xl bg-[#0B3B2C] text-[#F3E3B8]" title={tr('Check', 'تحقق')}>
             <Search className="w-4 h-4" />
           </button>
         </form>
 
         {loading ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="w-7 h-7 animate-spin text-[#D4AF37]" />
+            <Loader2 className="w-7 h-7 animate-spin text-[#C9A04F]" />
           </div>
         ) : serial && cert ? (
           <div className="bg-white rounded-3xl p-6 border-2 border-emerald-500 shadow-md space-y-3 text-center">
             <ShieldCheck className="w-14 h-14 mx-auto text-emerald-600" />
-            <div className="font-bold text-emerald-700">{tr('Valid certificate issued by English Zone Academy', 'شهادة صحيحة صادرة رسميًا عن أكاديمية English Zone')}</div>
+            <div className="font-bold text-emerald-700">{tr('Valid certificate issued by Fusha Zone Academy', 'شهادة صحيحة صادرة رسميًا عن أكاديمية Fusha Zone')}</div>
             <div className="text-sm text-gray-700 space-y-1.5">
               <div>
                 {tr('Name:', 'الاسم:')} <b>{cert.name}</b>

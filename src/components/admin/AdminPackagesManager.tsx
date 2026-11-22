@@ -96,7 +96,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{tr('Packages & prices', 'الباقات والأسعار')}</h2>
+          <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{tr('Packages & prices', 'الباقات والأسعار')}</h2>
           <p className="text-xs text-gray-500">
             {tr(
               'Every change appears on the prices page right after saving.',
@@ -107,7 +107,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
         <button
           onClick={() => setEditing(emptyPackage((list[list.length - 1]?.order || 0) + 1))}
           disabled={busy}
-          className="px-4 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-2 disabled:opacity-50"
         >
           <Plus className="w-4 h-4" />
           {tr('New package', 'باقة جديدة')}
@@ -115,12 +115,12 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
       </div>
 
       {!loading && list.length === 0 && !editing && (
-        <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/40 space-y-3 text-center">
+        <div className="p-5 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/40 space-y-3 text-center">
           <p className="text-xs text-gray-600">{tr('No packages yet.', 'لا توجد باقات بعد.')}</p>
           <button
             onClick={() => run(() => packagesService.addApproved(), 'أُضيفت الباقات المعتمدة.', 'Approved packages added.')}
             disabled={busy}
-            className="px-4 py-2 rounded-xl bg-[#D4AF37] text-[#0A192F] text-xs font-bold inline-flex items-center gap-2 disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-[#C9A04F] text-[#0B3B2C] text-xs font-bold inline-flex items-center gap-2 disabled:opacity-50"
           >
             <PackagePlus className="w-4 h-4" />
             {tr('Add the approved packages', 'إضافة الباقات المعتمدة')}
@@ -129,7 +129,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
       )}
 
       {editing && (
-        <div className="p-5 rounded-2xl border-2 border-[#D4AF37]/50 bg-[#FAF8F5] space-y-4">
+        <div className="p-5 rounded-2xl border-2 border-[#C9A04F]/50 bg-[#FAF7EF] space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>{tr('Program', 'البرنامج')}</label>
@@ -185,7 +185,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
               <label className={labelCls}>{tr('Order on the page', 'الترتيب في الصفحة')}</label>
               <input type="number" className={inputCls} value={editing.order} onChange={(e) => set({ order: Number(e.target.value) || 0 })} />
             </div>
-            <div className="flex flex-wrap items-center gap-4 pt-5 text-xs font-bold text-[#0A192F]">
+            <div className="flex flex-wrap items-center gap-4 pt-5 text-xs font-bold text-[#0B3B2C]">
               <label className="flex items-center gap-1.5">
                 <input type="checkbox" checked={!!editing.free} onChange={(e) => set({ free: e.target.checked })} />
                 {tr('Free', 'مجانية')}
@@ -204,7 +204,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
             <button onClick={() => setEditing(null)} disabled={busy} className="px-4 py-2 rounded-xl border border-gray-300 bg-white text-xs font-bold">
               {tr('Cancel', 'إلغاء')}
             </button>
-            <button onClick={save} disabled={busy} className="px-4 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-2 disabled:opacity-50">
+            <button onClick={save} disabled={busy} className="px-4 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-2 disabled:opacity-50">
               <Save className="w-4 h-4" />
               {busy ? tr('Saving...', 'جارٍ الحفظ...') : tr('Save', 'حفظ')}
             </button>
@@ -217,13 +217,13 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
         if (!items.length) return null;
         return (
           <div key={prog.id} className="space-y-2">
-            <h3 className="font-bold text-sm text-[#0A192F]">{isAr ? prog.ar : prog.en}</h3>
+            <h3 className="font-bold text-sm text-[#0B3B2C]">{isAr ? prog.ar : prog.en}</h3>
             {items.map((p) => (
               <div key={p.id} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${p.active ? 'border-gray-200 bg-white' : 'border-dashed border-gray-300 bg-gray-50 opacity-70'}`}>
                 <div className="min-w-0">
-                  <div className="font-bold text-sm text-[#0A192F]">
+                  <div className="font-bold text-sm text-[#0B3B2C]">
                     {isAr ? p.titleAr : p.titleEn}
-                    {p.featured && <span className="ms-2 text-[10px] px-2 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F]">{tr('Most chosen', 'الأكثر اختيارًا')}</span>}
+                    {p.featured && <span className="ms-2 text-[10px] px-2 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C]">{tr('Most chosen', 'الأكثر اختيارًا')}</span>}
                   </div>
                   <div className="text-[11px] text-gray-500">
                     {[
@@ -233,7 +233,7 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
                       .filter(Boolean)
                       .join(' • ')}
                   </div>
-                  <div className="text-xs font-bold text-[#AA820A] mt-1">{priceLine(p)}</div>
+                  <div className="text-xs font-bold text-[#9A772E] mt-1">{priceLine(p)}</div>
                 </div>
                 <div className="flex gap-2 shrink-0">
                   <button onClick={() => setEditing({ ...p })} disabled={busy} className="px-3 py-1.5 rounded-lg border border-gray-300 text-xs font-bold">

@@ -105,7 +105,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
           key={c}
           onClick={() => onPick(c)}
           className={`w-9 h-9 rounded-full border-2 transition-transform ${
-            value.toLowerCase() === c.toLowerCase() ? 'border-[#D4AF37] scale-110 shadow' : 'border-gray-200'
+            value.toLowerCase() === c.toLowerCase() ? 'border-[#C9A04F] scale-110 shadow' : 'border-gray-200'
           }`}
           style={{ background: c }}
           aria-label={c}
@@ -129,7 +129,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
           key={it.id}
           onClick={() => onPick(it.id)}
           className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-colors ${
-            value === it.id ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+            value === it.id ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
           }`}
         >
           {isAr ? it.ar : it.en}
@@ -140,7 +140,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
 
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="space-y-2.5">
-      <h4 className="text-xs font-bold text-[#0A192F]">{title}</h4>
+      <h4 className="text-xs font-bold text-[#0B3B2C]">{title}</h4>
       {children}
     </div>
   );
@@ -153,29 +153,29 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-8">
+    <div className="min-h-screen bg-[#FAF7EF] py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {editUser && (
-          <div className="p-3 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold text-center">
+          <div className="p-3 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold text-center">
             {tr('Admin editing:', 'تعديل الإدارة لحساب:')} {editUser.fullName || editUser.email}
           </div>
         )}
-        <button onClick={() => (onClose ? onClose() : navigate((me as any)?.role === 'teacher' ? 'teacher-dashboard' : 'student-dashboard'))} className="text-xs font-bold text-gray-500 hover:text-[#0A192F] flex items-center gap-1.5">
+        <button onClick={() => (onClose ? onClose() : navigate((me as any)?.role === 'teacher' ? 'teacher-dashboard' : 'student-dashboard'))} className="text-xs font-bold text-gray-500 hover:text-[#0B3B2C] flex items-center gap-1.5">
           <ArrowLeft className={`w-4 h-4 ${isAr ? 'rotate-180' : ''}`} />
           <span>{tr('Back to my dashboard', 'العودة إلى لوحتي')}</span>
         </button>
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h1 className="font-serif-luxury font-bold text-3xl text-[#0A192F] flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-[#D4AF37]" />
+            <h1 className="font-serif-luxury font-bold text-3xl text-[#0B3B2C] flex items-center gap-2">
+              <Sparkles className="w-6 h-6 text-[#C9A04F]" />
               {tr('My Avatar', 'الأفاتار الخاص بي')}
             </h1>
             <p className="text-sm text-gray-500 mt-1">{tr('Design your character, then save.', 'صمّم شخصيتك ثم اضغط حفظ.')}</p>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => set({ ...randomAvatar(a.gender), photo: a.photo, mode: 'cartoon' })} className="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-bold flex items-center gap-1.5">
-              <Dices className="w-4 h-4 text-[#AA820A]" />
+              <Dices className="w-4 h-4 text-[#9A772E]" />
               {tr('Random', 'عشوائي')}
             </button>
             <button onClick={() => set(saved)} className="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-bold flex items-center gap-1.5">
@@ -185,9 +185,9 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
             <button
               onClick={handleSave}
               disabled={status === 'saving'}
-              className="px-5 py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-1.5 disabled:opacity-60"
+              className="px-5 py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-1.5 disabled:opacity-60"
             >
-              {status === 'saved' ? <CheckCircle2 className="w-4 h-4 text-[#25D366]" /> : <Save className="w-4 h-4 text-[#D4AF37]" />}
+              {status === 'saved' ? <CheckCircle2 className="w-4 h-4 text-[#25D366]" /> : <Save className="w-4 h-4 text-[#C9A04F]" />}
               {status === 'saving' ? tr('Saving...', 'جارٍ الحفظ...') : status === 'saved' ? tr('Saved', 'تم الحفظ') : tr('Save', 'حفظ')}
             </button>
           </div>
@@ -200,13 +200,13 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
             <input value={displayName} onChange={(e) => { setDisplayName(e.target.value); setStatus('idle'); }} className="w-full px-3 py-2 rounded-xl border border-gray-300 text-sm" />
           </div>
           {(user as any)?.role !== 'teacher' && (
-          <div className="sm:col-span-2 flex flex-wrap gap-x-6 gap-y-2 p-3 rounded-xl bg-[#FAF8F5] border border-gray-200">
-            <label className="flex items-center gap-2 text-xs font-semibold text-[#0A192F] cursor-pointer">
-              <input type="checkbox" checked={showCountry} onChange={(e) => { setShowCountry(e.target.checked); setStatus('idle'); }} className="w-4 h-4 accent-[#D4AF37]" />
+          <div className="sm:col-span-2 flex flex-wrap gap-x-6 gap-y-2 p-3 rounded-xl bg-[#FAF7EF] border border-gray-200">
+            <label className="flex items-center gap-2 text-xs font-semibold text-[#0B3B2C] cursor-pointer">
+              <input type="checkbox" checked={showCountry} onChange={(e) => { setShowCountry(e.target.checked); setStatus('idle'); }} className="w-4 h-4 accent-[#C9A04F]" />
               {tr('Show my country to others', 'إظهار دولتي للآخرين')}
             </label>
-            <label className="flex items-center gap-2 text-xs font-semibold text-[#0A192F] cursor-pointer">
-              <input type="checkbox" checked={showAge} onChange={(e) => { setShowAge(e.target.checked); setStatus('idle'); }} className="w-4 h-4 accent-[#D4AF37]" />
+            <label className="flex items-center gap-2 text-xs font-semibold text-[#0B3B2C] cursor-pointer">
+              <input type="checkbox" checked={showAge} onChange={(e) => { setShowAge(e.target.checked); setStatus('idle'); }} className="w-4 h-4 accent-[#C9A04F]" />
               {tr('Show my age to others', 'إظهار عمري للآخرين')}
             </label>
           </div>
@@ -222,7 +222,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Preview */}
           <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-4">
-            <div className="bg-white rounded-3xl p-4 border border-[#D4AF37]/40 shadow-lg flex justify-center">
+            <div className="bg-white rounded-3xl p-4 border border-[#C9A04F]/40 shadow-lg flex justify-center">
               <EZAvatar config={a} view="full" size={260} />
             </div>
             <div className="flex items-center justify-center gap-3">
@@ -231,17 +231,17 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
             </div>
             {/* Profile photo */}
             <div className="bg-white rounded-2xl border border-gray-200 p-4 space-y-3">
-              <h4 className="text-xs font-bold text-[#0A192F] flex items-center gap-1.5">
-                <Camera className="w-4 h-4 text-[#AA820A]" />
+              <h4 className="text-xs font-bold text-[#0B3B2C] flex items-center gap-1.5">
+                <Camera className="w-4 h-4 text-[#9A772E]" />
                 {tr('My profile photo', 'صورتي الشخصية')}
               </h4>
               <div className="flex items-center gap-3">
                 {a.photo ? (
-                  <img src={a.photo} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-[#D4AF37]" />
+                  <img src={a.photo} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-[#C9A04F]" />
                 ) : (
                   <div className="w-14 h-14 rounded-full bg-gray-100 border border-dashed border-gray-300" />
                 )}
-                <label className="px-3 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold cursor-pointer">
+                <label className="px-3 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold cursor-pointer">
                   {a.photo ? tr('Change photo', 'تغيير الصورة') : tr('Upload photo', 'رفع صورة')}
                   <input
                     type="file"
@@ -268,13 +268,13 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => set({ mode: 'photo' })}
-                    className={`py-2 rounded-xl text-[11px] font-bold border ${a.mode === 'photo' ? 'bg-[#D4AF37] text-[#0A192F] border-[#D4AF37]' : 'bg-white text-gray-600 border-gray-200'}`}
+                    className={`py-2 rounded-xl text-[11px] font-bold border ${a.mode === 'photo' ? 'bg-[#C9A04F] text-[#0B3B2C] border-[#C9A04F]' : 'bg-white text-gray-600 border-gray-200'}`}
                   >
                     {tr('Show my photo', 'أظهر صورتي')}
                   </button>
                   <button
                     onClick={() => set({ mode: 'cartoon' })}
-                    className={`py-2 rounded-xl text-[11px] font-bold border ${a.mode !== 'photo' ? 'bg-[#D4AF37] text-[#0A192F] border-[#D4AF37]' : 'bg-white text-gray-600 border-gray-200'}`}
+                    className={`py-2 rounded-xl text-[11px] font-bold border ${a.mode !== 'photo' ? 'bg-[#C9A04F] text-[#0B3B2C] border-[#C9A04F]' : 'bg-white text-gray-600 border-gray-200'}`}
                   >
                     {tr('Show my avatar', 'أظهر الأفاتار')}
                   </button>
@@ -292,7 +292,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
                   key={g}
                   onClick={() => setGender(g)}
                   className={`py-3 rounded-2xl text-sm font-bold border transition-colors ${
-                    a.gender === g ? 'bg-[#0A192F] text-[#F3E5AB] border-[#0A192F]' : 'bg-white text-gray-700 border-gray-200'
+                    a.gender === g ? 'bg-[#0B3B2C] text-[#F3E3B8] border-[#0B3B2C]' : 'bg-white text-gray-700 border-gray-200'
                   }`}
                 >
                   {g === 'female' ? tr('Girl', 'بنت') : tr('Boy', 'ولد')}
@@ -311,7 +311,7 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
                     key={t.id}
                     onClick={() => setTab(t.id)}
                     className={`px-3 py-3.5 text-xs font-bold flex items-center justify-center gap-1.5 border-b-2 ${
-                      tab === t.id ? 'border-[#D4AF37] text-[#0A192F]' : 'border-transparent text-gray-500'
+                      tab === t.id ? 'border-[#C9A04F] text-[#0B3B2C]' : 'border-transparent text-gray-500'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -398,13 +398,13 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setOccasionOnly(false)}
-                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold ${!occasionOnly ? 'bg-[#D4AF37] text-[#0A192F]' : 'bg-gray-100 text-gray-600'}`}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold ${!occasionOnly ? 'bg-[#C9A04F] text-[#0B3B2C]' : 'bg-gray-100 text-gray-600'}`}
                     >
                       {tr('All', 'الكل')}
                     </button>
                     <button
                       onClick={() => setOccasionOnly(true)}
-                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold ${occasionOnly ? 'bg-[#D4AF37] text-[#0A192F]' : 'bg-gray-100 text-gray-600'}`}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold ${occasionOnly ? 'bg-[#C9A04F] text-[#0B3B2C]' : 'bg-gray-100 text-gray-600'}`}
                     >
                       {tr('Occasions', 'المناسبات')}
                     </button>
@@ -414,12 +414,12 @@ export const AvatarStudioPage: React.FC<AvatarStudioPageProps> = ({ navigate, ed
                       <button
                         key={o.id}
                         onClick={() => set({ outfit: o.id })}
-                        className={`rounded-2xl border-2 p-1.5 bg-[#FAF8F5] transition-colors ${
-                          a.outfit === o.id ? 'border-[#D4AF37] shadow' : 'border-transparent hover:border-gray-200'
+                        className={`rounded-2xl border-2 p-1.5 bg-[#FAF7EF] transition-colors ${
+                          a.outfit === o.id ? 'border-[#C9A04F] shadow' : 'border-transparent hover:border-gray-200'
                         }`}
                       >
                         <EZAvatar config={{ ...a, outfit: o.id }} view="full" size={80} showBackground={false} />
-                        <span className="block text-[10px] font-bold text-[#0A192F] mt-1 leading-tight">{isAr ? o.ar : o.en}</span>
+                        <span className="block text-[10px] font-bold text-[#0B3B2C] mt-1 leading-tight">{isAr ? o.ar : o.en}</span>
                       </button>
                     ))}
                   </div>

@@ -117,7 +117,7 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
       <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-serif-luxury font-bold text-xl text-[#0A192F]">{tr('Referrals & rewards', 'الدعوات والمكافآت')}</h2>
+            <h2 className="font-serif-luxury font-bold text-xl text-[#0B3B2C]">{tr('Referrals & rewards', 'الدعوات والمكافآت')}</h2>
             <p className="text-xs text-gray-500">
               {tr(
                 'The offer type is decided by groups: same group = “My friend in my group”, another group = “Ambassador”. Amounts use each student’s monthly fee.',
@@ -132,9 +132,9 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
         </div>
 
         {ambassadorsDue.length > 0 && (
-          <div className="p-4 rounded-2xl bg-[#0A192F] text-[#F3E5AB] space-y-1">
+          <div className="p-4 rounded-2xl bg-[#0B3B2C] text-[#F3E3B8] space-y-1">
             <div className="text-xs font-bold flex items-center gap-1.5">
-              <Gem className="w-4 h-4 text-[#D4AF37]" />
+              <Gem className="w-4 h-4 text-[#C9A04F]" />
               {tr('Ambassador rewards due this month (not yet recorded):', 'مكافآت السفيرات المستحقة هذا الشهر (لم تُسجَّل بعد):')}
             </div>
             {ambassadorsDue.map((a) => (
@@ -148,7 +148,7 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
         {loading ? (
           <div className="p-6 text-center text-xs text-gray-500">{tr('Loading...', 'جارٍ التحميل...')}</div>
         ) : rows.length === 0 ? (
-          <div className="p-6 text-center text-xs text-gray-500 bg-[#FAF8F5] rounded-2xl">{tr('No referrals yet.', 'لا توجد دعوات بعد.')}</div>
+          <div className="p-6 text-center text-xs text-gray-500 bg-[#FAF7EF] rounded-2xl">{tr('No referrals yet.', 'لا توجد دعوات بعد.')}</div>
         ) : (
           <div className="space-y-3">
             {rows.map((r) => {
@@ -164,13 +164,13 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
                 <div key={r.regId} className="p-4 rounded-2xl border border-gray-200 space-y-2 text-xs">
                   <div className="flex flex-wrap items-center gap-2">
                     {r.type === 'group' ? (
-                      <span className="px-2 py-0.5 rounded-full bg-[#D4AF37]/20 text-[#7A5C00] font-bold flex items-center gap-1">
+                      <span className="px-2 py-0.5 rounded-full bg-[#C9A04F]/20 text-[#6E5418] font-bold flex items-center gap-1">
                         <Gift className="w-3.5 h-3.5" />
                         {tr('My friend in my group', 'صديقتي في مجموعتي')}
                       </span>
                     ) : r.type === 'ambassador' ? (
-                      <span className="px-2 py-0.5 rounded-full bg-[#0A192F] text-[#F3E5AB] font-bold flex items-center gap-1">
-                        <Gem className="w-3.5 h-3.5 text-[#D4AF37]" />
+                      <span className="px-2 py-0.5 rounded-full bg-[#0B3B2C] text-[#F3E3B8] font-bold flex items-center gap-1">
+                        <Gem className="w-3.5 h-3.5 text-[#C9A04F]" />
                         {tr('Ambassador', 'سفيرة')}
                       </span>
                     ) : r.type === 'pending-group' ? (
@@ -185,14 +185,14 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div className="p-2 rounded-xl bg-[#FAF8F5]">
+                    <div className="p-2 rounded-xl bg-[#FAF7EF]">
                       <div className="text-[10px] text-gray-500">{tr('Invited by', 'صاحبة الدعوة')}</div>
-                      <b className="text-[#0A192F]">{r.referrer?.fullName || '—'}</b>
+                      <b className="text-[#0B3B2C]">{r.referrer?.fullName || '—'}</b>
                       {r.referrer && !isActiveSub(r.referrer) && <span className="ms-1 text-gray-500">({tr('not a course student', 'ليست مشتركة في الكورس')})</span>}
                     </div>
-                    <div className="p-2 rounded-xl bg-[#FAF8F5]">
+                    <div className="p-2 rounded-xl bg-[#FAF7EF]">
                       <div className="text-[10px] text-gray-500">{tr('New friend', 'الصديقة الجديدة')}</div>
-                      <b className="text-[#0A192F]">{r.friendName}</b>
+                      <b className="text-[#0B3B2C]">{r.friendName}</b>
                       {!isActiveSub(r.friend) && <span className="ms-1 text-gray-500">({tr('not active yet', 'لم تُفعَّل بعد')})</span>}
                     </div>
                   </div>
@@ -212,7 +212,7 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
                       )}
 
                       {r.type === 'ambassador' && (
-                        <div className="p-2 rounded-xl border border-[#D4AF37]/40 space-y-1">
+                        <div className="p-2 rounded-xl border border-[#C9A04F]/40 space-y-1">
                           <div>
                             {tr('Paid to the ambassador so far:', 'سُلِّم للسفيرة حتى الآن:')} <b>{formatMoney(Math.round(paidTotal * 100) / 100, r.friend?.tuitionCurrency || siteCurrency)}</b> ({payouts.length} {tr('months', 'شهر')})
                           </div>
@@ -230,7 +230,7 @@ export const AdminReferrals: React.FC<{ isAr: boolean; onNotice: (m: string) => 
                               onClick={() =>
                                 update(r.regId, { payouts: [...payouts, { month: thisMonth(), amount: Math.round((nextAmount || 0) * 100) / 100, at: new Date().toISOString() }] })
                               }
-                              className="px-3 py-1.5 rounded-lg bg-[#0A192F] text-[#F3E5AB] font-bold flex items-center gap-1 disabled:opacity-50"
+                              className="px-3 py-1.5 rounded-lg bg-[#0B3B2C] text-[#F3E3B8] font-bold flex items-center gap-1 disabled:opacity-50"
                             >
                               {busy === r.regId ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
                               {tr('Record this month’s reward', 'تسجيل تسليم مكافأة هذا الشهر')} ({payouts.length ? `${AMBASSADOR_MONTHLY}%` : `${AMBASSADOR_FIRST}%`}): {money(nextAmount, r.friend)}

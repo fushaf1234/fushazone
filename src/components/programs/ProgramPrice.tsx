@@ -15,9 +15,9 @@ export const ProgramPrice: React.FC<Props> = ({ prog, language, dark, className 
   const ar = language === 'ar';
   const note = ar ? prog.offerNoteAr : prog.offerNoteEn;
   return (
-    <div className={`rounded-2xl border-2 border-[#D4AF37] p-4 ${dark ? 'bg-white/10' : 'bg-white'} ${className}`}>
+    <div className={`rounded-2xl border-2 border-[#C9A04F] p-4 ${dark ? 'bg-white/10' : 'bg-white'} ${className}`}>
       <div className="flex items-baseline flex-wrap gap-x-3 gap-y-1">
-        <span className={`text-3xl font-extrabold ${dark ? 'text-[#F3E5AB]' : 'text-[#0A192F]'}`}>
+        <span className={`text-3xl font-extrabold ${dark ? 'text-[#F3E3B8]' : 'text-[#0B3B2C]'}`}>
           ${prog.monthlyStartingPrice}
         </span>
         <span className={`text-sm font-bold ${dark ? 'text-gray-200' : 'text-gray-600'}`}>{ar ? '/ شهريًا' : '/ month'}</span>
@@ -32,8 +32,8 @@ export const ProgramPrice: React.FC<Props> = ({ prog, language, dark, className 
         </div>
       )}
       {(ar ? prog.certNoteAr : prog.certNoteEn) && (
-        <div className={`mt-2 flex items-center gap-1.5 text-sm font-extrabold ${dark ? 'text-[#F3E5AB]' : 'text-[#0A192F]'}`}>
-          <Award className="w-4 h-4 text-[#D4AF37]" />
+        <div className={`mt-2 flex items-center gap-1.5 text-sm font-extrabold ${dark ? 'text-[#F3E3B8]' : 'text-[#0B3B2C]'}`}>
+          <Award className="w-4 h-4 text-[#C9A04F]" />
           {ar ? prog.certNoteAr : prog.certNoteEn}
         </div>
       )}

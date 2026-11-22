@@ -2,13 +2,13 @@
 
 @layer base {
   :root {
-    --brand-navy: #0A192F;
-    --brand-navy-deep: #060D1A;
-    --brand-navy-light: #162B4D;
-    --brand-gold: #D4AF37;
-    --brand-gold-light: #F3E5AB;
-    --brand-gold-dark: #AA820A;
-    --brand-cream: #FAF8F5;
+    --brand-navy: #0B3B2C;
+    --brand-navy-deep: #062419;
+    --brand-navy-light: #14523C;
+    --brand-gold: #C9A04F;
+    --brand-gold-light: #F3E3B8;
+    --brand-gold-dark: #9A772E;
+    --brand-cream: #FAF7EF;
     --brand-sand: #F3EDE2;
   }
 
@@ -52,18 +52,18 @@
 /* Glassmorphism & luxury borders */
 .luxury-card {
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(212, 175, 55, 0.18);
-  box-shadow: 0 10px 30px -10px rgba(10, 25, 47, 0.08);
+  border: 1px solid rgba(201, 160, 79, 0.18);
+  box-shadow: 0 10px 30px -10px rgba(11, 59, 44, 0.08);
 }
 
 .luxury-card-dark {
-  background: linear-gradient(135deg, #0A192F 0%, #0F2042 100%);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: linear-gradient(135deg, #0B3B2C 0%, #0E4734 100%);
+  border: 1px solid rgba(201, 160, 79, 0.25);
   box-shadow: 0 15px 35px -10px rgba(6, 13, 26, 0.5);
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #D4AF37 0%, #F5D77F 50%, #AA820A 100%);
+  background: linear-gradient(135deg, #C9A04F 0%, #E6C67E 50%, #9A772E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -74,8 +74,8 @@
   50% { transform: translateY(-6px); }
 }
 @keyframes ez-glow {
-  0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.45), 0 0 0 rgba(212, 175, 55, 0); }
-  50% { box-shadow: 0 0 28px rgba(212, 175, 55, 0.85), 0 0 50px rgba(212, 175, 55, 0.35); }
+  0%, 100% { box-shadow: 0 0 10px rgba(201, 160, 79, 0.45), 0 0 0 rgba(201, 160, 79, 0); }
+  50% { box-shadow: 0 0 28px rgba(201, 160, 79, 0.85), 0 0 50px rgba(201, 160, 79, 0.35); }
 }
 .ez-float-glow {
   animation: ez-float 2.6s ease-in-out infinite, ez-glow 2.6s ease-in-out infinite;

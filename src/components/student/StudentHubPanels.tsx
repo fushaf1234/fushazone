@@ -9,7 +9,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../../services/firebase';
 
 const card = 'bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-5';
-const inputCls = 'w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#D4AF37]';
+const inputCls = 'w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-[#C9A04F]';
 
 const typeIcon = (t: MaterialType) =>
   t === 'book' ? BookOpen : t === 'audio' ? Headphones : t === 'video' ? PlayCircle : LinkIcon;
@@ -37,10 +37,10 @@ export const StudentCourseMaterials: React.FC<{ level?: string; isAr: boolean }>
 
   return (
     <div className="space-y-4">
-      <h3 className="font-serif-luxury font-bold text-lg text-[#0A192F]">{isAr ? 'مواد المنهج' : 'Course Materials'}</h3>
+      <h3 className="font-serif-luxury font-bold text-lg text-[#0B3B2C]">{isAr ? 'مواد المنهج' : 'Course Materials'}</h3>
       {withLinks.map((m) => (
-        <div key={m.id} className="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-200 space-y-3">
-          <span className="font-bold text-sm text-[#0A192F]">{(isAr ? m.courseTitleAr : m.courseTitleEn) || m.courseTitleAr || m.courseTitleEn}</span>
+        <div key={m.id} className="p-4 rounded-2xl bg-[#FAF7EF] border border-gray-200 space-y-3">
+          <span className="font-bold text-sm text-[#0B3B2C]">{(isAr ? m.courseTitleAr : m.courseTitleEn) || m.courseTitleAr || m.courseTitleEn}</span>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {m.links.map((l, i) => {
               const Icon = typeIcon(l.type);
@@ -50,9 +50,9 @@ export const StudentCourseMaterials: React.FC<{ level?: string; isAr: boolean }>
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[#D4AF37]/30 hover:border-[#D4AF37] text-xs font-semibold text-[#0A192F]"
+                  className="flex items-center gap-2 p-3 rounded-xl bg-white border border-[#C9A04F]/30 hover:border-[#C9A04F] text-xs font-semibold text-[#0B3B2C]"
                 >
-                  <Icon className="w-4 h-4 text-[#AA820A] shrink-0" />
+                  <Icon className="w-4 h-4 text-[#9A772E] shrink-0" />
                   <span>{l.label}</span>
                 </a>
               );
@@ -89,7 +89,7 @@ export const StudentLibrary: React.FC<{ isAr: boolean }> = ({ isAr }) => {
 
   return (
     <div className={card}>
-      <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">{isAr ? 'المكتبة' : 'Library'}</h2>
+      <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{isAr ? 'المكتبة' : 'Library'}</h2>
       {loading ? (
         <p className="text-xs text-gray-500 text-center py-6">{isAr ? 'جارٍ التحميل...' : 'Loading...'}</p>
       ) : books.length === 0 ? (
@@ -100,11 +100,11 @@ export const StudentLibrary: React.FC<{ isAr: boolean }> = ({ isAr }) => {
             const Icon = b.category === 'magazine' ? Newspaper : BookOpen;
             const title = (isAr ? b.titleAr : b.titleEn) || b.titleAr || b.titleEn;
             return (
-              <div key={b.id} className="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-200 flex items-start justify-between gap-3">
+              <div key={b.id} className="p-4 rounded-2xl bg-[#FAF7EF] border border-gray-200 flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <Icon className="w-5 h-5 text-[#AA820A] mt-0.5 shrink-0" />
+                  <Icon className="w-5 h-5 text-[#9A772E] mt-0.5 shrink-0" />
                   <div>
-                    <span className="font-bold text-sm text-[#0A192F] block">{title}</span>
+                    <span className="font-bold text-sm text-[#0B3B2C] block">{title}</span>
                     <span className="text-[11px] text-gray-500">
                       {[catLabel(b.category), b.level && b.level !== 'All Levels' ? b.level : ''].filter(Boolean).join(' • ')}
                     </span>
@@ -115,7 +115,7 @@ export const StudentLibrary: React.FC<{ isAr: boolean }> = ({ isAr }) => {
                     href={b.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0A192F] text-[#F3E5AB] whitespace-nowrap"
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] whitespace-nowrap"
                   >
                     {isAr ? 'فتح' : 'Open'}
                   </a>
@@ -167,7 +167,7 @@ export const StudentMessages: React.FC<{ uid: string; name: string; email: strin
     // تنبيه المعلمة والأكاديمية بالبريد
     const preview = text.trim() || '🎙️ رسالة صوتية';
     if (teacherId && teacherEmail) notifyNewMessage({ toEmail: teacherEmail, toName: teacherName, fromName: name, preview });
-    getAcademyNotifyEmail().then((to) => notifyNewMessage({ toEmail: to, toName: 'English Zone', fromName: name, preview }));
+    getAcademyNotifyEmail().then((to) => notifyNewMessage({ toEmail: to, toName: 'Fusha Zone', fromName: name, preview }));
   };
 
   const report = async (b: Bubble) => {
@@ -222,14 +222,14 @@ export const StudentFeedback: React.FC<{ uid: string; name: string; level?: stri
 
   return (
     <div className={card}>
-      <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">{isAr ? 'اكتب رأيك' : 'Share Your Feedback'}</h2>
+      <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{isAr ? 'اكتب رأيك' : 'Share Your Feedback'}</h2>
       <p className="text-xs text-gray-500">
         {isAr ? 'رأيك يساعدنا ويساعد الطلاب الجدد. يظهر في الموقع بعد موافقة الإدارة.' : 'Your feedback appears on the site after the academy approves it.'}
       </p>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
           <button key={n} onClick={() => setRating(n)} title={String(n)}>
-            <Star className={`w-6 h-6 ${n <= rating ? 'text-[#D4AF37] fill-current' : 'text-gray-300'}`} />
+            <Star className={`w-6 h-6 ${n <= rating ? 'text-[#C9A04F] fill-current' : 'text-gray-300'}`} />
           </button>
         ))}
       </div>
@@ -239,9 +239,9 @@ export const StudentFeedback: React.FC<{ uid: string; name: string; level?: stri
         <button
           onClick={send}
           disabled={sending || !text.trim()}
-          className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#0A192F] text-[#F3E5AB] disabled:opacity-50 flex items-center gap-1.5"
+          className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#0B3B2C] text-[#F3E3B8] disabled:opacity-50 flex items-center gap-1.5"
         >
-          <Send className="w-4 h-4 text-[#D4AF37]" />
+          <Send className="w-4 h-4 text-[#C9A04F]" />
           <span>{sending ? (isAr ? 'جارٍ الإرسال...' : 'Sending...') : isAr ? 'إرسال رأيي' : 'Send feedback'}</span>
         </button>
       </div>

@@ -30,29 +30,29 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           kind: 'all',
           name: 'كل المميزات',
           badge: 'باختصار',
-          title: 'ليست مجرد دورة إنجليزية… بل تجربة متكاملة تصنع مستقبلك!',
+          title: 'ليست مجرد دورة عربية… بل رحلة تقربك من اللغة والقرآن!',
           desc: '',
-          items: ['📝 اختبار تحديد مستوى مجاني', '🏅 شهادات معتمدة من بريطانيا', '🎙️ غرف محادثة صوتية', '🎒 حقيبة تعليمية متكاملة', '💻 منصة تعليمية ذكية', '🤝 مجتمع متعلمين ملهم'],
+          items: ['📝 جلسة تقييم مستوى مجانية', '🏅 شهادات قابلة للتحقق', '🎙️ غرف محادثة صوتية', '🎒 حقيبة تعليمية متكاملة', '💻 منصة تعليمية ذكية', '🤝 مجتمع متعلمين ملهم'],
           cta: 'انضم الآن',
           route: home
         },
         {
           kind: 'placement',
-          name: 'اختبار تحديد المستوى',
-          badge: 'مجاني • وفق معايير CEFR',
-          title: 'لا تبدأ عشوائيًا… اكتشف مستواك أولًا!',
-          desc: 'اختبر مستواك وتعرّف على نقطة البداية المناسبة لك وفق الإطار الأوروبي المرجعي للغات CEFR، لتبدأ رحلتك بخطوات واضحة.',
+          name: 'تقييم المستوى',
+          badge: 'مجاني • مع معلم',
+          title: 'لا تبدأ عشوائيًا… اعرف مستواك أولًا!',
+          desc: 'جلسة مجانية مع أحد معلمينا تحدد مستواك في العربية أو التلاوة، لتبدأ رحلتك بخطوات واضحة.',
           items: [],
-          cta: 'اختبر مستواك مجانًا',
+          cta: 'احجز تقييمك المجاني',
           route: home
         },
         {
           kind: 'certs',
-          name: 'الشهادات المعتمدة',
-          badge: '🇬🇧 معتمدة من بريطانيا • مجانًا',
+          name: 'الشهادات',
+          badge: 'قابلة للتحقق عبر الإنترنت',
           title: 'تعلّم، أنجز، واحصل على ما يوثّق تطورك!',
-          desc: '3 مزايا وشهادات مجانية ضمن رحلتك التعليمية، دون رسوم إضافية.',
-          items: ['شهادة تطوير مهني معتمدة من بريطانيا.', 'شهادة إثبات مستوى اللغة وفق معايير دولية.', 'شهادة إتمام موثقة برقم فريد للتحقق.'],
+          desc: 'شهادة من Fusha Zone عند إتمام مستواك في العربية أو مسارك في القرآن.',
+          items: ['شهادة مستوى اللغة العربية.', 'شهادة مسار القرآن الكريم.', 'رقم فريد ورمز QR للتحقق.'],
           cta: 'ابدأ رحلتك',
           route: home
         },
@@ -60,8 +60,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           kind: 'rooms',
           name: 'غرف المحادثة الصوتية',
           badge: 'فرصة مجانية للمسجلين',
-          title: 'تفهم الإنجليزية وتخجل من التحدث؟ حان وقت التغيير!',
-          desc: 'الممارسة هي مفتاح الطلاقة. تحدث بالإنجليزية وشارك في نقاشات حقيقية بثقة.',
+          title: 'تفهم العربية وتخجل من التحدث؟ حان وقت التغيير!',
+          desc: 'الممارسة هي مفتاح الطلاقة. تحدث بالعربية وشارك في نقاشات حقيقية بثقة.',
           items: ['محادثات صوتية مباشرة.', 'موضوعات ونقاشات متنوعة.', 'تطوير الطلاقة والثقة.'],
           cta: 'انضم إلى غرف المحادثة',
           route: isAuthenticated ? 'rooms' : 'join-us'
@@ -71,8 +71,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           name: 'الحقيبة التعليمية',
           badge: 'مواردك التعليمية بين يديك',
           title: 'كل ما تحتاجه للتعلم… في مكان واحد!',
-          desc: 'لا حاجة للبحث عن مصادر متفرقة؛ حقيبة متكاملة تساعدك على الفهم والمراجعة خطوة بخطوة.',
-          items: ['منهج منظم حسب المستوى.', 'مواد وموارد داعمة.', 'تدريبات وأنشطة تطبيقية.'],
+          desc: 'قصص تفاعلية ومناهج مصممة لطلاب Fusha Zone، تجعل التعلم مستمرًا بين الحصص.',
+          items: ['منهج منظم حسب المستوى.', 'قصص وموارد في المكتبة.', 'تدريبات وأنشطة تطبيقية.'],
           cta: 'اكتشف حقيبتك التعليمية',
           route: home
         },
@@ -81,8 +81,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           name: 'المنصة التعليمية الذكية',
           badge: 'تعلمك أصبح أكثر تنظيمًا',
           title: 'منصة متكاملة… تتابع تقدمك وتساعدك على التطور!',
-          desc: 'دروسك واختباراتك وواجباتك ونتائجك في مكان واحد.',
-          items: ['اختبارات بتصحيح تلقائي.', 'تقارير وتحليل للقوة والضعف.', 'متابعة التقدم والإنجازات.'],
+          desc: 'حصصك وحضورك ونجومك وتقاريرك في مكان واحد.',
+          items: ['عدّاد الحصص والحضور.', 'تقارير أسبوعية وشهرية.', 'نجوم ومكافآت على التقدم.'],
           cta: 'اكتشف منصتك التعليمية',
           route: home
         },
@@ -102,29 +102,29 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           kind: 'all',
           name: 'All features',
           badge: 'At a glance',
-          title: 'Not just an English course… a complete experience that shapes your future!',
+          title: 'Not just an Arabic course… a journey that brings you closer to the language and the Quran!',
           desc: '',
-          items: ['📝 Free placement test', '🏅 UK-accredited certificates', '🎙️ Voice conversation rooms', '🎒 Complete learning package', '💻 Smart learning platform', '🤝 Inspiring learner community'],
+          items: ['📝 Free level assessment', '🏅 Verifiable certificates', '🎙️ Voice conversation rooms', '🎒 Complete learning package', '💻 Smart learning platform', '🤝 Inspiring learner community'],
           cta: 'Join now',
           route: home
         },
         {
           kind: 'placement',
-          name: 'Placement test',
-          badge: 'Free • CEFR standards',
-          title: "Don't start randomly… discover your level first!",
-          desc: 'Test your level and find the right starting point based on the CEFR, so you start with clear steps.',
+          name: 'Level assessment',
+          badge: 'Free • With a teacher',
+          title: "Don't start randomly… know your level first!",
+          desc: 'A free session with one of our teachers finds your level in Arabic or Quran recitation, so you start with clear steps.',
           items: [],
-          cta: 'Test your level for free',
+          cta: 'Book your free assessment',
           route: home
         },
         {
           kind: 'certs',
-          name: 'Accredited certificates',
-          badge: '🇬🇧 UK-accredited • Free',
+          name: 'Certificates',
+          badge: 'Verifiable online',
           title: 'Learn, achieve, and get proof of your progress!',
-          desc: '3 free benefits and certificates within your journey, at no extra cost.',
-          items: ['A UK-accredited professional development certificate.', 'An English level certificate to international standards.', 'A completion certificate with a unique verification number.'],
+          desc: 'A Fusha Zone certificate when you complete your Arabic level or your Quran track.',
+          items: ['Arabic level certificate.', 'Quran track certificate.', 'Unique number and QR code for verification.'],
           cta: 'Start your journey',
           route: home
         },
@@ -132,8 +132,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           kind: 'rooms',
           name: 'Voice rooms',
           badge: 'Free for members',
-          title: 'Understand English but shy to speak? Time for a change!',
-          desc: 'Practice is the key to fluency. Speak English and join real discussions with confidence.',
+          title: 'Understand Arabic but shy to speak? Time for a change!',
+          desc: 'Practice is the key to fluency. Speak Arabic and join real discussions with confidence.',
           items: ['Live voice conversations.', 'Varied topics and discussions.', 'Build fluency and confidence.'],
           cta: 'Join the voice rooms',
           route: isAuthenticated ? 'rooms' : 'join-us'
@@ -143,8 +143,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           name: 'Learning package',
           badge: 'Your resources in your hands',
           title: 'Everything you need to learn… in one place!',
-          desc: 'No scattered sources; a complete package to understand and review step by step.',
-          items: ['A structured curriculum by level.', 'Supporting materials.', 'Practical exercises.'],
+          desc: 'Interactive stories and materials made for Fusha Zone students, so learning continues between lessons.',
+          items: ['A structured curriculum by level.', 'Stories and resources in the library.', 'Practical exercises.'],
           cta: 'Discover your package',
           route: home
         },
@@ -153,8 +153,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
           name: 'Smart platform',
           badge: 'Your learning, organised',
           title: 'An all-in-one platform that tracks your progress!',
-          desc: 'Your lessons, tests, homework and results in one place.',
-          items: ['Auto-marked tests.', 'Reports on strengths and weaknesses.', 'Progress tracking.'],
+          desc: 'Your lessons, attendance, stars and reports in one place.',
+          items: ['Lessons and attendance counter.', 'Weekly and monthly reports.', 'Stars and rewards for progress.'],
           cta: 'Discover your platform',
           route: home
         },
@@ -218,8 +218,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
       `}</style>
 
       <div className="text-center max-w-3xl mx-auto mb-8 px-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">LEARN • PRACTICE • ACHIEVE</span>
-        <h2 className="font-serif-luxury font-bold text-3xl sm:text-4xl text-[#0A192F] mt-2">{ar ? 'مميزات وفوائد الأكاديمية' : 'Academy features & benefits'}</h2>
+        <span className="text-xs font-bold uppercase tracking-widest text-[#C9A04F]">LEARN • PRACTICE • ACHIEVE</span>
+        <h2 className="font-serif-luxury font-bold text-3xl sm:text-4xl text-[#0B3B2C] mt-2">{ar ? 'مميزات وفوائد الأكاديمية' : 'Academy features & benefits'}</h2>
       </div>
 
       <div
@@ -247,8 +247,8 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
             <div
               key={f.kind}
               onClick={() => !active && visible && go(i)}
-              className={`absolute top-0 rounded-3xl overflow-hidden border-2 shadow-2xl text-white bg-gradient-to-br from-[#0A192F] via-[#102445] to-[#0A192F] ${
-                active ? 'border-[#D4AF37] cursor-default' : 'border-[#D4AF37]/40 cursor-pointer'
+              className={`absolute top-0 rounded-3xl overflow-hidden border-2 shadow-2xl text-white bg-gradient-to-br from-[#0B3B2C] via-[#11503A] to-[#0B3B2C] ${
+                active ? 'border-[#C9A04F] cursor-default' : 'border-[#C9A04F]/40 cursor-pointer'
               }`}
               style={{
                 width: w,
@@ -271,12 +271,12 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
                       e.stopPropagation();
                       navigate(home);
                     }}
-                    className="ez-ribbon absolute top-3 start-3 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] text-xs font-bold shadow-xl border border-white/60"
+                    className="ez-ribbon absolute top-3 start-3 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] text-xs font-bold shadow-xl border border-white/60"
                   >
                     ✨ {ar ? 'انضموا لنا' : 'Join us'}
                   </button>
                 )}
-                <span dir="ltr" className="absolute bottom-2.5 end-3 text-[10px] font-bold text-[#F3E5AB] bg-black/35 rounded-full px-2 py-0.5">
+                <span dir="ltr" className="absolute bottom-2.5 end-3 text-[10px] font-bold text-[#F3E3B8] bg-black/35 rounded-full px-2 py-0.5">
                   {i + 1} / {n}
                 </span>
               </div>
@@ -284,16 +284,16 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
               {/* الشرح */}
               <div className="p-5 flex flex-col" style={{ height: H - imgH }}>
                 <div className="flex items-center gap-2 flex-wrap mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[11px] font-bold">{f.name}</span>
-                  <span className="text-[11px] font-bold text-[#F3E5AB]/85">{f.badge}</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[11px] font-bold">{f.name}</span>
+                  <span className="text-[11px] font-bold text-[#F3E3B8]/85">{f.badge}</span>
                 </div>
-                <h3 className="font-serif-luxury font-bold text-lg text-[#F3E5AB] leading-snug">{f.title}</h3>
+                <h3 className="font-serif-luxury font-bold text-lg text-[#F3E3B8] leading-snug">{f.title}</h3>
                 {f.desc && <p className="text-[13px] text-gray-300 leading-relaxed mt-2">{f.desc}</p>}
                 {f.items.length > 0 && (
                   <ul className={`mt-3 ${f.kind === 'all' ? 'grid grid-cols-2 gap-x-2 gap-y-2' : 'space-y-1.5'}`}>
                     {f.items.map((it) => (
                       <li key={it} className="flex items-start gap-1.5 text-[12.5px] text-gray-200 leading-snug">
-                        {f.kind !== 'all' && <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] flex-shrink-0 mt-0.5" aria-hidden="true" />}
+                        {f.kind !== 'all' && <CheckCircle2 className="w-3.5 h-3.5 text-[#C9A04F] flex-shrink-0 mt-0.5" aria-hidden="true" />}
                         <span>{it}</span>
                       </li>
                     ))}
@@ -306,12 +306,12 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
                       if (active) navigate(f.route);
                       else go(i);
                     }}
-                    className="px-4 py-2.5 rounded-xl font-bold text-[13px] bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] shadow-md active:scale-95 transition-transform"
+                    className="px-4 py-2.5 rounded-xl font-bold text-[13px] bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] shadow-md active:scale-95 transition-transform"
                   >
                     {f.cta}
                   </button>
                   {f.kind === 'all' && (
-                    <span className="text-[11px] text-[#F3E5AB]/80 font-bold flex items-center gap-0.5">
+                    <span className="text-[11px] text-[#F3E3B8]/80 font-bold flex items-center gap-0.5">
                       {ar ? 'اسحب للتفاصيل' : 'Swipe for details'}
                       <NextIcon className="w-3.5 h-3.5" />
                     </span>
@@ -326,7 +326,7 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
         <button
           onClick={prev}
           aria-label={ar ? 'السابق' : 'Previous'}
-          className="absolute z-10 w-11 h-11 rounded-full bg-white text-[#0A192F] shadow-xl border border-[#D4AF37]/50 flex items-center justify-center hover:bg-[#D4AF37] transition-colors"
+          className="absolute z-10 w-11 h-11 rounded-full bg-white text-[#0B3B2C] shadow-xl border border-[#C9A04F]/50 flex items-center justify-center hover:bg-[#C9A04F] transition-colors"
           style={{ top: Math.round(imgH / 2) - 22, [ar ? 'right' : 'left']: `calc(50% - ${w / 2 + 22}px)` }}
         >
           <PrevIcon className="w-6 h-6" />
@@ -334,7 +334,7 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
         <button
           onClick={next}
           aria-label={ar ? 'التالي' : 'Next'}
-          className="absolute z-10 w-11 h-11 rounded-full bg-white text-[#0A192F] shadow-xl border border-[#D4AF37]/50 flex items-center justify-center hover:bg-[#D4AF37] transition-colors"
+          className="absolute z-10 w-11 h-11 rounded-full bg-white text-[#0B3B2C] shadow-xl border border-[#C9A04F]/50 flex items-center justify-center hover:bg-[#C9A04F] transition-colors"
           style={{ top: Math.round(imgH / 2) - 22, [ar ? 'left' : 'right']: `calc(50% - ${w / 2 + 22}px)` }}
         >
           <NextIcon className="w-6 h-6" />
@@ -348,7 +348,7 @@ export const FeaturesShowcase: React.FC<Props> = ({ ar, isAuthenticated, navigat
             key={f.kind}
             onClick={() => go(i)}
             aria-label={f.name}
-            className={`h-2.5 rounded-full transition-all ${i === idx ? 'w-8 bg-[#D4AF37]' : 'w-2.5 bg-[#0A192F]/25 hover:bg-[#0A192F]/50'}`}
+            className={`h-2.5 rounded-full transition-all ${i === idx ? 'w-8 bg-[#C9A04F]' : 'w-2.5 bg-[#0B3B2C]/25 hover:bg-[#0B3B2C]/50'}`}
           />
         ))}
       </div>

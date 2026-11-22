@@ -14,7 +14,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('english_zone_lang');
+    const saved = localStorage.getItem('fusha_zone_lang');
     if (saved === 'ar' || saved === 'en') {
       return saved;
     }
@@ -24,7 +24,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const dir = language === 'ar' ? 'rtl' : 'ltr';
 
   useEffect(() => {
-    localStorage.setItem('english_zone_lang', language);
+    localStorage.setItem('fusha_zone_lang', language);
     document.documentElement.lang = language;
     document.documentElement.dir = dir;
     if (language === 'ar') {

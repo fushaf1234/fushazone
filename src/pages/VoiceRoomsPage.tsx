@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { LEVEL_CODES, levelLabel } from '../data/academyData';
 import { Mic, Lock, ShieldCheck, Globe2, Users, Plus, X, Radio, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { ACTIVE_MS, RoomPrivacy, VoiceRoom, createRoom, watchRooms, roomLink } from '../services/voiceRooms';
 import { nextSession, countdown, formatSession, calendarLink } from '../services/roomSchedule';
 
-const LEVELS = ['', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LEVELS = ['', ...LEVEL_CODES];
 
 export const userGender = (u: any): string =>
   u?.gender === 'male' || u?.gender === 'female'
@@ -97,23 +98,23 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[70vh] bg-[#FAF8F5] flex items-center justify-center px-4 py-12" dir={isAr ? 'rtl' : 'ltr'}>
-        <div className="max-w-lg w-full bg-white rounded-3xl border border-[#D4AF37]/40 shadow-lg p-8 text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-[#0A192F] text-[#F3E5AB] flex items-center justify-center mx-auto">
+      <div className="min-h-[70vh] bg-[#FAF7EF] flex items-center justify-center px-4 py-12" dir={isAr ? 'rtl' : 'ltr'}>
+        <div className="max-w-lg w-full bg-white rounded-3xl border border-[#C9A04F]/40 shadow-lg p-8 text-center space-y-4">
+          <div className="w-16 h-16 rounded-full bg-[#0B3B2C] text-[#F3E3B8] flex items-center justify-center mx-auto">
             <Mic className="w-8 h-8" />
           </div>
-          <h1 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">{tr('English voice rooms', 'غرف المحادثة الصوتية بالإنجليزية')}</h1>
+          <h1 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{tr('Arabic voice rooms', 'غرف المحادثة الصوتية بالعربية')}</h1>
           <p className="text-sm text-gray-600 leading-relaxed">
             {tr(
-              'Practise speaking English live with other learners. Free for everyone who signs up.',
-              '{تدرّب|تدرّبي} على التحدث بالإنجليزية مباشرة مع متعلمين آخرين. مجانًا لكل من يسجّل في المنصة.'
+              'Practise speaking Arabic live with other learners. Free for everyone who signs up.',
+              '{تدرّب|تدرّبي} على التحدث بالعربية مباشرة مع متعلمين آخرين. مجانًا لكل من يسجّل في المنصة.'
             )}
           </p>
           <div className="flex flex-col sm:flex-row gap-2 justify-center">
-            <button onClick={() => navigate('join-us')} className="px-5 py-3 rounded-xl bg-[#D4AF37] text-[#0A192F] font-bold text-sm">
+            <button onClick={() => navigate('join-us')} className="px-5 py-3 rounded-xl bg-[#C9A04F] text-[#0B3B2C] font-bold text-sm">
               {tr('Sign up free', '{سجّل|سجّلي} مجانًا')}
             </button>
-            <button onClick={() => navigate('login')} className="px-5 py-3 rounded-xl border border-[#0A192F] text-[#0A192F] font-bold text-sm">
+            <button onClick={() => navigate('login')} className="px-5 py-3 rounded-xl border border-[#0B3B2C] text-[#0B3B2C] font-bold text-sm">
               {tr('I already have an account', 'لدي حساب')}
             </button>
           </div>
@@ -123,9 +124,9 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
   }
 
   return (
-    <div className={`${embedded ? '' : 'min-h-screen bg-[#FAF8F5] py-8 px-4'}`} dir={isAr ? 'rtl' : 'ltr'}>
+    <div className={`${embedded ? '' : 'min-h-screen bg-[#FAF7EF] py-8 px-4'}`} dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-5xl mx-auto space-y-5">
-        <div className="bg-gradient-to-r from-[#0A192F] to-[#102445] text-white rounded-3xl p-6 border border-[#D4AF37]/40 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-[#0B3B2C] to-[#11503A] text-white rounded-3xl p-6 border border-[#C9A04F]/40 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             {!embedded && (
               <button onClick={() => navigate('portal')} className="text-[11px] text-gray-300 hover:text-white inline-flex items-center gap-1 mb-1">
@@ -133,8 +134,8 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
                 {tr('My dashboard', 'لوحتي')}
               </button>
             )}
-            <h1 className="font-serif-luxury font-bold text-2xl text-[#F3E5AB] flex items-center gap-2">
-              <Mic className="w-6 h-6 text-[#D4AF37]" />
+            <h1 className="font-serif-luxury font-bold text-2xl text-[#F3E3B8] flex items-center gap-2">
+              <Mic className="w-6 h-6 text-[#C9A04F]" />
               {teacher ? tr('Voice rooms with my students', 'الغرف الصوتية مع طلابي') : tr('Voice rooms', 'الغرف الصوتية')}
             </h1>
             <p className="text-sm text-gray-300">
@@ -145,7 +146,7 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
           </div>
           <button
             onClick={() => setShowCreate(true)}
-            className="self-start px-4 py-3 rounded-xl bg-[#D4AF37] text-[#0A192F] font-bold text-sm inline-flex items-center gap-2 disabled:opacity-50"
+            className="self-start px-4 py-3 rounded-xl bg-[#C9A04F] text-[#0B3B2C] font-bold text-sm inline-flex items-center gap-2 disabled:opacity-50"
           >
             <Plus className="w-4 h-4" />
             {tr('Open a room', '{افتح|افتحي} غرفة')}
@@ -156,25 +157,25 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
 
         <div className="p-4 rounded-2xl bg-white border border-gray-200 text-xs text-gray-600 leading-relaxed">
           {tr(
-            'Be kind and speak English as much as you can. Room owners can accept or refuse who enters, and anyone can report bad behaviour.',
-            '{كن|كوني} {لطيفًا|لطيفة} {وتحدث|وتحدثي} بالإنجليزية قدر الإمكان. صاحب/ة الغرفة يقبل أو يرفض من يدخل، ويمكن لأي أحد الإبلاغ عن أي إساءة.'
+            'Be kind and speak Arabic as much as you can. Room owners can accept or refuse who enters, and anyone can report bad behaviour.',
+            '{كن|كوني} {لطيفًا|لطيفة} {وتحدث|وتحدثي} بالعربية قدر الإمكان. صاحب/ة الغرفة يقبل أو يرفض من يدخل، ويمكن لأي أحد الإبلاغ عن أي إساءة.'
           )}
         </div>
 
         {upcoming.length > 0 && (
           <div className="space-y-3">
-            <h2 className="font-bold text-[#0A192F] flex items-center gap-2">🗓️ {tr('Academy rooms — upcoming', 'مواعيد غرف الأكاديمية')}</h2>
+            <h2 className="font-bold text-[#0B3B2C] flex items-center gap-2">🗓️ {tr('Academy rooms — upcoming', 'مواعيد غرف الأكاديمية')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {upcoming.map(({ r, t }) => {
                 const isNow = t <= now;
                 return (
-                  <div key={r.id} className="p-4 rounded-3xl bg-gradient-to-br from-[#0A192F] to-[#1E1B4B] text-white border border-[#D4AF37]/50 shadow-md space-y-2">
+                  <div key={r.id} className="p-4 rounded-3xl bg-gradient-to-br from-[#0B3B2C] to-[#1E1B4B] text-white border border-[#C9A04F]/50 shadow-md space-y-2">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <span className="inline-block px-2 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[10px] font-bold mb-1">{tr('Official', 'رسمية')}</span>
-                        <h3 className="font-bold text-[#F3E5AB] leading-snug">{r.title}</h3>
+                        <span className="inline-block px-2 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[10px] font-bold mb-1">{tr('Official', 'رسمية')}</span>
+                        <h3 className="font-bold text-[#F3E3B8] leading-snug">{r.title}</h3>
                       </div>
-                      {r.level && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 shrink-0">{r.level}</span>}
+                      {r.level && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 shrink-0">{levelLabel(r.level, isAr)}</span>}
                     </div>
                     {r.topic && <p className="text-xs text-gray-300 line-clamp-2">{r.topic}</p>}
                     <div className="text-xs text-gray-200">
@@ -182,14 +183,14 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
                       {r.weekly && <span className="text-gray-400"> · {tr('every week', 'كل أسبوع')}</span>}
                     </div>
                     <div className="flex items-center justify-between gap-2 pt-1">
-                      <span className={`text-xs font-bold ${isNow ? 'text-emerald-300 animate-pulse' : 'text-[#D4AF37]'}`}>
+                      <span className={`text-xs font-bold ${isNow ? 'text-emerald-300 animate-pulse' : 'text-[#C9A04F]'}`}>
                         {isNow ? tr('● Live now', '● مباشرة الآن') : `⏳ ${countdown(t - now, isAr)}`}
                       </span>
                       <div className="flex gap-1.5">
                         <a href={calendarLink(r, t, roomLink(r.id))} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1.5 rounded-lg bg-white/10 text-[11px] font-bold">
                           {tr('Add to calendar', 'أضف للتقويم')}
                         </a>
-                        <button onClick={() => navigate('room/' + r.id)} className="px-3 py-1.5 rounded-lg bg-[#D4AF37] text-[#0A192F] text-[11px] font-bold">
+                        <button onClick={() => navigate('room/' + r.id)} className="px-3 py-1.5 rounded-lg bg-[#C9A04F] text-[#0B3B2C] text-[11px] font-bold">
                           {isNow ? tr('Enter', 'دخول') : tr('Open', 'فتح')}
                         </button>
                       </div>
@@ -198,7 +199,7 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
                 );
               })}
             </div>
-            <h2 className="font-bold text-[#0A192F] pt-2">{tr('All rooms', 'كل الغرف')}</h2>
+            <h2 className="font-bold text-[#0B3B2C] pt-2">{tr('All rooms', 'كل الغرف')}</h2>
           </div>
         )}
 
@@ -212,11 +213,11 @@ export const VoiceRoomsPage: React.FC<{ navigate: (r: string) => void; embedded?
               <button
                 key={r.id}
                 onClick={() => navigate('room/' + r.id)}
-                className="text-start p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#D4AF37] hover:shadow-md transition-all space-y-3"
+                className="text-start p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#C9A04F] hover:shadow-md transition-all space-y-3"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-bold text-[#0A192F] text-base leading-snug">{r.title}</h3>
-                  {r.level && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF8F5] text-[#AA820A] border border-[#D4AF37]/40 shrink-0">{r.level}</span>}
+                  <h3 className="font-bold text-[#0B3B2C] text-base leading-snug">{r.title}</h3>
+                  {r.level && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF7EF] text-[#9A772E] border border-[#C9A04F]/40 shrink-0">{levelLabel(r.level, isAr)}</span>}
                 </div>
                 {r.topic && <p className="text-xs text-gray-600 line-clamp-2">{r.topic}</p>}
                 {r.audience === 'teacher' && (
@@ -320,7 +321,7 @@ const CreateRoomModal: React.FC<{
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl">
         <div className="flex items-center justify-between">
-          <h2 className="font-bold text-lg text-[#0A192F]">{tr('New voice room', 'غرفة صوتية جديدة')}</h2>
+          <h2 className="font-bold text-lg text-[#0B3B2C]">{tr('New voice room', 'غرفة صوتية جديدة')}</h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />
           </button>
@@ -339,7 +340,7 @@ const CreateRoomModal: React.FC<{
             <select value={level} onChange={(e) => setLevel(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm bg-white">
               {LEVELS.map((l) => (
                 <option key={l} value={l}>
-                  {l || tr('All levels', 'كل المستويات')}
+                  {l ? levelLabel(l, isAr) : tr('All levels', 'كل المستويات')}
                 </option>
               ))}
             </select>
@@ -362,9 +363,9 @@ const CreateRoomModal: React.FC<{
               key={o.v}
               type="button"
               onClick={() => setPrivacy(o.v)}
-              className={`w-full text-start p-3 rounded-xl border text-sm ${privacy === o.v ? 'border-[#D4AF37] bg-[#FAF8F5]' : 'border-gray-200'}`}
+              className={`w-full text-start p-3 rounded-xl border text-sm ${privacy === o.v ? 'border-[#C9A04F] bg-[#FAF7EF]' : 'border-gray-200'}`}
             >
-              <span className="font-bold text-[#0A192F] block">{tr(o.en, o.ar)}</span>
+              <span className="font-bold text-[#0B3B2C] block">{tr(o.en, o.ar)}</span>
               <span className="text-xs text-gray-500">{tr(o.dEn, o.dAr)}</span>
             </button>
           ))}
@@ -376,8 +377,8 @@ const CreateRoomModal: React.FC<{
           </label>
         )}
         {admin && (
-          <div className="p-3 rounded-xl bg-[#FAF8F5] border border-[#D4AF37]/50 space-y-2">
-            <label className="flex items-center gap-2 text-sm font-bold text-[#0A192F] cursor-pointer">
+          <div className="p-3 rounded-xl bg-[#FAF7EF] border border-[#C9A04F]/50 space-y-2">
+            <label className="flex items-center gap-2 text-sm font-bold text-[#0B3B2C] cursor-pointer">
               <input type="checkbox" checked={official} onChange={(e) => setOfficial(e.target.checked)} className="w-4 h-4" />
               {tr('Official academy room with a set time', 'غرفة رسمية للأكاديمية بموعد محدد')}
             </label>
@@ -415,7 +416,7 @@ const CreateRoomModal: React.FC<{
               setBusy(false);
             }
           }}
-          className="w-full py-3 rounded-xl bg-[#0A192F] text-[#F3E5AB] font-bold text-sm disabled:opacity-50"
+          className="w-full py-3 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] font-bold text-sm disabled:opacity-50"
         >
           {busy ? '…' : tr('Create and enter', 'إنشاء ودخول')}
         </button>

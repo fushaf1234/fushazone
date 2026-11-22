@@ -25,9 +25,9 @@ const DEFAULT_AVATAR: AvatarConfiguration = {
   hairColor: '#1A1A1A',
   hasHijab: true,
   hijabStyle: 'modern-wrap',
-  hijabColor: '#0A192F',
+  hijabColor: '#0B3B2C',
   clothingType: 'modest-blouse',
-  clothingColor: '#D4AF37',
+  clothingColor: '#C9A04F',
   backgroundId: 'modern-library',
   accessories: ['glasses']
 };
@@ -36,14 +36,14 @@ const DEFAULT_AVATAR: AvatarConfiguration = {
 const INITIAL_USERS: UserProfile[] = [
   {
     id: 'user_admin_01',
-    email: 'admin@englishzone.com',
+    email: 'admin@fushazone.com',
     fullName: 'Academy Super Administrator',
     role: 'super_admin',
     createdAt: new Date().toISOString()
   },
   {
     id: 'user_teacher_01',
-    email: 'teacher@englishzone.com',
+    email: 'teacher@fushazone.com',
     fullName: 'Senior Academic Instructor',
     role: 'teacher',
     phone: '+84 326 853 884',
@@ -153,7 +153,7 @@ export const storageService = {
     this.saveRegistrations(regs);
 
     // Create or activate the student user account
-    const assignedLevel: CEFRLevel = reg.mainLevel === 'needs_test' ? 'A1' : reg.mainLevel;
+    const assignedLevel: CEFRLevel = reg.mainLevel === 'needs_test' ? 'beginner' : reg.mainLevel;
     const assignedStage: StageId = `${assignedLevel}.1` as StageId;
 
     const newStudent: UserProfile = {
@@ -203,7 +203,7 @@ export const storageService = {
     return reg;
   },
 
-  // English Zone Stars Points Audit Log
+  // Fusha Zone Stars Points Audit Log
   getPointsLog(studentId?: string) {
     const raw = localStorage.getItem(STORAGE_KEYS.POINTS_LOG);
     const logs = raw ? JSON.parse(raw) : [];

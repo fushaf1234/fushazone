@@ -85,10 +85,10 @@ export const StudentMonthlyReport: React.FC<Props> = ({ uid, isAr, grades, point
   const Card = ({ icon: Icon, title, main, sub }: { icon: any; title: string; main: string; sub?: string }) => (
     <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
       <div className="flex items-center gap-1.5 text-[11px] text-gray-400">
-        <Icon className="w-3.5 h-3.5 text-[#D4AF37]" />
+        <Icon className="w-3.5 h-3.5 text-[#C9A04F]" />
         <span>{title}</span>
       </div>
-      <div className="font-bold text-lg text-[#F3E5AB]">{main}</div>
+      <div className="font-bold text-lg text-[#F3E3B8]">{main}</div>
       {sub && <div className="text-[11px] text-gray-400">{sub}</div>}
     </div>
   );
@@ -101,13 +101,13 @@ export const StudentMonthlyReport: React.FC<Props> = ({ uid, isAr, grades, point
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#0A192F] via-[#102445] to-[#0A192F] text-white rounded-3xl p-6 border border-[#D4AF37]/50 shadow-xl space-y-4">
+    <div className="bg-gradient-to-br from-[#0B3B2C] via-[#11503A] to-[#0B3B2C] text-white rounded-3xl p-6 border border-[#C9A04F]/50 shadow-xl space-y-4">
       <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/10">
         {(['week', 'month'] as const).map((m) => (
           <button
             key={m}
             onClick={() => switchTo(m)}
-            className={`py-1.5 rounded-lg text-xs font-bold ${mode === m ? 'bg-[#D4AF37] text-[#0A192F]' : 'text-gray-300'}`}
+            className={`py-1.5 rounded-lg text-xs font-bold ${mode === m ? 'bg-[#C9A04F] text-[#0B3B2C]' : 'text-gray-300'}`}
           >
             {m === 'week' ? (isAr ? 'التقرير الأسبوعي' : 'Weekly') : isAr ? 'التقرير الشهري' : 'Monthly'}
           </button>
@@ -119,7 +119,7 @@ export const StudentMonthlyReport: React.FC<Props> = ({ uid, isAr, grades, point
           {isAr ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
         <div className="text-center">
-          <h3 className="font-serif-luxury font-bold text-lg text-[#F3E5AB]">
+          <h3 className="font-serif-luxury font-bold text-lg text-[#F3E3B8]">
             {isWeek ? (offset === 0 ? (isAr ? 'هذا الأسبوع' : 'This week') : isAr ? 'أسبوع سابق' : 'Past week') : isAr ? 'تقرير الشهر' : 'Month report'}
           </h3>
           <span className="text-xs text-gray-300">{label}</span>
@@ -135,18 +135,18 @@ export const StudentMonthlyReport: React.FC<Props> = ({ uid, isAr, grades, point
       </div>
 
       {/* نجم/نجمة الأسبوع أو الشهر */}
-      <div className="p-3 rounded-2xl bg-gradient-to-r from-[#D4AF37]/25 to-transparent border border-[#D4AF37]/50 flex items-center gap-3">
-        <Star className="w-7 h-7 text-[#D4AF37] fill-[#D4AF37] shrink-0" />
+      <div className="p-3 rounded-2xl bg-gradient-to-r from-[#C9A04F]/25 to-transparent border border-[#C9A04F]/50 flex items-center gap-3">
+        <Star className="w-7 h-7 text-[#C9A04F] fill-[#C9A04F] shrink-0" />
         <div className="min-w-0">
           <span className="text-[11px] text-gray-300 block">
             {isWeek ? (isAr ? '{نجم|نجمة} الأسبوع في المجموعة' : 'Star of the week') : isAr ? '{نجم|نجمة} الشهر في المجموعة' : 'Star of the month'}
           </span>
-          <span className="font-bold text-sm text-[#F3E5AB] block truncate">
+          <span className="font-bold text-sm text-[#F3E3B8] block truncate">
             {starRow ? `${starRow.name}${starRow.me ? (isAr ? ' (أنت) 🎉' : ' (you) 🎉') : ''}` : dash}
           </span>
         </div>
         {starRow && (
-          <span className="ms-auto text-xs font-bold text-[#D4AF37] whitespace-nowrap">
+          <span className="ms-auto text-xs font-bold text-[#C9A04F] whitespace-nowrap">
             {starRow.pts} {isAr ? 'نقطة' : 'pts'}
           </span>
         )}

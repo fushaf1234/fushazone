@@ -37,18 +37,18 @@ import { StudentPreviewPage } from './pages/StudentPreviewPage';
 import { TeacherDashboard } from './pages/dashboards/TeacherDashboard';
 import { AdminDashboard } from './pages/dashboards/AdminDashboard';
 import { AvatarStudioPage } from './pages/dashboards/AvatarStudioPage';
-import { EnglishZoneEmblem } from './components/common/Logo';
+import { FushaZoneEmblem } from './components/common/Logo';
 import { CEFRLevel } from './types';
 import { ShieldAlert, ArrowLeft } from 'lucide-react';
 
 const LoadingScreen: React.FC = () => (
-  <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-4">
+  <div className="min-h-screen bg-[#FAF7EF] flex flex-col items-center justify-center p-4">
     <div className="flex flex-col items-center space-y-4">
       <div className="animate-spin-slow">
-        <EnglishZoneEmblem sizeClass="w-20 h-20" glow={true} />
+        <FushaZoneEmblem sizeClass="w-20 h-20" glow={true} />
       </div>
-      <span className="font-serif-luxury font-bold text-sm tracking-wider text-[#0A192F]">
-        ENGLISH ZONE
+      <span className="font-serif-luxury font-bold text-sm tracking-wider text-[#0B3B2C]">
+        FUSHA ZONE
       </span>
       <span className="text-xs text-gray-400">
         Verifying secure authentication...
@@ -63,12 +63,12 @@ const UnauthorizedScreen: React.FC<{ navigate: (route: string) => void; required
 }) => {
   const { language } = useLanguage();
   return (
-    <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FAF7EF] flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-red-200 shadow-2xl max-w-md w-full text-center space-y-5">
         <div className="w-16 h-16 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">
+        <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">
           {language === 'ar' ? 'وصول غير مصرح به' : 'Access Restricted'}
         </h2>
         <p className="text-sm text-gray-600 leading-relaxed">
@@ -78,7 +78,7 @@ const UnauthorizedScreen: React.FC<{ navigate: (route: string) => void; required
         </p>
         <button
           onClick={() => navigate('portal')}
-          className="px-6 py-3 rounded-xl bg-[#0A192F] text-[#F3E5AB] font-bold text-xs hover:bg-[#162B4D] transition-colors inline-flex items-center gap-2"
+          className="px-6 py-3 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] font-bold text-xs hover:bg-[#14523C] transition-colors inline-flex items-center gap-2"
         >
           <ArrowLeft className={`w-4 h-4 ${language === 'ar' ? 'rotate-180' : ''}`} />
           <span>{language === 'ar' ? 'العودة لبوابتك المصرح بها' : 'Return to Authorized Portal'}</span>

@@ -1,6 +1,7 @@
 export type Language = 'en' | 'ar';
 
-export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+// مستويات Fusha Zone: ثلاثة للعربية وثلاثة مسارات للقرآن (اسم النوع بقي كما هو لتقليل التغييرات)
+export type CEFRLevel = 'beginner' | 'intermediate' | 'advanced' | 'noorani' | 'tajweed' | 'hifz';
 
 export type StageId = 
   | 'A1.1' | 'A1.2' | 'A1.3'
@@ -38,7 +39,8 @@ export interface CEFRLevelInfo {
   code: CEFRLevel;
   nameEn: string;
   nameAr: string;
-  durationMonths: number;
+  durationMonths?: number;
+  program: 'arabic' | 'quran';
   descriptionEn: string;
   descriptionAr: string;
   targetAudienceEn: string;

@@ -69,34 +69,34 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
     { id: 'blog', label: t.nav.blog, icon: FileText },
     { id: 'library', label: language === 'ar' ? 'المكتبة والمجلة' : 'Library & Magazine', icon: BookOpen },
     ...(user ? [] : [{ id: 'join', label: language === 'ar' ? '{سجّل|سجّلي} مجانًا' : 'Sign up free', icon: Gift, badge: 'Free' }]),
-  ].filter((l) => l.id !== 'placement-test' || !!contacts.placementTestUrl);
+  ];
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-[#0A192F]/95 backdrop-blur-md border-b border-[#D4AF37]/30 py-3 shadow-xl' 
-        : 'bg-[#0A192F] border-b border-[#D4AF37]/20 py-4'
+        ? 'bg-[#0B3B2C]/95 backdrop-blur-md border-b border-[#C9A04F]/30 py-3 shadow-xl' 
+        : 'bg-[#0B3B2C] border-b border-[#C9A04F]/20 py-4'
     }`}>
       {/* Top micro announcement bar */}
       <div className="hidden lg:block border-b border-white/5 pb-2 mb-2 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-gray-300">
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 text-[#F3E5AB]">
-              <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
+            <span className="inline-flex items-center gap-1.5 text-[#F3E3B8]">
+              <span className="w-2 h-2 rounded-full bg-[#C9A04F] animate-pulse"></span>
               {t.brand.slogan}
             </span>
             <span className="text-gray-500">|</span>
             <span className="text-gray-400">{t.brand.onlineOnlyBadge}</span>
           </div>
           <div className="flex items-center gap-4">
-            {contacts.placementTestUrl && (
+            {(
             <a
               href={pt.href}
               target={pt.target}
               rel={pt.rel}
-              className="text-[#F3E5AB] hover:text-[#D4AF37] transition-colors flex items-center gap-1 font-medium"
+              className="text-[#F3E3B8] hover:text-[#C9A04F] transition-colors flex items-center gap-1 font-medium"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#C9A04F]" />
               <span>{pt.label(language === 'ar')}</span>
             </a>
             )}
@@ -131,14 +131,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                   onClick={() => handleNav(link.id)}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     isActive
-                      ? 'text-[#F3E5AB] bg-white/10 font-semibold'
+                      ? 'text-[#F3E3B8] bg-white/10 font-semibold'
                       : 'text-gray-200 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <span className="flex items-center gap-1.5">
                     <span>{link.label}</span>
                     {link.id === 'english-club' && (
-                      <span className="px-1.5 py-0.5 rounded-full bg-[#D4AF37] text-[#0A192F] text-[10px] font-extrabold tracking-wider uppercase leading-none shadow-xs">
+                      <span className="px-1.5 py-0.5 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-[10px] font-extrabold tracking-wider uppercase leading-none shadow-xs">
                         New
                       </span>
                     )}
@@ -159,7 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
 
               {isMoreDropdownOpen && (
                 <div 
-                  className={`absolute ${language === 'ar' ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-[#0A192F] border border-[#D4AF37]/30 shadow-2xl p-2 z-50`}
+                  className={`absolute ${language === 'ar' ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-[#0B3B2C] border border-[#C9A04F]/30 shadow-2xl p-2 z-50`}
                   onMouseLeave={() => setIsMoreDropdownOpen(false)}
                 >
                   {moreLinks.map((item) => {
@@ -176,11 +176,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                           className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-left transition-colors text-gray-200 hover:bg-white/10 hover:text-white"
                         >
                           <div className="flex items-center gap-2.5">
-                            <IconComponent className="w-4 h-4 text-[#D4AF37]" />
+                            <IconComponent className="w-4 h-4 text-[#C9A04F]" />
                             <span>{item.label}</span>
                           </div>
                           {item.badge && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#0A192F]">
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#C9A04F] text-[#0B3B2C]">
                               {item.badge}
                             </span>
                           )}
@@ -193,16 +193,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                         onClick={() => handleNav(item.id)}
                         className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-left transition-colors ${
                           isActive
-                            ? 'bg-[#D4AF37]/20 text-[#F3E5AB] font-semibold'
+                            ? 'bg-[#C9A04F]/20 text-[#F3E3B8] font-semibold'
                             : 'text-gray-200 hover:bg-white/10 hover:text-white'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <IconComponent className="w-4 h-4 text-[#D4AF37]" />
+                          <IconComponent className="w-4 h-4 text-[#C9A04F]" />
                           <span>{item.label}</span>
                         </div>
                         {item.badge && (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#0A192F]">
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#C9A04F] text-[#0B3B2C]">
                             {item.badge}
                           </span>
                         )}
@@ -221,9 +221,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
             {user ? (
               <button
                 onClick={() => handleNav('portal')}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#162B4D] border border-[#D4AF37]/40 text-[#F3E5AB] hover:bg-[#D4AF37] hover:text-[#0A192F] transition-all flex items-center gap-2 shadow"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#14523C] border border-[#C9A04F]/40 text-[#F3E3B8] hover:bg-[#C9A04F] hover:text-[#0B3B2C] transition-all flex items-center gap-2 shadow"
               >
-                <div className="w-5 h-5 rounded-full bg-[#D4AF37] text-[#0A192F] flex items-center justify-center font-bold text-[10px]">
+                <div className="w-5 h-5 rounded-full bg-[#C9A04F] text-[#0B3B2C] flex items-center justify-center font-bold text-[10px]">
                   {user.fullName.charAt(0)}
                 </div>
                 <span>
@@ -245,7 +245,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
 
                 <button
                   onClick={() => handleNav('join-us')}
-                  className="relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] shadow-lg hover:shadow-[#D4AF37]/20 transition-all active:scale-95"
+                  className="relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] shadow-lg hover:shadow-[#C9A04F]/20 transition-all active:scale-95"
                 >
                   <span className="relative z-10 flex items-center gap-1.5">
                     <GraduationCap className="w-4 h-4" />
@@ -264,7 +264,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
               className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10"
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6 text-[#D4AF37]" /> : <Menu className="w-6 h-6 text-gray-200" />}
+              {isMobileMenuOpen ? <X className="w-6 h-6 text-[#C9A04F]" /> : <Menu className="w-6 h-6 text-gray-200" />}
             </button>
           </div>
         </div>
@@ -272,12 +272,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
 
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-[#D4AF37]/20 bg-[#0A192F] px-4 pt-4 pb-6 space-y-2 max-h-[85vh] overflow-y-auto">
+        <div className="md:hidden border-t border-[#C9A04F]/20 bg-[#0B3B2C] px-4 pt-4 pb-6 space-y-2 max-h-[85vh] overflow-y-auto">
           <div className="grid grid-cols-2 gap-2 mb-4">
             {user ? (
               <button
                 onClick={() => handleNav('portal')}
-                className="col-span-2 w-full py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] text-center"
+                className="col-span-2 w-full py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C9A04F] to-[#9A772E] text-[#0B3B2C] text-center"
               >
                 {language === 'ar' ? 'حسابي' : 'My account'}
               </button>
@@ -285,7 +285,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
               <>
                 <button
                   onClick={() => handleNav('join-us')}
-                  className="w-full py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#D4AF37] to-[#AA820A] text-[#0A192F] text-center"
+                  className="w-full py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C9A04F] to-[#9A772E] text-[#0B3B2C] text-center"
                 >
                   {t.nav.register}
                 </button>
@@ -297,15 +297,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                 </button>
               </>
             )}
-            {contacts.placementTestUrl && (
+            {(
             <a
               href={pt.href}
               target={pt.target}
               rel={pt.rel}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="col-span-2 w-full py-2.5 rounded-xl font-semibold text-xs border border-[#D4AF37]/50 text-[#F3E5AB] flex items-center justify-center gap-1"
+              className="col-span-2 w-full py-2.5 rounded-xl font-semibold text-xs border border-[#C9A04F]/50 text-[#F3E3B8] flex items-center justify-center gap-1"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#C9A04F]" />
               {t.nav.placementTest}
             </a>
             )}
@@ -318,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                 onClick={() => handleNav(link.id)}
                 className={`w-full text-left py-2.5 px-3 rounded-lg text-sm font-medium ${
                   currentRoute === link.id
-                    ? 'bg-[#D4AF37]/20 text-[#F3E5AB] font-bold'
+                    ? 'bg-[#C9A04F]/20 text-[#F3E3B8] font-bold'
                     : 'text-gray-200 hover:bg-white/5'
                 }`}
               >
@@ -326,7 +326,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
               </button>
             ))}
 
-            <div className="pt-2 pb-1 text-xs uppercase tracking-wider text-[#D4AF37] font-bold px-3">
+            <div className="pt-2 pb-1 text-xs uppercase tracking-wider text-[#C9A04F] font-bold px-3">
               {language === 'ar' ? 'صفحات إضافية' : 'Academy Explorations'}
             </div>
 
@@ -342,7 +342,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                 >
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#0A192F]">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#C9A04F] text-[#0B3B2C]">
                       {item.badge}
                     </span>
                   )}
@@ -353,13 +353,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
                   onClick={() => handleNav(item.id)}
                   className={`w-full flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-medium ${
                     currentRoute === item.id
-                      ? 'bg-[#D4AF37]/20 text-[#F3E5AB] font-bold'
+                      ? 'bg-[#C9A04F]/20 text-[#F3E3B8] font-bold'
                       : 'text-gray-300 hover:bg-white/5'
                   }`}
                 >
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#D4AF37] text-[#0A192F]">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#C9A04F] text-[#0B3B2C]">
                       {item.badge}
                     </span>
                   )}

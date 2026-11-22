@@ -27,11 +27,11 @@ const PINK_FLOWERS = svg(
     leaf(100, 25, 70, '#BBF7D0', 0.35)
 );
 const NIGHT_FLOWERS = svg(
-  flower(30, 30, 6, '#F3E5AB', '#D4AF37', 0.28) +
-    flower(90, 80, 8, '#FBCFE8', '#F3E5AB', 0.22) +
-    flower(35, 100, 4, '#F3E5AB', '#D4AF37', 0.25) +
-    leaf(52, 40, 25, '#D4AF37', 0.25) +
-    leaf(75, 95, -35, '#D4AF37', 0.22)
+  flower(30, 30, 6, '#F3E3B8', '#C9A04F', 0.28) +
+    flower(90, 80, 8, '#FBCFE8', '#F3E3B8', 0.22) +
+    flower(35, 100, 4, '#F3E3B8', '#C9A04F', 0.25) +
+    leaf(52, 40, 25, '#C9A04F', 0.25) +
+    leaf(75, 95, -35, '#C9A04F', 0.22)
 );
 const SPRING = svg(
   flower(20, 30, 6, '#FFFFFF', '#FDE047', 0.55) +
@@ -54,8 +54,8 @@ export interface RoomBg {
 }
 
 export const ROOM_BGS: RoomBg[] = [
-  { id: 'night', ar: 'ليلي', en: 'Night', css: 'linear-gradient(to bottom, #0A192F, #0B1424 45%, #05080F)' },
-  { id: 'night-flowers', ar: 'ورود ذهبية', en: 'Golden flowers', css: `${NIGHT_FLOWERS}, linear-gradient(to bottom, #0A192F, #05080F)` },
+  { id: 'night', ar: 'ليلي', en: 'Night', css: 'linear-gradient(to bottom, #0B3B2C, #0B1424 45%, #05080F)' },
+  { id: 'night-flowers', ar: 'ورود ذهبية', en: 'Golden flowers', css: `${NIGHT_FLOWERS}, linear-gradient(to bottom, #0B3B2C, #05080F)` },
   { id: 'rose-flowers', ar: 'ورود وردية', en: 'Pink flowers', css: `${PINK_FLOWERS}, linear-gradient(160deg, #831843, #9D174D 45%, #3B0764)` },
   { id: 'spring', ar: 'ربيع', en: 'Spring', css: `${SPRING}, linear-gradient(160deg, #065F46, #047857 45%, #064E3B)` },
   { id: 'stars', ar: 'نجوم', en: 'Stars', css: `${STARS}, linear-gradient(to bottom, #1E1B4B, #0F172A 60%, #020617)` },

@@ -12,7 +12,7 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
   const [copied, setCopied] = useState('');
   const { whatsapp } = useAcademySettings();
   const ambassadorWa = whatsapp
-    ? whatsappWithText(whatsapp, tr(`Hello English Zone, I would like to become an ambassador. My code: ${code}`, resolveGender(`مرحبًا English Zone، أريد أن {أصبح سفيرًا|أصبح سفيرة} للأكاديمية. كودي: ${code}`)))
+    ? whatsappWithText(whatsapp, tr(`Hello Fusha Zone, I would like to become an ambassador. My code: ${code}`, resolveGender(`مرحبًا Fusha Zone، أريد أن {أصبح سفيرًا|أصبح سفيرة} للأكاديمية. كودي: ${code}`)))
     : '';
 
   const copy = async (text: string, what: string) => {
@@ -26,25 +26,25 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
   };
 
   const shareText = tr(
-    `Join me at English Zone Academy and get ${FRIEND_DISCOUNT}% off your first month! Use my code ${code}: ${link}`,
-    resolveGender(`{انضم|انضمي} معي إلى أكاديمية English Zone {واحصل|واحصلي} على خصم ${FRIEND_DISCOUNT}% على شهرك الأول! كود الدعوة: ${code}\n${link}`)
+    `Join me at Fusha Zone Academy and get ${FRIEND_DISCOUNT}% off your first month! Use my code ${code}: ${link}`,
+    resolveGender(`{انضم|انضمي} معي إلى أكاديمية Fusha Zone {واحصل|واحصلي} على خصم ${FRIEND_DISCOUNT}% على شهرك الأول! كود الدعوة: ${code}\n${link}`)
   );
 
   return (
     <div className="space-y-5">
       <div className="text-center space-y-1">
-        <h2 className="font-serif-luxury font-bold text-2xl text-[#0A192F]">{tr('Invite & earn', '{ادعُ أصدقاءك واربح|ادعي صديقاتكِ واربحي}')}</h2>
+        <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{tr('Invite & earn', '{ادعُ أصدقاءك واربح|ادعي صديقاتكِ واربحي}')}</h2>
         <p className="text-xs text-gray-500">{tr('Two offers, no limit on the number of friends.', 'عرضان، وبلا حد لعدد {الأصدقاء|الصديقات}.')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-3xl p-6 bg-white border-2 border-[#D4AF37]/50 shadow-md space-y-3">
+        <div className="rounded-3xl p-6 bg-white border-2 border-[#C9A04F]/50 shadow-md space-y-3">
           <div className="flex items-center gap-2">
-            <Gift className="w-6 h-6 text-[#D4AF37]" />
-            <h3 className="font-bold text-lg text-[#0A192F]">{tr('“My friend in my group”', 'عرض «{صديقي|صديقتي} في مجموعتي»')}</h3>
+            <Gift className="w-6 h-6 text-[#C9A04F]" />
+            <h3 className="font-bold text-lg text-[#0B3B2C]">{tr('“My friend in my group”', 'عرض «{صديقي|صديقتي} في مجموعتي»')}</h3>
           </div>
           <p className="text-xs text-gray-600">{tr('Invite your friend to your own group:', '{ادعُ صديقك|ادعي صديقتكِ} إلى {مجموعتك|مجموعتكِ} نفسها:')}</p>
-          <ul className="space-y-2 text-sm text-[#0A192F]">
+          <ul className="space-y-2 text-sm text-[#0B3B2C]">
             <li>
               • <b>{tr('You:', '{أنت|أنتِ}:')}</b> {tr(`${REFERRER_GROUP_DISCOUNT}% off one full month for every friend who joins (2 friends = 2 months at ${REFERRER_GROUP_DISCOUNT}%).`, `خصم ${REFERRER_GROUP_DISCOUNT}% على شهر كامل {عن كل صديق ينضم|عن كل صديقة تنضم} ({صديقان|صديقتان} = خصم ${REFERRER_GROUP_DISCOUNT}% على شهرين، وهكذا).`)}
             </li>
@@ -54,10 +54,10 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
           </ul>
         </div>
 
-        <div className="rounded-3xl p-6 bg-gradient-to-br from-[#0A192F] to-[#102445] text-[#F3E5AB] border-2 border-[#D4AF37]/60 shadow-md space-y-3">
+        <div className="rounded-3xl p-6 bg-gradient-to-br from-[#0B3B2C] to-[#11503A] text-[#F3E3B8] border-2 border-[#C9A04F]/60 shadow-md space-y-3">
           <div className="flex items-center gap-2">
-            <Gem className="w-6 h-6 text-[#D4AF37]" />
-            <h3 className="font-bold text-lg">{tr('“English Zone Ambassador”', 'عرض «{سفير|سفيرة} English Zone»')}</h3>
+            <Gem className="w-6 h-6 text-[#C9A04F]" />
+            <h3 className="font-bold text-lg">{tr('“Fusha Zone Ambassador”', 'عرض «{سفير|سفيرة} Fusha Zone»')}</h3>
           </div>
           <p className="text-xs text-gray-300">
             {active
@@ -84,7 +84,7 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
       </div>
 
       <div className="rounded-3xl p-6 bg-white border border-gray-200 shadow-sm space-y-3">
-        <h3 className="font-bold text-[#0A192F]">{tr('Your invitation code', 'كود الدعوة الخاص {بك|بكِ}')}</h3>
+        <h3 className="font-bold text-[#0B3B2C]">{tr('Your invitation code', 'كود الدعوة الخاص {بك|بكِ}')}</h3>
         {!active && (
           <p className="text-[11px] text-gray-500">
             {tr('Before subscribing, your code works for the Ambassador offer. The “My friend in my group” offer starts once you subscribe.', 'قبل الاشتراك يعمل {كودك|كودكِ} لعرض «{السفير|السفيرة}». وعرض «{صديقي|صديقتي} في مجموعتي» يبدأ بعد {اشتراكك|اشتراككِ} في الكورس.')}
@@ -93,7 +93,7 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
         {true ? (
           <>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-4 py-2 rounded-xl bg-[#FAF8F5] border-2 border-dashed border-[#D4AF37] font-mono font-bold text-lg text-[#0A192F] tracking-widest" dir="ltr">
+              <span className="px-4 py-2 rounded-xl bg-[#FAF7EF] border-2 border-dashed border-[#C9A04F] font-mono font-bold text-lg text-[#0B3B2C] tracking-widest" dir="ltr">
                 {code}
               </span>
               <button onClick={() => copy(code, 'code')} className="px-3 py-2 rounded-xl border border-gray-300 text-xs font-bold flex items-center gap-1">
@@ -119,13 +119,13 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
             </p>
           </>
         ) : (
-          <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-[#FAF8F5]">
+          <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-[#FAF7EF]">
             <span className="text-xs text-gray-600 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-[#AA820A]" />
+              <Lock className="w-4 h-4 text-[#9A772E]" />
               {tr('Your personal code activates once you subscribe to the course.', 'يُفعَّل {كودك|كودكِ} الخاص بعد {اشتراكك|اشتراككِ} في الكورس.')}
             </span>
             {onSubscribe && (
-              <button onClick={onSubscribe} className="px-4 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold">
+              <button onClick={onSubscribe} className="px-4 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold">
                 {tr('Subscribe to the course', '{اشترك|اشتركي} في الكورس')}
               </button>
             )}
@@ -133,8 +133,8 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
         )}
       </div>
 
-      <div className="rounded-2xl p-4 bg-[#FAF8F5] border border-gray-200 text-[11px] text-gray-600 space-y-1">
-        <b className="text-[#0A192F]">{tr('Terms', 'الشروط')}</b>
+      <div className="rounded-2xl p-4 bg-[#FAF7EF] border border-gray-200 text-[11px] text-gray-600 space-y-1">
+        <b className="text-[#0B3B2C]">{tr('Terms', 'الشروط')}</b>
         <p>• {tr('Rewards count after your friend’s subscription is activated and paid.', 'تُحتسب المكافأة بعد تفعيل اشتراك {الصديق ودفعه|الصديقة ودفعها}.')}</p>
         <p>• {tr(`The monthly ${AMBASSADOR_MONTHLY}% is due while your friend stays subscribed.`, `تُستحق مكافأة ${AMBASSADOR_MONTHLY}% الشهرية ما {دام الصديق مشتركًا|دامت الصديقة مشتركة}.`)}</p>
         <p>• {tr('The ambassador offer does not require a course subscription.', 'عرض {السفير|السفيرة} لا يشترط الاشتراك في الكورس.')}</p>
@@ -150,7 +150,7 @@ export const ReferralOffers: React.FC<{ uid: string; isAr: boolean; active: bool
 export const ReferralTeaser: React.FC<{ isAr: boolean; onClick: () => void; className?: string }> = ({ isAr, onClick, className = '' }) => (
   <button
     onClick={onClick}
-    className={`ez-float-glow w-full rounded-2xl px-5 py-4 bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-[#0A192F] font-bold text-sm sm:text-base flex items-center justify-center gap-2 ${className}`}
+    className={`ez-float-glow w-full rounded-2xl px-5 py-4 bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] font-bold text-sm sm:text-base flex items-center justify-center gap-2 ${className}`}
   >
     <Gift className="w-5 h-5" />
     {isAr ? '🎁 {اربح|اربحي} بسهولة! {سجّل|سجّلي} مجانًا {واكتشف|واكتشفي} عروض الدعوة' : '🎁 Earn easily! Sign up free and discover our invite offers'}

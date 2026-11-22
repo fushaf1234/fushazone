@@ -118,5 +118,5 @@ const sendViaEmailJS = async (cfg: EmailCfg, p: { to: string; toName: string; fr
 export const sendTestEmail = async (cfg: { serviceId: string; templateId: string; publicKey: string }, to: string) =>
   sendViaEmailJS(
     { serviceId: cfg.serviceId.trim(), templateId: cfg.templateId.trim(), publicKey: cfg.publicKey.trim(), academyEmail: to },
-    { to: to.trim(), toName: 'English Zone', fromName: 'منصة English Zone', preview: 'هذه رسالة تجريبية للتأكد من أن تنبيهات البريد تعمل ✅' }
+    { to: to.trim(), toName: 'Fusha Zone', fromName: 'منصة Fusha Zone', preview: 'هذه رسالة تجريبية للتأكد من أن تنبيهات البريد تعمل ✅' }
   );

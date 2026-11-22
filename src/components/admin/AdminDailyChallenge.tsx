@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LEVEL_CODES, levelLabel } from '../../data/academyData';
 import { Trash2, Pencil, Plus, Loader2, Sparkles } from 'lucide-react';
 import { generateChallenges, loadGeminiKey, saveGeminiKey } from '../../services/challengeAI';
 import { Challenge, addDays, dayKey, deleteChallenge, listChallenges, saveChallenge } from '../../services/dailyChallenge';
@@ -15,7 +16,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
   const [key, setKey] = useState('');
   const [keyInput, setKeyInput] = useState('');
   const [showKey, setShowKey] = useState(false);
-  const [gen, setGen] = useState({ level: 'A1', count: 7, topic: '' });
+  const [gen, setGen] = useState({ level: 'beginner', count: 7, topic: '' });
   const [genBusy, setGenBusy] = useState(false);
   const [drafts, setDrafts] = useState<Omit<Challenge, 'date'>[]>([]);
   useEffect(() => {
@@ -108,7 +109,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
     <div className="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-bold text-[#0A192F]">🎯 {tr('Daily challenge', 'تحدّي اليوم')}</h3>
+          <h3 className="font-bold text-[#0B3B2C]">🎯 {tr('Daily challenge', 'تحدّي اليوم')}</h3>
           <p className="text-[11px] text-gray-500">
             {tr(
               'One question per day for members. They answer once and build a streak. Days without a question show nothing.',
@@ -116,7 +117,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
             )}
           </p>
         </div>
-        <button onClick={() => setEdit(blank())} className="px-3 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-1 shrink-0">
+        <button onClick={() => setEdit(blank())} className="px-3 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-1 shrink-0">
           <Plus className="w-4 h-4" />
           {tr('Add', 'إضافة سؤال')}
         </button>
@@ -165,8 +166,8 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
         )}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <select value={gen.level} onChange={(e) => setGen({ ...gen, level: e.target.value })} className="px-3 py-2 rounded-xl border border-gray-300 text-sm bg-white">
-            {['A1', 'A2', 'B1', 'B2', 'C1'].map((l) => (
-              <option key={l}>{l}</option>
+            {LEVEL_CODES.map((l) => (
+              <option key={l} value={l}>{levelLabel(l, isAr)}</option>
             ))}
           </select>
           <select value={gen.count} onChange={(e) => setGen({ ...gen, count: Number(e.target.value) })} className="px-3 py-2 rounded-xl border border-gray-300 text-sm bg-white">
@@ -217,7 +218,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
               </div>
             ))}
             <div className="flex gap-2">
-              <button onClick={saveDrafts} disabled={genBusy} className="flex-1 py-2.5 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-sm font-bold disabled:opacity-50">
+              <button onClick={saveDrafts} disabled={genBusy} className="flex-1 py-2.5 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-sm font-bold disabled:opacity-50">
                 {tr(`Save all (${drafts.length})`, `حفظ الكل (${drafts.length})`)}
               </button>
               <button onClick={() => setDrafts([])} className="px-4 py-2.5 rounded-xl bg-gray-100 text-sm font-bold">
@@ -229,7 +230,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
       </div>
 
       {edit && (
-        <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#D4AF37]/50 space-y-3">
+        <div className="p-4 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/50 space-y-3">
           <label className="block space-y-1">
             <span className="text-xs font-bold text-gray-700">{tr('Date', 'التاريخ')}</span>
             <input type="date" value={edit.date} min={today} onChange={(e) => setEdit({ ...edit, date: e.target.value })} className="px-3 py-2 rounded-xl border border-gray-300 text-sm bg-white" />
@@ -257,7 +258,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
               </div>
             ))}
             {edit.options.length < 4 && (
-              <button onClick={() => setEdit({ ...edit, options: [...edit.options, ''] })} className="text-xs font-bold text-[#AA820A]">
+              <button onClick={() => setEdit({ ...edit, options: [...edit.options, ''] })} className="text-xs font-bold text-[#9A772E]">
                 + {tr('Add choice', 'خيار آخر')}
               </button>
             )}
@@ -267,7 +268,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
             <textarea value={edit.explanation} dir="auto" rows={2} onChange={(e) => setEdit({ ...edit, explanation: e.target.value.slice(0, 600) })} className="w-full px-3 py-2 rounded-xl border border-gray-300 text-sm" />
           </label>
           <div className="flex gap-2">
-            <button onClick={save} disabled={busy} className="px-4 py-2 rounded-xl bg-[#0A192F] text-[#F3E5AB] text-xs font-bold flex items-center gap-1 disabled:opacity-50">
+            <button onClick={save} disabled={busy} className="px-4 py-2 rounded-xl bg-[#0B3B2C] text-[#F3E3B8] text-xs font-bold flex items-center gap-1 disabled:opacity-50">
               {busy && <Loader2 className="w-4 h-4 animate-spin" />}
               {tr('Save', 'حفظ')}
             </button>
@@ -288,7 +289,7 @@ export const AdminDailyChallenge: React.FC<{ isAr: boolean; onNotice: (m: string
                 <span className={`text-[11px] font-bold ${c.date === today ? 'text-emerald-700' : 'text-gray-500'}`}>
                   {c.date} {c.date === today ? `· ${tr('today', 'اليوم')}` : ''}
                 </span>
-                <p className="text-sm font-bold text-[#0A192F] truncate" dir="auto">{c.question}</p>
+                <p className="text-sm font-bold text-[#0B3B2C] truncate" dir="auto">{c.question}</p>
               </div>
               <div className="flex gap-1 shrink-0">
                 <button onClick={() => setEdit({ ...c, options: [...c.options] })} className="p-2 rounded-lg bg-gray-50 text-gray-600">

@@ -68,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, navigate }) => {
     { id: 'testimonials', label: t.nav.testimonials, icon: UserCheck },
     { id: 'blog', label: t.nav.blog, icon: FileText },
     { id: 'library', label: language === 'ar' ? 'المكتبة والمجلة' : 'Library & Magazine', icon: BookOpen },
+    { id: 'quran-kids', label: language === 'ar' ? 'دروس القرآن للأطفال' : "Kids' Qur'an Lessons", icon: BookOpen, badge: 'New', externalUrl: '/quran-kids/' },
     ...(user ? [] : [{ id: 'join', label: language === 'ar' ? '{سجّل|سجّلي} مجانًا' : 'Sign up free', icon: Gift, badge: 'Free' }]),
   ];
 

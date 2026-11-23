@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة دروس القرآن الكريم والتجويد للأطفال</title>
+<style>
+  :root{
+    --green-deep:#123524;
+    --green:#1F5C42;
+    --green-mid:#2F7D57;
+    --green-soft:#DCEAE1;
+    --gold:#C9A24B;
+    --gold-light:#EAD9A0;
+    --gold-glow:#F6E9C4;
+    --cream:#FBF7EE;
+    --white:#FFFFFF;
+    --ink:#1B2A22;
+    --ink-soft:#4B5D53;
+    --shadow: 0 10px 30px rgba(18,53,36,0.12);
+    --radius-lg: 28px;
+    --radius-md: 20px;
+    --radius-sm: 14px;
+    --font-ar-display: "Traditional Arabic","Segoe UI","Times New Roman", serif;
+    --font-ar-body: "Tahoma","Segoe UI","Geeza Pro","Arial", sans-serif;
+    --font-en-display: Georgia, "Times New Roman", serif;
+    --font-en-body: "Segoe UI", Arial, Helvetica, sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{ scroll-behavior:smooth; }
+  html,body{margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 8%, rgba(201,162,75,0.10), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(31,92,66,0.10), transparent 45%),
+      var(--cream);
+    font-family: var(--font-ar-body);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body.lang-en{ font-family: var(--font-en-body); }
+  body.lang-en [data-ar-only]{display:none !important;}
+  body:not(.lang-en) [data-en-only]{display:none !important;}
+
+  .pattern-strip{ height:10px; width:100%; background-image: repeating-linear-gradient(45deg, var(--gold) 0 6px, var(--green) 6px 12px); opacity:0.55; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:22px 18px 60px; }
+
+  .lang-toggle{
+    position:fixed; top:16px; inset-inline-start:16px; z-index:60;
+    background:var(--green-deep); border:1px solid var(--gold); border-radius:999px; padding:6px;
+    display:flex; align-items:center; gap:2px; box-shadow:var(--shadow); font-size:13px; font-weight:bold;
+  }
+  .lang-toggle .globe{ padding:0 6px; color:var(--gold-light); }
+  .lang-toggle button{
+    border:none; background:transparent; color:var(--green-soft); padding:7px 14px; border-radius:999px;
+    cursor:pointer; font-family:inherit; font-weight:bold; font-size:13px; transition: background .2s ease, color .2s ease;
+  }
+  .lang-toggle button.active{ background: var(--gold); color:var(--green-deep); }
+  .lang-toggle button:focus-visible{ outline:2px solid var(--gold-glow); outline-offset:2px; }
+
+  header.hero{
+    display:flex; flex-wrap:wrap; gap:22px; align-items:stretch;
+    background: linear-gradient(160deg, var(--green-deep), var(--green) 65%, var(--green-mid));
+    border-radius: var(--radius-lg); padding: 34px 30px; box-shadow: var(--shadow);
+    position:relative; overflow:hidden; margin-top:56px;
+  }
+  header.hero::before{
+    content:""; position:absolute; inset-inline-end:-60px; top:-40px; width:260px; height:260px; border-radius:50%;
+    background: radial-gradient(circle, rgba(234,217,160,0.22), transparent 70%);
+  }
+  header.hero::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:14px;
+    background-image: repeating-linear-gradient(45deg, rgba(201,162,75,0.55) 0 6px, transparent 6px 12px);
+  }
+  .hero-crest{
+    flex:0 0 auto; width:78px; height:78px; border-radius:50%; z-index:2;
+    background: radial-gradient(circle at 35% 30%, var(--gold-glow), var(--gold) 60%, #9A7530 100%);
+    display:flex; align-items:center; justify-content:center; font-size:34px;
+    box-shadow: 0 8px 20px rgba(180,134,58,0.4), inset 0 0 0 4px rgba(255,255,255,0.3);
+    align-self:center;
+  }
+  .hero-titles{ flex:1 1 320px; display:flex; flex-direction:column; justify-content:center; gap:10px; z-index:2; }
+  .hero-titles h1{
+    margin:0; color:var(--gold-light); font-family: var(--font-ar-display);
+    font-size: clamp(24px, 3.4vw, 34px); line-height:1.4; text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+  body.lang-en .hero-titles h1{ font-family: var(--font-en-display); }
+  .hero-titles p{ margin:0; color:var(--green-soft); font-size:15px; line-height:1.7; max-width:520px; }
+
+  .quick-nav{
+    display:flex; gap:16px; justify-content:center; margin-top:22px; flex-wrap:wrap;
+  }
+  .nav-panel{ display:flex; flex-direction:column; align-items:center; gap:8px; max-width:280px; }
+  .quick-nav-btn{
+    display:flex; align-items:center; gap:8px;
+    background: var(--white); color:var(--green-deep); border:1px solid var(--gold-light);
+    padding:10px 22px; border-radius:999px; font-weight:bold; font-size:14px; font-family:inherit; cursor:pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+  }
+  .quick-nav-btn:hover, .quick-nav-btn:focus-visible{
+    transform: translateY(-2px); border-color:var(--gold); box-shadow: 0 8px 18px rgba(18,53,36,0.14); outline:none;
+  }
+  .quick-nav-btn.active{ background: var(--green-deep); color:var(--gold-light); border-color:var(--green-deep); }
+  .hadith-line{
+    margin:0; text-align:center; font-size:12.5px; color:var(--ink-soft); line-height:1.7;
+    font-family: var(--font-ar-display);
+  }
+  body.lang-en .hadith-line{ font-family: var(--font-en-body); font-style:italic; }
+
+  .section-title{ margin: 36px 0 6px; display:flex; align-items:center; gap:10px; color:var(--green-deep); font-size:21px; font-weight:bold; scroll-margin-top: 80px; }
+  .section-title::after{ content:""; flex:1; height:2px; background: repeating-linear-gradient(90deg, var(--gold) 0 8px, transparent 8px 16px); }
+  .section-sub{ color:var(--ink-soft); font-size:14px; margin:0 0 20px; }
+
+  .lesson-panel{ display:none; }
+  .lesson-panel.open{ display:block; animation: panel-in .35s ease; }
+  @keyframes panel-in{ from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:translateY(0); } }
+
+  .lesson-list{ display:flex; flex-direction:column; gap:12px; counter-reset: lesson-counter; }
+
+  .lesson-row{
+    display:flex; align-items:center; gap:16px; text-decoration:none; color:inherit;
+    background: var(--white); border-radius: var(--radius-md); padding:14px 20px;
+    border:1px solid var(--gold-light); box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    position:relative; overflow:hidden;
+  }
+  .lesson-row::before{
+    content:""; position:absolute; inset-inline-start:0; top:0; bottom:0; width:5px;
+    background: linear-gradient(180deg, var(--gold), var(--green-mid));
+    opacity:0; transition: opacity .2s ease;
+  }
+  .lesson-row:hover, .lesson-row:focus-visible{
+    transform: translateX(6px); box-shadow: 0 10px 22px rgba(18,53,36,0.14); border-color:var(--gold);
+    outline:none;
+  }
+  body.lang-en .lesson-row:hover, body.lang-en .lesson-row:focus-visible{ transform: translateX(-6px); }
+  .lesson-row:hover::before, .lesson-row:focus-visible::before{ opacity:1; }
+
+  .lesson-badge{
+    flex:0 0 auto; width:46px; height:46px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-glow), var(--gold) 65%, #9A7530 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-ar-display); font-weight:bold; font-size:15px; color:var(--green-deep);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.4);
+  }
+  .lesson-names{ flex:1; min-width:0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .lesson-names .name-ar{ font-family: var(--font-ar-display); font-size:19px; color:var(--green-deep); }
+  .lesson-names .name-en{ font-family: var(--font-en-body); font-size:12.5px; color:var(--ink-soft); }
+  .lesson-cta{
+    flex:0 0 auto; display:flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:bold; color:var(--green);
+  }
+  .lesson-cta .arrow{ transition: transform .2s ease; }
+  .lesson-row:hover .lesson-cta .arrow{ transform: translateX(-4px); }
+  body.lang-en .lesson-row:hover .lesson-cta .arrow{ transform: translateX(4px); }
+
+  .tajweed-row .lesson-badge{
+    background: radial-gradient(circle at 35% 30%, var(--green-soft), var(--green-mid) 70%, var(--green-deep) 100%);
+    color:var(--gold-light); font-size:20px;
+  }
+  .tajweed-row .lesson-cta{ color:var(--green-deep); }
+
+  .arabic-row .lesson-badge{
+    background: radial-gradient(circle at 35% 30%, var(--cream), var(--gold) 70%, #9A7530 100%);
+    color:var(--green-deep); font-size:19px;
+  }
+  .arabic-row .lesson-cta{ color:var(--green-deep); }
+
+  .lesson-row.soon{ opacity:.6; cursor:default; }
+  .lesson-row.soon:hover{ transform:none; }
+
+  .juz-heading{
+    margin:18px 0 2px; padding:8px 18px; align-self:flex-start;
+    background:var(--green-deep); color:var(--gold-light); border-radius:999px;
+    font-family:var(--font-ar-display); font-weight:bold; font-size:16px;
+    box-shadow:0 4px 12px rgba(18,53,36,0.15);
+  }
+  body.lang-en .juz-heading{ font-family:var(--font-en-display); }
+
+  .teacher-strip{
+    display:flex; align-items:center; gap:12px; justify-content:center;
+    margin-top:26px; padding:14px 20px; background:var(--white); border-radius:999px;
+    border:1px solid var(--gold-light); box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    color:var(--green-deep); font-size:14px; font-weight:bold;
+  }
+  .teacher-strip .avatar-mini{
+    width:38px; height:38px; border-radius:50%; overflow:hidden; flex:0 0 auto;
+    background:var(--cream); box-shadow: inset 0 0 0 2px var(--gold-light);
+  }
+  .teacher-strip .avatar-mini svg{ width:100%; height:100%; display:block; }
+
+  footer{ text-align:center; margin-top:48px; color:var(--ink-soft); font-size:13px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+  @media (max-width:640px){
+    header.hero{ flex-direction:column; align-items:flex-start; }
+    .hero-crest{ align-self:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pattern-strip"></div>
+
+<div class="lang-toggle">
+  <span class="globe">🌐</span>
+  <button id="btnAr" class="active">العربية</button>
+  <span style="color:var(--gold-light)">|</span>
+  <button id="btnEn">English</button>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-crest" aria-hidden="true">📖</div>
+    <div class="hero-titles">
+      <h1><span data-ar-only>منصة دروس القرآن الكريم والتجويد</span><span data-en-only>Qur'an &amp; Tajweed Lessons Platform</span></h1>
+      <p><span data-ar-only>اختر سورة أو درس تجويد لتبدأ رحلتك التفاعلية: قراءة، فهم، وأنشطة ممتعة مع اختبار في النهاية.</span><span data-en-only>Pick a surah or a tajweed lesson to begin your interactive journey: reading, understanding, and fun activities with a quiz at the end.</span></p>
+    </div>
+  </header>
+
+  <nav class="quick-nav">
+    <div class="nav-panel">
+      <button class="quick-nav-btn" id="quranToggle" aria-expanded="false" aria-controls="quranSection">📖 <span data-ar-only>القرآن</span><span data-en-only>Qur'an</span></button>
+      <p class="hadith-line">
+        <span data-ar-only>«خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»</span>
+        <span data-en-only>"The best among you are those who learn the Qur'an and teach it."</span>
+      </p>
+    </div>
+    <div class="nav-panel">
+      <button class="quick-nav-btn" id="tajweedToggle" aria-expanded="false" aria-controls="tajweedSection">🎙️ <span data-ar-only>التجويد</span><span data-en-only>Tajweed</span></button>
+      <p class="hadith-line">
+        <span data-ar-only>«الَّذِي يَقْرَأُ الْقُرْآنَ وَهُوَ عَلَيْهِ شَاقٌّ فَلَهُ أَجْرَانِ»</span>
+        <span data-en-only>"Whoever reads the Qur'an and finds it hard to recite will have a double reward."</span>
+      </p>
+    </div>
+    <div class="nav-panel">
+      <button class="quick-nav-btn" id="arabicToggle" aria-expanded="false" aria-controls="arabicSection">🔤 <span data-ar-only>العربية</span><span data-en-only>Arabic</span></button>
+      <p class="hadith-line">
+        <span data-ar-only>«إِنَّا جَعَلْنَٰهُ قُرْءَٰنًا عَرَبِيًّا لَّعَلَّكُمْ تَعْقِلُونَ»</span>
+        <span data-en-only>"Indeed, We have made it an Arabic Qur'an that you might understand."</span>
+      </p>
+    </div>
+  </nav>
+
+  <div class="lesson-panel" id="quranSection">
+    <div class="section-title">📖 <span data-ar-only>دروس القرآن الكريم</span><span data-en-only>Qur'an Lessons</span></div>
+    <p class="section-sub"><span data-ar-only>مرتبة حسب ترتيب المصحف</span><span data-en-only>Ordered as they appear in the Mus'haf</span></p>
+    <div class="lesson-list" id="quranList"></div>
+  </div>
+
+  <div class="lesson-panel" id="tajweedSection">
+    <div class="section-title">🎙️ <span data-ar-only>دروس التجويد</span><span data-en-only>Tajweed Lessons</span></div>
+    <p class="section-sub"><span data-ar-only>تعلّم قواعد تلاوة القرآن الكريم بشكل صحيح</span><span data-en-only>Learn the rules of reciting the Qur'an correctly</span></p>
+    <div class="lesson-list" id="tajweedList"></div>
+  </div>
+
+  <div class="lesson-panel" id="arabicSection">
+    <div class="section-title">🔤 <span data-ar-only>دروس اللغة العربية</span><span data-en-only>Arabic Language Lessons</span></div>
+    <p class="section-sub"><span data-ar-only>تمارين لتقوية اللغة العربية</span><span data-en-only>Exercises to strengthen Arabic language skills</span></p>
+    <div class="lesson-list" id="arabicList"></div>
+  </div>
+
+  <div class="teacher-strip">
+    <span class="avatar-mini" aria-hidden="true">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 8 C18 8 6 40 6 66 C6 87 28 97 50 97 C72 97 94 87 94 66 C94 40 82 8 50 8 Z" fill="#2F7D57"/>
+        <ellipse cx="50" cy="50" rx="21" ry="25" fill="#F3D9B1"/>
+        <path d="M27 42 C27 20 73 20 73 42 C73 30 63 23 50 23 C37 23 27 30 27 42 Z" fill="#2F7D57"/>
+        <circle cx="42" cy="52" r="2.6" fill="#2A1E14"/>
+        <circle cx="58" cy="52" r="2.6" fill="#2A1E14"/>
+        <path d="M40 62 Q50 68 60 62" stroke="#2A1E14" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M50 8 C18 8 6 40 6 66 C6 87 28 97 50 97 C72 97 94 87 94 66 C94 40 82 8 50 8 Z" fill="none" stroke="#C9A24B" stroke-width="3"/>
+      </svg>
+    </span>
+    <span data-ar-only>إعداد المعلمة أمل الحسن</span>
+    <span data-en-only>Prepared by Teacher Amal Al-Hassan</span>
+  </div>
+
+  <footer>
+    <span data-ar-only>صمم بحب لطلاب القرآن الكريم 🌙</span>
+    <span data-en-only>Designed with love for students of the Qur'an 🌙</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // [رقم السورة, الاسم العربي, الاسم الإنجليزي] — ملف الدرس = "<الاسم العربي>.html"
+  var surahData = [
+    [1,"الفاتحة","Al-Fatiha"],
+    // الجزء ٢٨ (قد سمع)
+    [58,"المجادلة","Al-Mujadila"],[59,"الحشر","Al-Hashr"],[60,"الممتحنة","Al-Mumtahanah"],
+    [61,"الصف","As-Saff"],[62,"الجمعة","Al-Jumu'ah"],[63,"المنافقون","Al-Munafiqun"],
+    [64,"التغابن","At-Taghabun"],[65,"الطلاق","At-Talaq"],[66,"التحريم","At-Tahrim"],
+    // الجزء ٢٩ (تبارك)
+    [67,"الملك","Al-Mulk"],[68,"القلم","Al-Qalam"],[69,"الحاقة","Al-Haqqah"],
+    [70,"المعارج","Al-Ma'arij"],[71,"نوح","Nuh"],[72,"الجن","Al-Jinn"],
+    [73,"المزمل","Al-Muzzammil"],[74,"المدثر","Al-Muddaththir"],[75,"القيامة","Al-Qiyamah"],
+    [76,"الإنسان","Al-Insan"],[77,"المرسلات","Al-Mursalat"],
+    // الجزء ٣٠ (عمّ)
+    [78,"النبأ","An-Naba'"],[79,"النازعات","An-Nazi'at"],[80,"عبس","'Abasa"],
+    [81,"التكوير","At-Takwir"],[82,"الانفطار","Al-Infitar"],[83,"المطففين","Al-Mutaffifin"],
+    [84,"الانشقاق","Al-Inshiqaq"],[85,"البروج","Al-Buruj"],[86,"الطارق","At-Tariq"],
+    [87,"الأعلى","Al-A'la"],[88,"الغاشية","Al-Ghashiyah"],[89,"الفجر","Al-Fajr"],
+    [90,"البلد","Al-Balad"],[91,"الشمس","Ash-Shams"],[92,"الليل","Al-Layl"],
+    [93,"الضحى","Ad-Duha"],[94,"الشرح","Ash-Sharh"],[95,"التين","At-Tin"],
+    [96,"العلق","Al-'Alaq"],[97,"القدر","Al-Qadr"],[98,"البينة","Al-Bayyinah"],
+    [99,"الزلزلة","Az-Zalzalah"],[100,"العاديات","Al-'Adiyat"],[101,"القارعة","Al-Qari'ah"],
+    [102,"التكاثر","At-Takathur"],[103,"العصر","Al-'Asr"],[104,"الهمزة","Al-Humazah"],
+    [105,"الفيل","Al-Fil"],[106,"قريش","Quraysh"],[107,"الماعون","Al-Ma'un"],
+    [108,"الكوثر","Al-Kawthar"],[109,"الكافرون","Al-Kafirun"],[110,"النصر","An-Nasr"],
+    [111,"المسد","Al-Masad"],[112,"الإخلاص","Al-Ikhlas"],[113,"الفلق","Al-Falaq"],
+    [114,"الناس","An-Nas"]
+  ];
+
+  function toArabicDigits(n){
+    return String(n).replace(/[0-9]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; });
+  }
+
+  var surahs = surahData.map(function(s){
+    return { n:s[0], num:toArabicDigits(s[0]), numEn:String(s[0]), file:"surah-" + ("00" + s[0]).slice(-3) + ".html",
+             nameAr:"سورة " + s[1], nameEn:"Surat " + s[2] };
+  });
+
+  // بداية كل جزء (رقم أول سورة فيه)
+  var juzStarts = {
+    58: { ar:"الجزء الثامن والعشرون (قد سمع)", en:"Juz' 28 (Qad Sami'a)" },
+    67: { ar:"الجزء التاسع والعشرون (تبارك)",  en:"Juz' 29 (Tabarak)" },
+    78: { ar:"الجزء الثلاثون (عمّ)",            en:"Juz' 30 ('Amma)" }
+  };
+
+  function buildJuzHeading(container, j){
+    var h = document.createElement('div');
+    h.className = 'juz-heading';
+    h.innerHTML = '<span data-ar-only>' + j.ar + '</span><span data-en-only>' + j.en + '</span>';
+    container.appendChild(h);
+  }
+
+  var tajweed = [
+    { icon:"🎙️", file:"", soon:true, nameAr:"لماذا نتعلم التجويد؟ (١)", nameEn:"Why Do We Learn Tajweed? (1)" }
+  ];
+
+  var arabic = [
+    { icon:"🔤", file:"", soon:true, nameAr:"تمارين أحب العربي (١ - ٦)", nameEn:"'I Love Arabic' Exercises (1-6)" }
+  ];
+
+  function buildRow(container, item, kind){
+    var a = document.createElement('a');
+    var extraClass = kind === 'tajweed' ? ' tajweed-row' : (kind === 'arabic' ? ' arabic-row' : '');
+    a.className = 'lesson-row' + extraClass;
+    if(item.soon){ a.removeAttribute('href'); a.classList.add('soon'); a.setAttribute('aria-disabled','true'); }
+    else { a.href = encodeURI(item.file); }
+    a.innerHTML =
+      '<div class="lesson-badge">' + (kind ? item.icon : item.num) + '</div>' +
+      '<div class="lesson-names">' +
+        '<span class="name-ar" data-ar-only>' + item.nameAr + '</span>' +
+        '<span class="name-en" data-ar-only>' + item.nameEn + '</span>' +
+        '<span class="name-ar" data-en-only style="font-family:var(--font-en-body); font-size:17px;">' + item.nameEn + '</span>' +
+        '<span class="name-en" data-en-only>' + item.nameAr + '</span>' +
+      '</div>' +
+      '<div class="lesson-cta">' +
+        (item.soon ? '<span data-ar-only>قريبًا</span><span data-en-only>Coming soon</span>' : '<span data-ar-only>ابدأ الدرس</span><span data-en-only>Start Lesson</span>') +
+        '<span class="arrow" data-ar-only>←</span><span class="arrow" data-en-only>→</span>' +
+      '</div>';
+    container.appendChild(a);
+  }
+
+  var quranList = document.getElementById('quranList');
+  surahs.forEach(function(s){
+    if(juzStarts[s.n]) buildJuzHeading(quranList, juzStarts[s.n]);
+    buildRow(quranList, s, false);
+  });
+
+  var tajweedList = document.getElementById('tajweedList');
+  tajweed.forEach(function(t){ buildRow(tajweedList, t, 'tajweed'); });
+
+  var arabicList = document.getElementById('arabicList');
+  arabic.forEach(function(t){ buildRow(arabicList, t, 'arabic'); });
+
+  var panels = [
+    { btn: document.getElementById('quranToggle'), panel: document.getElementById('quranSection') },
+    { btn: document.getElementById('tajweedToggle'), panel: document.getElementById('tajweedSection') },
+    { btn: document.getElementById('arabicToggle'), panel: document.getElementById('arabicSection') }
+  ];
+
+  function togglePanel(entry){
+    var isOpen = entry.panel.classList.contains('open');
+    panels.forEach(function(p){
+      p.panel.classList.remove('open');
+      p.btn.classList.remove('active');
+      p.btn.setAttribute('aria-expanded','false');
+    });
+    if(!isOpen){
+      entry.panel.classList.add('open');
+      entry.btn.classList.add('active');
+      entry.btn.setAttribute('aria-expanded','true');
+      entry.panel.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }
+  panels.forEach(function(entry){
+    entry.btn.addEventListener('click', function(){ togglePanel(entry); });
+  });
+
+  var btnAr = document.getElementById('btnAr');
+  var btnEn = document.getElementById('btnEn');
+  function setLang(isEn){
+    document.body.classList.toggle('lang-en', isEn);
+    document.documentElement.lang = isEn ? 'en' : 'ar';
+    document.documentElement.dir = isEn ? 'ltr' : 'rtl';
+    btnAr.classList.toggle('active', !isEn);
+    btnEn.classList.toggle('active', isEn);
+  }
+  btnAr.addEventListener('click', function(){ setLang(false); });
+  btnEn.addEventListener('click', function(){ setLang(true); });
+
+})();
+</script>
+
+</body>
+</html>

@@ -26,8 +26,8 @@ const LESSON_TRACKS: LessonTrack[] = [
     descAr: 'دروس تفاعلية بالبطاقات والتمارين.', descEn: 'Interactive lessons with cards and exercises.',
     items: [
       { ar: 'تجويد الأطفال – المستوى الأول', en: 'Tajweed for Kids – Level 1', href: '/quran-kids/#tajweed', noteAr: '١١ درسًا', noteEn: '11 lessons' },
-      { ar: 'تجويد الأطفال – المستوى الثاني', en: 'Tajweed for Kids – Level 2' },
-      { ar: 'التجويد المختصر', en: 'Tajweed – Short Course' },
+      { ar: 'تجويد الأطفال – المستوى الثاني', en: 'Tajweed for Kids – Level 2', href: '/quran-kids/#tajweed', noteAr: '١٢ درسًا', noteEn: '12 lessons' },
+      { ar: 'التجويد المختصر', en: 'Tajweed – Short Course', href: '/quran-kids/#tajweed', noteAr: '٧ دروس', noteEn: '7 lessons' },
       { ar: 'التجويد الكامل', en: 'Tajweed – Full Course' }
     ]
   },

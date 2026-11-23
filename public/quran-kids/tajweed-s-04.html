@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>المد الطبيعي وما يلحق به — تجويد الأطفال | Fusha Zone</title>
+<link rel="icon" href="/brand/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Nunito:wght@600;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --h: 28;
+    --deep: hsl(var(--h) 55% 18%);
+    --main: hsl(var(--h) 50% 32%);
+    --mid: hsl(var(--h) 45% 45%);
+    --soft: hsl(var(--h) 60% 92%);
+    --gold:#C9A24B; --gold-light:#F3E3B8; --gold-glow:#FBEFC9;
+    --cream:#FBF7EE; --white:#fff; --ink:#2B2B2B; --ink-soft:#6B6B6B;
+    --quran: "Scheherazade New","Amiri Quran","Traditional Arabic",serif;
+    --ar: "Baloo Bhaijaan 2","Tahoma",sans-serif;
+    --en: "Nunito","Segoe UI",sans-serif;
+    --r: 26px;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:var(--ar); color:var(--ink); background:var(--cream);
+    background-image: radial-gradient(circle at 10% 10%, hsl(var(--h) 70% 90%) 0 120px, transparent 121px),
+                      radial-gradient(circle at 95% 30%, #FDE7C8 0 90px, transparent 91px),
+                      radial-gradient(circle at 5% 80%, #E3F2FD 0 110px, transparent 111px); background-attachment:fixed; }
+  body.lang-en{ font-family:var(--en); }
+  [data-en-only]{ display:none !important; }
+  body.lang-en [data-en-only]{ display:inline !important; }
+  body.lang-en [data-ar-only]{ display:none !important; }
+  body.lang-en div[data-en-only], body.lang-en p[data-en-only]{ display:block !important; }
+  .quran{ font-family:var(--quran); font-weight:700; direction:rtl; unicode-bidi:isolate; }
+  .wrap{ max-width:920px; margin:0 auto; padding:16px 14px 60px; }
+
+  /* الشريط العلوي */
+  .topbar{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .lang{ display:flex; background:var(--white); border-radius:999px; padding:4px; box-shadow:0 4px 14px rgba(0,0,0,.08); }
+  .lang button{ border:none; background:none; padding:8px 16px; border-radius:999px; font-weight:800; cursor:pointer; font-family:inherit; color:var(--deep); }
+  .lang button.active{ background:var(--deep); color:var(--gold-light); }
+  .home-link{ text-decoration:none; background:var(--white); color:var(--deep); padding:9px 16px; border-radius:999px; font-weight:800; box-shadow:0 4px 14px rgba(0,0,0,.08); font-size:14px; }
+
+  /* الهيدر */
+  .hero{ margin-top:16px; background:linear-gradient(135deg, var(--deep), var(--mid)); color:#fff; border-radius:var(--r); padding:26px 22px; position:relative; overflow:hidden; box-shadow:0 14px 34px rgba(0,0,0,.18); }
+  .hero:before{ content:"✨"; position:absolute; font-size:120px; opacity:.12; inset-inline-end:-10px; top:-20px; }
+  .hero .kicker{ display:inline-block; background:rgba(255,255,255,.18); padding:5px 14px; border-radius:999px; font-weight:800; font-size:13px; color:var(--gold-light); }
+  .hero h1{ margin:12px 0 6px; font-size:clamp(28px, 6vw, 42px); line-height:1.3; }
+  .hero p{ margin:0; opacity:.95; font-size:16px; }
+  .hero .icon{ font-size:54px; float:inline-end; margin-inline-start:10px; filter:drop-shadow(0 6px 10px rgba(0,0,0,.25)); }
+  .tools{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; align-items:center; }
+  .tools label{ font-weight:800; font-size:14px; color:var(--gold-light); }
+  .tools select, .tools input{ font-family:inherit; font-weight:700; font-size:14px; padding:8px 12px; border-radius:999px; border:2px solid var(--gold-light); background:var(--cream); color:var(--deep); }
+  .teacher{ margin-top:14px; font-size:14px; color:var(--gold-light); font-weight:700; }
+
+  .section-title{ text-align:center; margin:34px 0 14px; font-size:clamp(22px, 4.6vw, 30px); font-weight:800; color:var(--deep); }
+  .section-sub{ text-align:center; margin:-6px 0 16px; color:var(--ink-soft); font-weight:700; }
+
+  /* بطاقات الدرس */
+  .deck-head{ display:flex; align-items:center; gap:10px; justify-content:space-between; flex-wrap:wrap; max-width:640px; margin:0 auto 10px; }
+  .stars{ background:var(--gold-glow); color:#8A6410; border-radius:999px; padding:6px 14px; font-weight:800; }
+  .bar{ flex:1; min-width:140px; height:12px; background:var(--white); border-radius:999px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,.12); }
+  .bar i{ display:block; height:100%; width:0; background:linear-gradient(90deg, var(--gold), var(--mid)); transition:width .4s ease; }
+  .stage{ perspective:1600px; max-width:640px; margin:0 auto; touch-action:pan-y; }
+  .card{ position:relative; height:min(560px, 76vh); transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.8,.2,1); cursor:pointer; }
+  .card.flipped{ transform:rotateY(180deg); }
+  .card.enter-next{ animation:inNext .45s ease; } .card.enter-prev{ animation:inPrev .45s ease; }
+  @keyframes inNext{ from{ opacity:0; translate:-40px 0; } to{ opacity:1; translate:0 0; } }
+  @keyframes inPrev{ from{ opacity:0; translate:40px 0; } to{ opacity:1; translate:0 0; } }
+  .face{ position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--r); padding:24px 20px; box-shadow:0 16px 40px rgba(0,0,0,.18); }
+  .front{ color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
+  .front .num{ position:absolute; top:14px; inset-inline-start:16px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center; font-weight:800; }
+  .front .art{ width:130px; height:130px; border-radius:50%; background:rgba(255,255,255,.22); box-shadow: inset 0 0 0 4px rgba(255,255,255,.5); display:flex; align-items:center; justify-content:center; font-size:68px; margin-bottom:14px; animation:bob 3s ease-in-out infinite; }
+  @keyframes bob{ 50%{ transform:translateY(-8px) rotate(-3deg); } }
+  .front h2{ margin:0 0 8px; font-size:clamp(28px, 6vw, 38px); line-height:1.25; text-shadow:0 3px 8px rgba(0,0,0,.2); }
+  .front .line{ font-size:18px; font-weight:700; opacity:.96; max-width:460px; }
+  .front .big{ margin-top:14px; font-family:var(--quran); font-weight:700; font-size:clamp(30px, 7vw, 44px); letter-spacing:6px; background:rgba(255,255,255,.18); padding:6px 18px; border-radius:18px; direction:rtl; }
+  .front .hint{ position:absolute; bottom:14px; font-size:13px; background:rgba(255,255,255,.22); padding:5px 14px; border-radius:999px; }
+  .front .deco{ position:absolute; font-size:34px; opacity:.35; }
+  .back{ transform:rotateY(180deg); background:var(--white); overflow-y:auto; border:4px solid var(--c1); }
+  .back h3{ margin:0 0 10px; color:var(--c2); font-size:24px; display:flex; gap:8px; align-items:center; }
+  .back .txt{ font-size:18px; line-height:1.95; margin:0 0 10px; }
+  .back ul{ margin:0 0 10px; padding-inline-start:22px; font-size:17px; line-height:1.9; }
+  .back b{ color:var(--c2); }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 12px; justify-content:center; }
+  .chip-l{ font-family:var(--quran); font-weight:700; font-size:30px; min-width:54px; text-align:center; padding:2px 12px; border-radius:16px; background:color-mix(in srgb, var(--c1) 18%, white); color:var(--c2); border:2px solid var(--c1); }
+  .ex{ background:var(--cream); border-radius:18px; padding:12px 14px; margin:10px 0; border-inline-start:6px solid var(--c1); }
+  .ex .ayah{ font-family:var(--quran); font-weight:700; font-size:clamp(22px, 4.6vw, 28px); line-height:2.1; direction:rtl; text-align:right; }
+  .ex mark{ background:none; color:var(--rc, #D81B60); border-bottom:3px solid currentColor; padding:0 2px; }
+  .ex .meta{ display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--ink-soft); font-weight:700; }
+  .ex .rule{ color:#fff; background:var(--rc, #555); border-radius:999px; padding:2px 10px; font-size:12px; }
+  .play{ border:none; background:var(--deep); color:var(--gold-light); border-radius:999px; padding:6px 12px; font-weight:800; cursor:pointer; font-family:inherit; font-size:13px; }
+  .loading{ color:var(--ink-soft); font-size:14px; }
+  .c0{ --c1:#FF8A65; --c2:#C2410C; } .c1{ --c1:#4FACFE; --c2:#1D4ED8; } .c2{ --c1:#B07CFF; --c2:#6D28D9; } .c3{ --c1:#F6B93B; --c2:#B45309; }
+  .c4{ --c1:#34D399; --c2:#047857; } .c5{ --c1:#F472B6; --c2:#BE185D; } .c6{ --c1:#2DD4BF; --c2:#0F766E; } .c7{ --c1:#818CF8; --c2:#4338CA; }
+  .front.c0{ background:linear-gradient(140deg,#FF8A65,#F4511E); } .front.c1{ background:linear-gradient(140deg,#4FACFE,#2563EB); }
+  .front.c2{ background:linear-gradient(140deg,#B07CFF,#7C3AED); } .front.c3{ background:linear-gradient(140deg,#F6B93B,#E58E26); }
+  .front.c4{ background:linear-gradient(140deg,#34D399,#059669); } .front.c5{ background:linear-gradient(140deg,#F472B6,#DB2777); }
+  .front.c6{ background:linear-gradient(140deg,#2DD4BF,#0D9488); } .front.c7{ background:linear-gradient(140deg,#818CF8,#4F46E5); }
+  .ctrls{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:14px auto 8px; max-width:640px; }
+  .btn{ border:none; cursor:pointer; font-family:inherit; font-weight:800; font-size:15px; padding:11px 18px; border-radius:999px; background:var(--white); color:var(--deep); box-shadow:0 4px 12px rgba(0,0,0,.1); transition:transform .15s ease; }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn.primary{ background:linear-gradient(135deg, var(--gold), #E0B85C); color:var(--deep); }
+  .btn.dark{ background:var(--deep); color:var(--gold-light); }
+  .btn:disabled{ opacity:.45; cursor:default; transform:none; }
+  .dots{ display:flex; gap:6px; justify-content:center; flex-wrap:wrap; max-width:640px; margin:0 auto; }
+  .dots button{ width:34px; height:34px; border-radius:50%; border:2px solid var(--mid); background:var(--white); font-weight:800; cursor:pointer; font-family:inherit; color:var(--deep); }
+  .dots button.on{ background:var(--deep); color:var(--gold-light); }
+  .dots button.done{ border-color:var(--gold); background:var(--gold-glow); }
+  .deck-done{ text-align:center; font-weight:800; color:var(--main); min-height:26px; margin-top:8px; font-size:18px; }
+
+  /* التمارين */
+  .act{ background:var(--white); border-radius:var(--r); padding:20px 18px; margin:18px auto; max-width:760px; box-shadow:0 10px 26px rgba(0,0,0,.08); border-top:8px solid var(--c1); }
+  .act h3{ margin:0 0 4px; text-align:center; color:var(--c2); font-size:22px; }
+  .act .sub{ text-align:center; color:var(--ink-soft); font-weight:700; margin-bottom:14px; }
+  .q{ text-align:center; font-size:20px; font-weight:800; color:var(--deep); margin:8px 0 14px; line-height:1.8; }
+  .opts{ display:flex; flex-direction:column; gap:10px; max-width:520px; margin:0 auto; }
+  .opt{ border:3px solid var(--soft); background:var(--cream); border-radius:18px; padding:12px 16px; font-size:18px; font-weight:800; cursor:pointer; font-family:inherit; color:var(--deep); text-align:center; transition:transform .15s; }
+  .opt:hover{ border-color:var(--c1); transform:scale(1.02); }
+  .opt.ok, .tok.ok, .let.ok, .item.ok{ background:#DCFCE7 !important; border-color:#16A34A !important; color:#14532D !important; }
+  .opt.no, .tok.no, .let.no, .item.no{ background:#FEE2E2 !important; border-color:#DC2626 !important; animation:shake .35s; }
+  @keyframes shake{ 25%{ translate:-6px 0; } 75%{ translate:6px 0; } }
+  .faces{ display:flex; gap:16px; justify-content:center; }
+  .face-btn{ font-size:52px; width:96px; height:96px; border-radius:50%; border:4px solid var(--soft); background:var(--cream); cursor:pointer; transition:transform .15s; }
+  .face-btn:hover{ transform:scale(1.08); }
+  .stmt{ font-size:20px; font-weight:800; text-align:center; line-height:1.9; background:var(--cream); border-radius:18px; padding:14px; margin-bottom:16px; }
+  .fb{ text-align:center; font-weight:800; min-height:28px; margin-top:12px; font-size:17px; }
+  .fb.good{ color:#15803D; } .fb.bad{ color:#B91C1C; }
+  .prog{ text-align:center; color:var(--ink-soft); font-size:13px; font-weight:800; margin-top:8px; }
+  .row{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+  .letters{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; direction:rtl; }
+  .let{ font-family:var(--quran); font-weight:700; font-size:30px; width:58px; height:58px; border-radius:16px; border:3px solid var(--soft); background:var(--cream); cursor:pointer; color:var(--deep); }
+  .toks{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; direction:rtl; }
+  .tok{ font-family:var(--quran); font-weight:700; font-size:clamp(22px, 4.6vw, 28px); padding:4px 14px; border-radius:16px; border:3px solid var(--soft); background:var(--cream); cursor:pointer; color:var(--deep); }
+  .buckets{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-top:14px; }
+  .bucket{ border:3px dashed var(--bc); border-radius:18px; padding:10px; min-height:90px; background:color-mix(in srgb, var(--bc) 10%, white); cursor:pointer; }
+  .bucket h4{ margin:0 0 8px; text-align:center; color:var(--bc); font-size:17px; }
+  .bucket .in{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+  .items{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .item{ border:3px solid var(--soft); background:var(--cream); border-radius:16px; padding:6px 14px; font-weight:800; font-size:17px; cursor:pointer; color:var(--deep); font-family:inherit; }
+  .item.quran{ font-size:clamp(21px, 4.4vw, 26px); }
+  .item.sel{ border-color:var(--gold); background:var(--gold-glow); transform:scale(1.05); }
+  .line-box{ min-height:64px; border:3px dashed var(--mid); border-radius:18px; padding:10px; display:flex; flex-direction:column; gap:6px; align-items:stretch; margin-bottom:12px; background:var(--cream); }
+  .line-box .item{ text-align:center; }
+
+  /* الوسام */
+  .finish{ text-align:center; background:linear-gradient(135deg, var(--deep), var(--mid)); color:#fff; border-radius:var(--r); padding:26px 18px; margin:26px auto; max-width:760px; }
+  .finish h3{ margin:0 0 8px; font-size:26px; color:var(--gold-light); }
+  .medal{ width:130px; height:130px; margin:16px auto; border-radius:50%; background:radial-gradient(circle at 35% 30%, #FFF3C4, var(--gold) 60%, #8A6410); display:none; align-items:center; justify-content:center; font-size:62px; box-shadow:0 0 0 8px rgba(255,255,255,.25), 0 14px 30px rgba(0,0,0,.3); animation:pop .6s ease; }
+  .medal.show{ display:flex; }
+  @keyframes pop{ from{ transform:scale(.2) rotate(-30deg); } to{ transform:scale(1) rotate(0); } }
+  footer{ text-align:center; color:var(--ink-soft); font-size:13px; margin-top:30px; }
+  #confetti{ position:fixed; inset:0; pointer-events:none; z-index:50; }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="wrap">
+  <div class="topbar">
+    <a class="home-link" href="./#tajweed"><span data-ar-only>→ كل الدروس</span><span data-en-only>← All lessons</span></a>
+    <div class="lang"><button id="btnAr" class="active">العربية</button><button id="btnEn">English</button></div>
+  </div>
+
+  <header class="hero">
+    <span class="icon">🌊</span>
+    <span class="kicker"><span data-ar-only>التجويد المختصر · الدرس ٤</span><span data-en-only>Tajweed – Short Course · Lesson 4</span></span>
+    <h1><span data-ar-only>المد الطبيعي وما يلحق به</span><span data-en-only>Natural Madd and Its Relatives</span></h1>
+    <p><span data-ar-only>مدود مقدارها حركتان</span><span data-en-only>Madds of two counts</span></p>
+    <div class="tools">
+      <label for="studentName"><span data-ar-only>👋 اسمك:</span><span data-en-only>👋 Your name:</span></label>
+      <input id="studentName" maxlength="40">
+      <label for="reciterSelect"><span data-ar-only>🎙️ القارئ:</span><span data-en-only>🎙️ Reciter:</span></label>
+      <select id="reciterSelect"></select>
+    </div>
+    <div class="teacher"><span data-ar-only>🌟 من إعداد المعلمة أمل الحسن</span><span data-en-only>🌟 Prepared by teacher Amal Al-Hasan</span></div>
+  </header>
+
+  <div class="section-title">📚 <span data-ar-only>لنتعلّم معًا</span><span data-en-only>Let's Learn Together</span></div>
+  <p class="section-sub"><span data-ar-only>اضغط على البطاقة لتقلبها، واسحب يمينًا أو يسارًا للتنقل</span><span data-en-only>Tap a card to flip it, swipe to move between cards</span></p>
+  <div class="deck-head">
+    <span class="stars" id="stars">⭐ 0</span>
+    <div class="bar"><i id="barFill"></i></div>
+  </div>
+  <div class="stage" id="stage"><div class="card" id="card"></div></div>
+  <div class="ctrls">
+    <button class="btn" id="prevBtn"><span data-ar-only>→ السابقة</span><span data-en-only>← Previous</span></button>
+    <button class="btn primary" id="gotBtn">⭐ <span data-ar-only>فهمتُها</span><span data-en-only>I got it</span></button>
+    <button class="btn" id="nextBtn"><span data-ar-only>التالية ←</span><span data-en-only>Next →</span></button>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="deck-done" id="deckDone"></div>
+
+  <div class="section-title" id="practice">🎯 <span data-ar-only>هيا نتدرّب</span><span data-en-only>Let's Practice</span></div>
+  <div id="acts"></div>
+
+  <div class="finish">
+    <h3 id="finishTitle"></h3>
+    <p id="finishText"></p>
+    <div class="medal" id="medal">🏅</div>
+    <button class="btn primary" id="medalBtn">🏅 <span data-ar-only>استلم وسامك</span><span data-en-only>Get your medal</span></button>
+  </div>
+
+  <footer><span data-ar-only>الأمثلة القرآنية من مصدر موثوق (الرسم العثماني) · Fusha Zone</span><span data-en-only>Qur'an examples from a trusted source (Uthmani script) · Fusha Zone</span></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var L = {"title": ["المد الطبيعي وما يلحق به", "Natural Madd and Its Relatives"], "cards": [{"icon": "🌊", "t": ["المد الطبيعي", "Natural Madd"], "x": ["ألف بعد فتح، وواو ساكنة بعد ضم، وياء ساكنة بعد كسر، وليس بعدها همز ولا سكون. مقداره **حركتان**.", "Alif after fatha, silent waw after damma, silent yaa after kasra, with no hamza or sukoon after. **Two counts**."], "line": ["حركتان", "Two counts"], "big": "ـَا ـُو ـِي", "ex": [{"s": 1, "a": 4, "hl": "مالك", "rule": "madd_t"}, {"s": 112, "a": 3, "hl": "يولد", "rule": "madd_t"}]}, {"icon": "🔁", "t": ["مد العوض", "Madd Al-Iwad"], "x": ["عند الوقف على تنوين الفتح نُبدله **ألفًا** حركتين.", "When stopping on tanween fatha it becomes an **alif** of two counts."], "line": ["الوقف على تنوين الفتح", "Stopping on tanween fatha"], "ex": [{"s": 100, "a": 1, "hl": "ضبحا", "rule": "madd_iwad"}, {"s": 73, "a": 4, "hl": "ترتيلا", "rule": "madd_iwad"}]}, {"icon": "🔄", "t": ["مد البدل", "Madd Al-Badal"], "x": ["تتقدّم الهمزة على حرف المد في كلمة، وليس بعده همز ولا سكون. مقداره **حركتان**.", "A hamza comes before the madd letter in one word, with no hamza or sukoon after. **Two counts**."], "line": ["همز ثم مد", "Hamza, then madd"], "ex": [{"s": 95, "a": 6, "hl": "امنوا", "rule": "madd_badal"}, {"s": 98, "a": 4, "hl": "اوتوا", "rule": "madd_badal"}]}, {"icon": "🎀", "t": ["مد الصلة الصغرى", "Minor Silah"], "x": ["هاء الضمير للمفرد الغائب بين متحركين، وليس بعدها همزة قطع. مقدارها **حركتان**.", "The singular pronoun haa between two voweled letters, with no hamza after. **Two counts**."], "line": ["هاء الضمير وليس بعدها همزة", "Pronoun haa with no hamza after"], "ex": [{"s": 100, "a": 7, "hl": "وانه علي", "rule": "sila_s"}]}], "ex": [{"t": "sort", "buckets": ["madd_t", "madd_iwad", "madd_badal", "sila_s"], "items": [{"b": 0, "s": 1, "a": 4, "hl": "مالك"}, {"b": 1, "s": 100, "a": 1, "hl": "ضبحا"}, {"b": 2, "s": 95, "a": 6, "hl": "امنوا"}, {"b": 3, "s": 100, "a": 7, "hl": "وانه علي"}, {"b": 2, "s": 98, "a": 4, "hl": "اوتوا"}, {"b": 1, "s": 73, "a": 4, "hl": "ترتيلا"}]}]};
+  var SURAHS = {"1": ["الفاتحة", "Al-Fatihah"], "2": ["البقرة", "Al-Baqarah"], "6": ["الأنعام", "Al-An'am"], "16": ["النحل", "An-Nahl"], "58": ["المجادلة", "Al-Mujadilah"], "73": ["المزمل", "Al-Muzzammil"], "78": ["النبأ", "An-Naba'"], "87": ["الأعلى", "Al-A'la"], "92": ["الليل", "Al-Layl"], "95": ["التين", "At-Tin"], "96": ["العلق", "Al-'Alaq"], "97": ["القدر", "Al-Qadr"], "99": ["الزلزلة", "Az-Zalzalah"], "101": ["القارعة", "Al-Qari'ah"], "102": ["التكاثر", "At-Takathur"], "104": ["الهمزة", "Al-Humazah"], "105": ["الفيل", "Al-Fil"], "106": ["قريش", "Quraysh"], "108": ["الكوثر", "Al-Kawthar"], "112": ["الإخلاص", "Al-Ikhlas"], "113": ["الفلق", "Al-Falaq"], "114": ["الناس", "An-Nas"], "4": ["النساء", "An-Nisa'"], "10": ["يونس", "Yunus"], "17": ["الإسراء", "Al-Isra'"], "18": ["الكهف", "Al-Kahf"], "19": ["مريم", "Maryam"], "20": ["طه", "Ta-Ha"], "33": ["الأحزاب", "Al-Ahzab"], "50": ["ق", "Qaf"], "54": ["القمر", "Al-Qamar"], "67": ["الملك", "Al-Mulk"], "69": ["الحاقة", "Al-Haqqah"], "76": ["الإنسان", "Al-Insan"], "80": ["عبس", "'Abasa"], "86": ["الطارق", "At-Tariq"], "89": ["الفجر", "Al-Fajr"], "90": ["البلد", "Al-Balad"], "91": ["الشمس", "Ash-Shams"], "98": ["البينة", "Al-Bayyinah"], "100": ["العاديات", "Al-'Adiyat"], "103": ["العصر", "Al-'Asr"], "109": ["الكافرون", "Al-Kafirun"], "110": ["النصر", "An-Nasr"]};
+  var RULES = {"izhar": {"ar": "إظهار حلقي", "en": "Izhar Halqi", "color": "#1E88E5"}, "idgham_g": {"ar": "إدغام بغنة", "en": "Idgham with ghunnah", "color": "#8E24AA"}, "idgham_ng": {"ar": "إدغام بغير غنة", "en": "Idgham without ghunnah", "color": "#6D4C41"}, "iqlab": {"ar": "إقلاب", "en": "Iqlab", "color": "#E53935"}, "ikhfa": {"ar": "إخفاء حقيقي", "en": "Ikhfa Haqiqi", "color": "#F57C00"}, "ghunna": {"ar": "غنة مشددة", "en": "Doubled ghunnah", "color": "#D81B60"}, "ikhfa_sh": {"ar": "إخفاء شفوي", "en": "Ikhfa Shafawi", "color": "#F4511E"}, "idgham_sh": {"ar": "إدغام شفوي", "en": "Idgham Shafawi", "color": "#7B1FA2"}, "izhar_sh": {"ar": "إظهار شفوي", "en": "Izhar Shafawi", "color": "#00897B"}, "qalqala": {"ar": "قلقلة", "en": "Qalqalah", "color": "#3949AB"}, "tafkheem": {"ar": "تفخيم", "en": "Heavy (tafkheem)", "color": "#B45309"}, "tarqeeq": {"ar": "ترقيق", "en": "Light (tarqeeq)", "color": "#0284C7"}, "madd_t": {"ar": "مد طبيعي", "en": "Natural madd", "color": "#16A34A"}, "alif7": {"ar": "ألف تُحذف وصلًا", "en": "Alif dropped when continuing", "color": "#64748B"}, "madd_iwad": {"ar": "مد العوض", "en": "Madd al-iwad", "color": "#0D9488"}, "madd_badal": {"ar": "مد البدل", "en": "Madd al-badal", "color": "#65A30D"}, "madd_muttasil": {"ar": "مد متصل", "en": "Connected madd", "color": "#DC2626"}, "madd_munfasil": {"ar": "مد منفصل", "en": "Separated madd", "color": "#EA580C"}, "sila_s": {"ar": "صلة صغرى", "en": "Minor silah", "color": "#0891B2"}, "sila_k": {"ar": "صلة كبرى", "en": "Major silah", "color": "#BE185D"}, "madd_arid": {"ar": "مد عارض للسكون", "en": "Madd arid", "color": "#7C3AED"}, "madd_leen": {"ar": "مد اللين", "en": "Madd al-leen", "color": "#059669"}, "madd_lazim": {"ar": "مد لازم", "en": "Madd lazim", "color": "#991B1B"}, "lam_qamari": {"ar": "لام قمرية (إظهار)", "en": "Lunar laam (clear)", "color": "#1D4ED8"}, "lam_shamsi": {"ar": "لام شمسية (إدغام)", "en": "Solar laam (merged)", "color": "#CA8A04"}, "lam_idgham": {"ar": "إدغام اللام", "en": "Merged laam", "color": "#A16207"}, "lam_izhar": {"ar": "إظهار اللام", "en": "Clear laam", "color": "#0369A1"}};
+
+  function isEn(){ return document.body.classList.contains('lang-en'); }
+  function toAr(n){ return String(n).replace(/[0-9]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; }); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function md(s){ return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>'); }
+  function bi(pair){ return '<span data-ar-only>' + md(pair[0]) + '</span><span data-en-only>' + md(pair[1]) + '</span>'; }
+  function shuffle(a){ for(var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function normalize(str){
+    return String(str)
+      .replace(/[ؐ-ًؚ-ٰٟۖ-ۭ࣓-ࣿـ]/g, '')
+      .replace(/[ٱآأإاى]/g, '')
+      .replace(/ة/g, 'ه').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي').replace(/ء/g, '')
+      .replace(/ي$/, '').replace(/[^ء-ي]/g, '');
+  }
+
+  /* ============ الآيات: من مصدر موثوق فقط ============ */
+  var cache = {};
+  function getAyah(s, a){
+    var k = s + ':' + a;
+    if(!cache[k]){
+      cache[k] = fetch('https://api.alquran.cloud/v1/ayah/' + k + '/quran-uthmani')
+        .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function(j){
+          var text = j.data.text.trim(), w = text.split(/\s+/);
+          // البسملة تأتي ملتصقة بأول آية في السور، فنفصلها
+          if(a === 1 && s !== 1 && w.length > 4 && normalize(w.slice(0, 4).join('')) === normalize('بسم الله الرحمن الرحيم')) text = w.slice(4).join(' ');
+          return { text: text, g: j.data.number };
+        })
+        .catch(function(e){ delete cache[k]; throw e; });
+    }
+    return cache[k];
+  }
+  // يعيد كلمات الآية ومواضع الكلمات المطلوبة (تُطابق بعد حذف التشكيل)
+  function locate(text, hl){
+    var toks = text.split(/\s+/), hit = {};
+    if(!hl) return { toks: toks, hit: hit };
+    // بدائل مفصولة بـ | (لاختلاف رسم بعض الكلمات)
+    var alts = hl.split('|');
+    if(alts.length > 1){ for(var z = 0; z < alts.length; z++){ var rz = locate(text, alts[z]); if(Object.keys(rz.hit).length) return rz; } return { toks: toks, hit: hit }; }
+    var want = hl.split(/\s+/).map(normalize).filter(Boolean);
+    var idx = []; toks.forEach(function(t, i){ if(normalize(t)) idx.push(i); });
+    for(var p = 0; p + want.length <= idx.length; p++){
+      var ok = true;
+      for(var q = 0; q < want.length; q++){ if(normalize(toks[idx[p + q]]) !== want[q]){ ok = false; break; } }
+      if(ok){ for(var q2 = 0; q2 < want.length; q2++) hit[idx[p + q2]] = true; break; }
+    }
+    return { toks: toks, hit: hit };
+  }
+  function ayahHtml(text, hl, color){
+    var r = locate(text, hl);
+    return r.toks.map(function(t, i){ return r.hit[i] ? '<mark style="--rc:' + color + '">' + esc(t) + '</mark>' : esc(t); }).join(' ');
+  }
+  function refLabel(s, a){
+    var n = SURAHS[s] || ['', ''];
+    return '<span data-ar-only>' + esc(n[0]) + ' : ' + toAr(a) + '</span><span data-en-only>' + esc(n[1]) + ' ' + s + ':' + a + '</span>';
+  }
+
+  /* ============ القرّاء ============ */
+  var RECITERS = [
+    { id:'minsh-teacher', ar:'المنشاوي – المصحف المعلم', en:'Al-Minshawi – Teaching Mushaf', ayah:['ea:Minshawy_Teacher_128kbps', 'in:ar.minshawi'] },
+    { id:'husr-teacher', ar:'الحصري – المصحف المعلم', en:'Al-Husary – Teaching Mushaf', ayah:['ea:Husary_Muallim_128kbps', 'in:ar.husary'] },
+    { id:'minsh', ar:'المنشاوي – مرتّل', en:'Al-Minshawi – Murattal', ayah:['ea:Minshawy_Murattal_128kbps', 'in:ar.minshawi'] },
+    { id:'husr', ar:'الحصري – مرتّل', en:'Al-Husary – Murattal', ayah:['ea:Husary_128kbps', 'in:ar.husary'] },
+    { id:'basit', ar:'عبد الباسط عبد الصمد – مرتّل', en:'Abdul Basit Abdus-Samad – Murattal', ayah:['ea:Abdul_Basit_Murattal_192kbps', 'in:ar.abdulbasitmurattal'] }
+  ];
+  var reciterId = 'minsh-teacher';
+  try { var sv = localStorage.getItem('fz_reciter'); if(sv) reciterId = sv; } catch(e){}
+  var reciterSelect = document.getElementById('reciterSelect');
+  function reciter(){ for(var i = 0; i < RECITERS.length; i++) if(RECITERS[i].id === reciterId) return RECITERS[i]; return RECITERS[0]; }
+  function fillReciters(){
+    reciterSelect.innerHTML = RECITERS.map(function(r){ return '<option value="' + r.id + '"' + (r.id === reciter().id ? ' selected' : '') + '>' + (isEn() ? r.en : r.ar) + '</option>'; }).join('');
+  }
+  reciterSelect.addEventListener('change', function(){ reciterId = reciterSelect.value; try { localStorage.setItem('fz_reciter', reciterId); } catch(e){} });
+  function pad3(x){ return ('00' + x).slice(-3); }
+  var audio = null;
+  function playAyah(s, a){
+    getAyah(s, a).then(function(d){
+      if(audio){ audio.pause(); }
+      var urls = reciter().ayah.map(function(src){
+        return src.indexOf('ea:') === 0 ? 'https://everyayah.com/data/' + src.slice(3) + '/' + pad3(s) + pad3(a) + '.mp3'
+          : 'https://cdn.islamic.network/quran/audio/128/' + src.slice(3) + '/' + d.g + '.mp3';
+      });
+      var me = new Audio(), i = 0; audio = me; me.src = urls[0];
+      me.onerror = function(){ i++; if(i < urls.length && audio === me){ me.src = urls[i]; var p2 = me.play(); if(p2 && p2.catch) p2.catch(function(){}); } };
+      var p = me.play(); if(p && p.catch) p.catch(function(){});
+    }).catch(function(){});
+  }
+
+  // يملأ أماكن الأمثلة بعد جلب الآيات
+  function fillExamples(root){
+    Array.prototype.forEach.call(root.querySelectorAll('[data-ex]'), function(el){
+      if(el.dataset.filled) return; el.dataset.filled = '1';
+      var s = +el.dataset.s, a = +el.dataset.a, hl = el.dataset.hl, rule = RULES[el.dataset.rule];
+      var color = rule ? rule.color : '#D81B60';
+      el.innerHTML = '<div class="ayah loading">…</div>';
+      getAyah(s, a).then(function(d){
+        el.innerHTML = '<div class="ayah">﴿ ' + ayahHtml(d.text, hl, color) + ' ﴾</div>' +
+          '<div class="meta"><span>' + refLabel(s, a) + (rule ? ' &nbsp;<span class="rule" style="--rc:' + color + '">' + bi([rule.ar, rule.en]) + '</span>' : '') + '</span>' +
+          '<button class="play" type="button">🔊 <span data-ar-only>استمع</span><span data-en-only>Listen</span></button></div>';
+        el.querySelector('.play').addEventListener('click', function(e){ e.stopPropagation(); playAyah(s, a); });
+      }).catch(function(){
+        el.dataset.filled = '';
+        el.innerHTML = '<div class="loading">' + (isEn() ? 'Could not load the verse. Check the internet.' : 'تعذّر تحميل الآية، تأكد من الإنترنت.') + '</div>';
+      });
+    });
+  }
+  function exBox(e){ return '<div class="ex" data-ex="1" data-s="' + e.s + '" data-a="' + e.a + '" data-hl="' + esc(e.hl || '') + '" data-rule="' + (e.rule || '') + '"></div>'; }
+
+  /* ============ بطاقات الدرس ============ */
+  var cardEl = document.getElementById('card'), idx = 0, got = {};
+  var DECO = ['⭐','🌙','✨','🍃','🌸','💫','🎈','🌼'];
+  function renderCard(dir){
+    var c = L.cards[idx], k = 'c' + (idx % 8);
+    var back = '<h3>' + c.icon + ' ' + bi(c.t) + '</h3>';
+    if(c.x) back += '<div class="txt">' + bi(c.x) + '</div>';
+    if(c.list){ back += '<ul>' + c.list.map(function(it){ return '<li>' + bi(it) + '</li>'; }).join('') + '</ul>'; }
+    if(c.letters) back += '<div class="chips">' + c.letters.split(' ').map(function(l){ return '<span class="chip-l">' + esc(l) + '</span>'; }).join('') + '</div>';
+    if(c.ex) back += c.ex.map(exBox).join('');
+    var deco = '<span class="deco" style="top:18%;inset-inline-end:10%">' + DECO[idx % 8] + '</span><span class="deco" style="bottom:20%;inset-inline-start:9%">' + DECO[(idx + 3) % 8] + '</span>';
+    cardEl.className = 'card' + (dir > 0 ? ' enter-next' : dir < 0 ? ' enter-prev' : '');
+    cardEl.innerHTML =
+      '<div class="face front ' + k + '"><span class="num">' + (isEn() ? idx + 1 : toAr(idx + 1)) + '</span>' + deco +
+        '<div class="art">' + c.icon + '</div><h2>' + bi(c.t) + '</h2>' +
+        (c.line ? '<div class="line">' + bi(c.line) + '</div>' : '') +
+        (c.big ? '<div class="big">' + esc(c.big) + '</div>' : '') +
+        '<span class="hint">' + bi(['👆 اضغط لترى الشرح', '👆 Tap to see the explanation']) + '</span></div>' +
+      '<div class="face back ' + k + '">' + back + '</div>';
+    fillExamples(cardEl);
+    renderNav();
+  }
+  function renderNav(){
+    var dots = document.getElementById('dots');
+    dots.innerHTML = L.cards.map(function(_, i){ return '<button class="' + (i === idx ? 'on ' : '') + (got[i] ? 'done' : '') + '" data-i="' + i + '">' + (isEn() ? i + 1 : toAr(i + 1)) + '</button>'; }).join('');
+    var n = Object.keys(got).length;
+    document.getElementById('stars').textContent = '⭐ ' + (isEn() ? n : toAr(n)) + ' / ' + (isEn() ? L.cards.length : toAr(L.cards.length));
+    document.getElementById('barFill').style.width = (100 * n / L.cards.length) + '%';
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === L.cards.length - 1;
+  }
+  document.getElementById('dots').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return; var j = +b.dataset.i; if(j !== idx){ var d = j > idx ? 1 : -1; idx = j; renderCard(d); }
+  });
+  function go(d){ var j = idx + d; if(j >= 0 && j < L.cards.length){ idx = j; renderCard(d); } }
+  cardEl.addEventListener('click', function(e){ if(e.target.closest('button')) return; cardEl.classList.toggle('flipped'); });
+  document.getElementById('prevBtn').addEventListener('click', function(){ go(-1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ go(1); });
+  document.getElementById('gotBtn').addEventListener('click', function(){
+    got[idx] = true;
+    var all = Object.keys(got).length === L.cards.length;
+    document.getElementById('deckDone').textContent = all ? (isEn() ? '🎉 Wonderful! You learned every card. Now let\'s practice!' : '🎉 رائع! تعلّمتَ كل البطاقات، هيا نتدرّب!') : '';
+    if(all){ renderNav(); confetti(); setTimeout(function(){ document.getElementById('practice').scrollIntoView({ behavior:'smooth' }); }, 900); }
+    else if(idx < L.cards.length - 1) go(1); else renderNav();
+  });
+  // السحب بالإصبع
+  var sx = null;
+  var stage = document.getElementById('stage');
+  stage.addEventListener('pointerdown', function(e){ sx = e.clientX; });
+  stage.addEventListener('pointerup', function(e){
+    if(sx === null) return; var dx = e.clientX - sx; sx = null;
+    if(Math.abs(dx) > 60){ var rtl = document.documentElement.dir === 'rtl'; go((dx < 0) === rtl ? -1 : 1); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    var rtl = document.documentElement.dir === 'rtl';
+    if(e.key === 'ArrowLeft') go(rtl ? 1 : -1);
+    else if(e.key === 'ArrowRight') go(rtl ? -1 : 1);
+    else if(e.key === ' '){ e.preventDefault(); cardEl.classList.toggle('flipped'); }
+  });
+
+  /* ============ التمارين ============ */
+  var actsEl = document.getElementById('acts'), score = 0, total = 0, doneActs = {};
+  var TITLES = {
+    tf: ['😊 صح أم خطأ؟', '😊 True or False?', 'اختر الوجه الضاحك للعبارة الصحيحة، والحزين للخاطئة', 'Pick the happy face if it is true, the sad face if it is false'],
+    mcq: ['✅ اختر الإجابة الصحيحة', '✅ Choose the Right Answer', '', ''],
+    letters: ['🎨 لوّن الحروف', '🎨 Color the Letters', '', ''],
+    tapword: ['👆 اضغط على الكلمة', '👆 Tap the Word', '', ''],
+    sort: ['🧺 صنّف في السلة الصحيحة', '🧺 Sort into the Right Basket', 'اضغط على البطاقة ثم على السلة', 'Tap a card, then tap its basket'],
+    order: ['🔢 رتّب بالترتيب الصحيح', '🔢 Put in the Right Order', 'اضغط على البطاقات بالترتيب', 'Tap the cards in order']
+  };
+  function labelOf(o){ return typeof o === 'string' ? [RULES[o].ar, RULES[o].en] : o; }
+  function mark(points){ score += points; }
+  function setFb(el, ok, txt){ el.className = 'fb ' + (ok ? 'good' : 'bad'); el.innerHTML = txt; }
+  function okTxt(){ return bi(['✅ أحسنت!', '✅ Well done!']); }
+  function noTxt(){ return bi(['❌ حاول مرة أخرى', '❌ Try again']); }
+  function finishTxt(){ return bi(['🎉 أنهيت هذا التمرين!', '🎉 You finished this exercise!']); }
+
+  function buildAct(a, ai){
+    var box = document.createElement('div');
+    var T = TITLES[a.t];
+    box.className = 'act c' + ((ai + 3) % 8);
+    var sub = a.p ? bi(a.p) : (T[2] ? bi([T[2], T[3]]) : '');
+    box.innerHTML = '<h3>' + bi([T[0], T[1]]) + '</h3>' + (sub ? '<div class="sub">' + sub + '</div>' : '') + '<div class="body"></div><div class="fb"></div><div class="prog"></div>';
+    actsEl.appendChild(box);
+    var body = box.querySelector('.body'), fb = box.querySelector('.fb'), prog = box.querySelector('.prog');
+    var items = a.items || [], i = 0;
+    function progress(){ prog.innerHTML = items.length > 1 ? bi(['السؤال ' + toAr(i + 1) + ' / ' + toAr(items.length), 'Question ' + (i + 1) + ' / ' + items.length]) : ''; }
+    function nextItem(){
+      if(i < items.length - 1){ setTimeout(function(){ i++; render(); }, 1100); }
+      else { doneActs[ai] = true; setTimeout(function(){ setFb(fb, true, finishTxt()); }, 700); }
+    }
+    function render(){
+      fb.className = 'fb'; fb.innerHTML = ''; progress();
+      var it = items[i], tries = 0;
+      if(a.t === 'tf'){
+        body.innerHTML = '<div class="stmt">' + bi([it[0], it[1]]) + '</div><div class="faces"><button class="face-btn" data-v="1">😊</button><button class="face-btn" data-v="0">😢</button></div>';
+        body.querySelectorAll('.face-btn').forEach(function(b){ b.addEventListener('click', function(){
+          var ok = (b.dataset.v === '1') === !!it[2];
+          if(ok){ if(!tries) mark(1); setFb(fb, true, okTxt() + (it[3] ? '<br>' + bi(it[3]) : '')); b.style.borderColor = '#16A34A'; nextItem(); }
+          else { tries++; setFb(fb, false, noTxt()); b.classList.add('no'); }
+        }); });
+      }
+      else if(a.t === 'mcq'){
+        var opts = shuffle(it.o.map(function(o, k){ return { o: o, k: k }; }));
+        body.innerHTML = '<div class="q">' + bi(it.q) + '</div>' + (it.ex ? exBox(it.ex) : '') + '<div class="opts">' +
+          opts.map(function(x){ return '<button class="opt" data-k="' + x.k + '">' + bi(labelOf(x.o)) + '</button>'; }).join('') + '</div>';
+        fillExamples(body);
+        body.querySelectorAll('.opt').forEach(function(b){ b.addEventListener('click', function(){
+          if(b.classList.contains('ok')) return;
+          if(+b.dataset.k === (it.c || 0)){ b.classList.add('ok'); if(!tries) mark(1); setFb(fb, true, okTxt()); nextItem(); }
+          else { tries++; b.classList.add('no'); setFb(fb, false, noTxt()); }
+        }); });
+      }
+      else if(a.t === 'tapword'){
+        body.innerHTML = '<div class="q">' + bi(it.q || a.p || ['اضغط على الكلمة المطلوبة', 'Tap the right word']) + '</div><div class="toks"><span class="loading">…</span></div><div class="row"><button class="play">🔊 ' + bi(['استمع', 'Listen']) + '</button></div>';
+        body.querySelector('.play').addEventListener('click', function(){ playAyah(it.s, it.a); });
+        getAyah(it.s, it.a).then(function(d){
+          var r = locate(d.text, it.hl), wrap = body.querySelector('.toks');
+          wrap.innerHTML = r.toks.map(function(t, k){ return normalize(t) ? '<button class="tok" data-k="' + k + '">' + esc(t) + '</button>' : ''; }).join('');
+          var need = Object.keys(r.hit).length, found = 0;
+          wrap.querySelectorAll('.tok').forEach(function(b){ b.addEventListener('click', function(){
+            if(b.classList.contains('ok')) return;
+            if(r.hit[b.dataset.k]){ b.classList.add('ok'); found++; if(found >= need){ if(!tries) mark(1); setFb(fb, true, okTxt()); nextItem(); } }
+            else { tries++; b.classList.add('no'); setFb(fb, false, noTxt()); setTimeout(function(){ b.classList.remove('no'); }, 600); }
+          }); });
+        }).catch(function(){ body.querySelector('.toks').innerHTML = '<span class="loading">' + bi(['تعذّر تحميل الآية', 'Could not load the verse']) + '</span>'; });
+      }
+    }
+    // أنواع لها عنصر واحد كبير
+    if(a.t === 'letters'){
+      items = [1];
+      var ok = a.ok.split(' '), all = shuffle(a.all.split(' ')), found = 0, miss = 0;
+      body.innerHTML = '<div class="letters">' + all.map(function(l){ return '<button class="let">' + esc(l) + '</button>'; }).join('') + '</div>';
+      body.querySelectorAll('.let').forEach(function(b){ b.addEventListener('click', function(){
+        if(b.classList.contains('ok')) return;
+        if(ok.indexOf(b.textContent) >= 0){ b.classList.add('ok'); found++; if(found === ok.length){ mark(miss ? 1 : 2); doneActs[ai] = true; setFb(fb, true, finishTxt()); confetti(); } }
+        else { miss++; b.classList.add('no'); setFb(fb, false, noTxt()); setTimeout(function(){ b.classList.remove('no'); }, 600); }
+      }); });
+      return;
+    }
+    if(a.t === 'sort'){
+      items = [1];
+      var sel = null, left = a.items.length, miss2 = 0;
+      body.innerHTML = '<div class="items"></div><div class="buckets">' + a.buckets.map(function(bk, k){
+        var c = typeof bk === 'string' ? RULES[bk].color : bk[2];
+        return '<div class="bucket" data-b="' + k + '" style="--bc:' + c + '"><h4>' + bi(labelOf(typeof bk === 'string' ? bk : [bk[0], bk[1]])) + '</h4><div class="in"></div></div>';
+      }).join('') + '</div>';
+      var itemsEl = body.querySelector('.items');
+      shuffle(a.items.slice()).forEach(function(it){
+        var b = document.createElement('button'); b.className = 'item' + (it.s ? ' quran' : ''); b.dataset.b = it.b;
+        if(it.s){
+          b.innerHTML = '…';
+          getAyah(it.s, it.a).then(function(d){ var r = locate(d.text, it.hl); var w = r.toks.filter(function(_, k){ return r.hit[k]; }); b.textContent = w.length ? w.join(' ') : it.hl; });
+        } else b.innerHTML = bi(it.x);
+        b.addEventListener('click', function(){ if(b.classList.contains('ok')) return; if(sel) sel.classList.remove('sel'); sel = b; b.classList.add('sel'); });
+        itemsEl.appendChild(b);
+      });
+      body.querySelectorAll('.bucket').forEach(function(bk){ bk.addEventListener('click', function(){
+        if(!sel) return;
+        if(sel.dataset.b === bk.dataset.b){ sel.classList.remove('sel'); sel.classList.add('ok'); bk.querySelector('.in').appendChild(sel); sel = null; left--; setFb(fb, true, okTxt());
+          if(!left){ mark(miss2 ? 1 : 2); doneActs[ai] = true; setFb(fb, true, finishTxt()); confetti(); } }
+        else { miss2++; var s2 = sel; s2.classList.add('no'); setFb(fb, false, noTxt()); setTimeout(function(){ s2.classList.remove('no'); }, 600); }
+      }); });
+      return;
+    }
+    if(a.t === 'order'){
+      items = [1];
+      var picked = [], order = shuffle(a.items.map(function(_, k){ return k; })), miss3 = 0;
+      body.innerHTML = '<div class="line-box"></div><div class="items"></div><div class="row"><button class="btn" data-r="1">' + bi(['↺ من جديد', '↺ Start over']) + '</button></div>';
+      var line = body.querySelector('.line-box'), pool = body.querySelector('.items');
+      function draw(){
+        line.innerHTML = picked.map(function(k, p){ return '<button class="item ok">' + (isEn() ? p + 1 : toAr(p + 1)) + '. ' + bi(a.items[k]) + '</button>'; }).join('');
+        pool.innerHTML = order.filter(function(k){ return picked.indexOf(k) < 0; }).map(function(k){ return '<button class="item" data-k="' + k + '">' + bi(a.items[k]) + '</button>'; }).join('');
+        pool.querySelectorAll('.item').forEach(function(b){ b.addEventListener('click', function(){
+          var k = +b.dataset.k;
+          if(k === picked.length){ picked.push(k); draw(); setFb(fb, true, okTxt()); if(picked.length === a.items.length){ mark(miss3 ? 1 : 2); doneActs[ai] = true; setFb(fb, true, finishTxt()); confetti(); } }
+          else { miss3++; b.classList.add('no'); setFb(fb, false, noTxt()); setTimeout(function(){ b.classList.remove('no'); }, 600); }
+        }); });
+      }
+      body.querySelector('[data-r]').addEventListener('click', function(){ picked = []; draw(); fb.innerHTML = ''; });
+      draw();
+      return;
+    }
+    render();
+  }
+  function buildActs(){ actsEl.innerHTML = ''; L.ex.forEach(buildAct); }
+
+  /* ============ الوسام ============ */
+  function maxScore(){ var m = 0; L.ex.forEach(function(a){ m += (a.t === 'letters' || a.t === 'sort' || a.t === 'order') ? 2 : a.items.length; }); return m; }
+  function renderFinish(){
+    var name = document.getElementById('studentName').value.trim();
+    document.getElementById('finishTitle').innerHTML = bi([name ? 'بارك الله فيك يا ' + name + ' 🌟' : 'بارك الله فيك 🌟', name ? 'Well done, ' + name + ' 🌟' : 'May Allah bless you 🌟']);
+    document.getElementById('finishText').innerHTML = bi(['أنهِ البطاقات والتمارين، ثم استلم وسامك', 'Finish the cards and exercises, then get your medal']);
+  }
+  document.getElementById('medalBtn').addEventListener('click', function(){
+    var m = maxScore(), st = Math.max(1, Math.round(5 * score / Math.max(1, m)));
+    document.getElementById('medal').classList.add('show');
+    document.getElementById('finishText').innerHTML = bi(['نجومك: ' + '⭐'.repeat(st) + ' — وسام «' + L.title[0] + '»', 'Your stars: ' + '⭐'.repeat(st) + ' — "' + L.title[1] + '" medal']);
+    confetti();
+  });
+  document.getElementById('studentName').addEventListener('input', renderFinish);
+
+  /* ============ قصاصات الاحتفال ============ */
+  var cv = document.getElementById('confetti'), cx = cv.getContext('2d'), parts = [], running = false;
+  function size(){ cv.width = innerWidth; cv.height = innerHeight; } size(); addEventListener('resize', size);
+  function confetti(){
+    for(var k = 0; k < 120; k++) parts.push({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * .5, r: 4 + Math.random() * 6, c: 'hsl(' + Math.floor(Math.random() * 360) + ' 85% 60%)', vy: 2 + Math.random() * 3, vx: -1 + Math.random() * 2, a: Math.random() * 6 });
+    if(!running){ running = true; requestAnimationFrame(frame); }
+  }
+  function frame(){
+    cx.clearRect(0, 0, cv.width, cv.height);
+    parts.forEach(function(p){ p.y += p.vy; p.x += p.vx; p.a += .1; cx.fillStyle = p.c; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 1.6); cx.restore(); });
+    parts = parts.filter(function(p){ return p.y < cv.height + 30; });
+    if(parts.length) requestAnimationFrame(frame); else { running = false; cx.clearRect(0, 0, cv.width, cv.height); }
+  }
+
+  /* ============ اللغة ============ */
+  var btnAr = document.getElementById('btnAr'), btnEn = document.getElementById('btnEn');
+  function setLang(en){
+    document.body.classList.toggle('lang-en', en);
+    document.documentElement.lang = en ? 'en' : 'ar';
+    document.documentElement.dir = en ? 'ltr' : 'rtl';
+    btnAr.classList.toggle('active', !en); btnEn.classList.toggle('active', en);
+    document.getElementById('studentName').placeholder = en ? 'Student name…' : 'اسم الطالب…';
+    fillReciters(); renderNav(); renderFinish();
+    var fl = cardEl.classList.contains('flipped'); renderCard(0); if(fl) cardEl.classList.add('flipped');
+  }
+  btnAr.addEventListener('click', function(){ setLang(false); });
+  btnEn.addEventListener('click', function(){ setLang(true); });
+
+  var qs = new URLSearchParams(location.search);
+  if(qs.get('name')) document.getElementById('studentName').value = qs.get('name').slice(0, 40);
+  if(qs.get('lang') === 'en') setLang(true); else setLang(false);
+  buildActs();
+})();
+</script>
+<!-- زر الرجوع الثابت: يرجع للصفحة السابقة، أو إلى ./#tajweed إن فُتحت الصفحة مباشرة -->
+<a id="fzBack" href="./#tajweed" style="position:fixed;bottom:16px;inset-inline-start:16px;z-index:60;display:inline-flex;align-items:center;gap:6px;padding:12px 18px;border-radius:999px;background:#0B3B2C;color:#F3E3B8;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.28);border:2px solid #C9A24B;font-family:inherit"><span data-ar-only>→ رجوع</span><span data-en-only>← Back</span></a>
+<script>(function(){var b=document.getElementById('fzBack');b.addEventListener('click',function(e){try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script>
+</body>
+</html>

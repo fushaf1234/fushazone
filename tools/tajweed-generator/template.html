@@ -246,6 +246,9 @@
   function locate(text, hl){
     var toks = text.split(/\s+/), hit = {};
     if(!hl) return { toks: toks, hit: hit };
+    // بدائل مفصولة بـ | (لاختلاف رسم بعض الكلمات)
+    var alts = hl.split('|');
+    if(alts.length > 1){ for(var z = 0; z < alts.length; z++){ var rz = locate(text, alts[z]); if(Object.keys(rz.hit).length) return rz; } return { toks: toks, hit: hit }; }
     var want = hl.split(/\s+/).map(normalize).filter(Boolean);
     var idx = []; toks.forEach(function(t, i){ if(normalize(t)) idx.push(i); });
     for(var p = 0; p + want.length <= idx.length; p++){

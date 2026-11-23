@@ -19,6 +19,23 @@ RULES = {
     'idgham_sh': {'ar': 'إدغام شفوي',      'en': 'Idgham Shafawi',    'color': '#7B1FA2'},
     'izhar_sh':  {'ar': 'إظهار شفوي',      'en': 'Izhar Shafawi',     'color': '#00897B'},
     'qalqala':   {'ar': 'قلقلة',           'en': 'Qalqalah',          'color': '#3949AB'},
+    'tafkheem':  {'ar': 'تفخيم',           'en': 'Heavy (tafkheem)',  'color': '#B45309'},
+    'tarqeeq':   {'ar': 'ترقيق',           'en': 'Light (tarqeeq)',   'color': '#0284C7'},
+    'madd_t':    {'ar': 'مد طبيعي',        'en': 'Natural madd',      'color': '#16A34A'},
+    'alif7':     {'ar': 'ألف تُحذف وصلًا', 'en': 'Alif dropped when continuing', 'color': '#64748B'},
+    'madd_iwad': {'ar': 'مد العوض',        'en': 'Madd al-iwad',      'color': '#0D9488'},
+    'madd_badal':{'ar': 'مد البدل',        'en': 'Madd al-badal',     'color': '#65A30D'},
+    'madd_muttasil': {'ar': 'مد متصل',     'en': 'Connected madd',    'color': '#DC2626'},
+    'madd_munfasil': {'ar': 'مد منفصل',    'en': 'Separated madd',    'color': '#EA580C'},
+    'sila_s':    {'ar': 'صلة صغرى',        'en': 'Minor silah',       'color': '#0891B2'},
+    'sila_k':    {'ar': 'صلة كبرى',        'en': 'Major silah',       'color': '#BE185D'},
+    'madd_arid': {'ar': 'مد عارض للسكون',  'en': 'Madd arid',         'color': '#7C3AED'},
+    'madd_leen': {'ar': 'مد اللين',        'en': 'Madd al-leen',      'color': '#059669'},
+    'madd_lazim':{'ar': 'مد لازم',         'en': 'Madd lazim',        'color': '#991B1B'},
+    'lam_qamari':{'ar': 'لام قمرية (إظهار)', 'en': 'Lunar laam (clear)', 'color': '#1D4ED8'},
+    'lam_shamsi':{'ar': 'لام شمسية (إدغام)', 'en': 'Solar laam (merged)', 'color': '#CA8A04'},
+    'lam_idgham':{'ar': 'إدغام اللام', 'en': 'Merged laam', 'color': '#A16207'},
+    'lam_izhar': {'ar': 'إظهار اللام', 'en': 'Clear laam', 'color': '#0369A1'},
 }
 
 SURAHS = {1: ('الفاتحة', 'Al-Fatihah'), 2: ('البقرة', 'Al-Baqarah'), 6: ('الأنعام', 'Al-An\'am'), 16: ('النحل', 'An-Nahl'),
@@ -26,11 +43,18 @@ SURAHS = {1: ('الفاتحة', 'Al-Fatihah'), 2: ('البقرة', 'Al-Baqarah')
           92: ('الليل', 'Al-Layl'), 95: ('التين', 'At-Tin'), 96: ('العلق', 'Al-\'Alaq'), 97: ('القدر', 'Al-Qadr'),
           99: ('الزلزلة', 'Az-Zalzalah'), 101: ('القارعة', 'Al-Qari\'ah'), 102: ('التكاثر', 'At-Takathur'), 104: ('الهمزة', 'Al-Humazah'),
           105: ('الفيل', 'Al-Fil'), 106: ('قريش', 'Quraysh'), 108: ('الكوثر', 'Al-Kawthar'), 112: ('الإخلاص', 'Al-Ikhlas'),
-          113: ('الفلق', 'Al-Falaq'), 114: ('الناس', 'An-Nas')}
+          113: ('الفلق', 'Al-Falaq'), 114: ('الناس', 'An-Nas'),
+          4: ('النساء', 'An-Nisa\''), 10: ('يونس', 'Yunus'), 17: ('الإسراء', 'Al-Isra\''), 18: ('الكهف', 'Al-Kahf'), 19: ('مريم', 'Maryam'),
+          20: ('طه', 'Ta-Ha'), 33: ('الأحزاب', 'Al-Ahzab'), 50: ('ق', 'Qaf'), 54: ('القمر', 'Al-Qamar'), 67: ('الملك', 'Al-Mulk'),
+          69: ('الحاقة', 'Al-Haqqah'), 76: ('الإنسان', 'Al-Insan'), 80: ('عبس', '\'Abasa'), 86: ('الطارق', 'At-Tariq'), 89: ('الفجر', 'Al-Fajr'),
+          90: ('البلد', 'Al-Balad'), 91: ('الشمس', 'Ash-Shams'), 98: ('البينة', 'Al-Bayyinah'), 100: ('العاديات', 'Al-\'Adiyat'),
+          103: ('العصر', 'Al-\'Asr'), 109: ('الكافرون', 'Al-Kafirun'), 110: ('النصر', 'An-Nasr')}
 
 SETS = [
     # (ملف البيانات، بادئة اسم الملف، المستوى بالعربية، بالإنجليزية)
     ('kids1', 'tajweed-k1', 'تجويد الأطفال – المستوى الأول', 'Tajweed for Kids – Level 1'),
+    ('kids2', 'tajweed-k2', 'تجويد الأطفال – المستوى الثاني', 'Tajweed for Kids – Level 2'),
+    ('short', 'tajweed-s', 'التجويد المختصر', 'Tajweed – Short Course'),
 ]
 
 AR_DIGITS = '٠١٢٣٤٥٦٧٨٩'

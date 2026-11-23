@@ -48,13 +48,16 @@ SURAHS = {1: ('الفاتحة', 'Al-Fatihah'), 2: ('البقرة', 'Al-Baqarah')
           20: ('طه', 'Ta-Ha'), 33: ('الأحزاب', 'Al-Ahzab'), 50: ('ق', 'Qaf'), 54: ('القمر', 'Al-Qamar'), 67: ('الملك', 'Al-Mulk'),
           69: ('الحاقة', 'Al-Haqqah'), 76: ('الإنسان', 'Al-Insan'), 80: ('عبس', '\'Abasa'), 86: ('الطارق', 'At-Tariq'), 89: ('الفجر', 'Al-Fajr'),
           90: ('البلد', 'Al-Balad'), 91: ('الشمس', 'Ash-Shams'), 98: ('البينة', 'Al-Bayyinah'), 100: ('العاديات', 'Al-\'Adiyat'),
-          103: ('العصر', 'Al-\'Asr'), 109: ('الكافرون', 'Al-Kafirun'), 110: ('النصر', 'An-Nasr')}
+          103: ('العصر', 'Al-\'Asr'), 109: ('الكافرون', 'Al-Kafirun'), 110: ('النصر', 'An-Nasr'),
+          3: ('آل عمران', 'Al \'Imran'), 5: ('المائدة', 'Al-Ma\'idah'), 11: ('هود', 'Hud'), 12: ('يوسف', 'Yusuf'), 27: ('النمل', 'An-Naml'),
+          36: ('يس', 'Ya-Sin'), 75: ('القيامة', 'Al-Qiyamah'), 77: ('المرسلات', 'Al-Mursalat'), 83: ('المطففين', 'Al-Mutaffifin')}
 
 SETS = [
     # (ملف البيانات، بادئة اسم الملف، المستوى بالعربية، بالإنجليزية)
     ('kids1', 'tajweed-k1', 'تجويد الأطفال – المستوى الأول', 'Tajweed for Kids – Level 1'),
     ('kids2', 'tajweed-k2', 'تجويد الأطفال – المستوى الثاني', 'Tajweed for Kids – Level 2'),
     ('short', 'tajweed-s', 'التجويد المختصر', 'Tajweed – Short Course'),
+    ('full', 'tajweed-f', 'التجويد الكامل', 'Tajweed – Full Course'),
 ]
 
 AR_DIGITS = '٠١٢٣٤٥٦٧٨٩'

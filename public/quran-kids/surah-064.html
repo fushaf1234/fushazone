@@ -824,24 +824,22 @@
   var listenBtn = document.getElementById('listenBtn');
   var listenToast = document.getElementById('listenToast');
   var audioEl = document.getElementById('surahAudio');
-  /* ============ القرّاء: السورة كاملة وصوت كل آية، مع رابط احتياطي لكل قارئ ============ */
+  /* ============ القرّاء: روابط مُتحقَّق منها (mp3quran للسورة، everyayah لكل آية) ============ */
   function pad3(x){ return ('00' + x).slice(-3); }
+  var MP3Q = 'https://cdn.mp3quran.net/download/audio/';
   var RECITERS = [
     { id:'minsh-teacher', ar:'المنشاوي – المصحف المعلم', en:'Al-Minshawi – Teaching Mushaf',
-      surah:['https://server10.mp3quran.net/minsh/Almusshaf-Al-Mo-lim/', 'https://server10.mp3quran.net/minsh/'],
-      ayah:['ea:Minshawy_Teacher_128kbps', 'in:ar.minshawi'] },
+      surah:[MP3Q + 'muhammad-minshawi/r3/', MP3Q + 'muhammad-minshawi/r1/'],
+      ayah:['ea:Minshawy_Murattal_128kbps', 'in:ar.minshawi'] },
     { id:'husr-teacher', ar:'الحصري – المصحف المعلم', en:'Al-Husary – Teaching Mushaf',
-      surah:['https://server13.mp3quran.net/husr/Almusshaf-Al-Mo-lim/', 'https://server13.mp3quran.net/husr/'],
+      surah:null, // تُقرأ السورة آية بعد آية من المصحف المعلم
       ayah:['ea:Husary_Muallim_128kbps', 'in:ar.husary'] },
     { id:'minsh', ar:'المنشاوي – مرتّل', en:'Al-Minshawi – Murattal',
-      surah:['https://server10.mp3quran.net/minsh/'],
-      ayah:['ea:Minshawy_Murattal_128kbps', 'in:ar.minshawi'] },
+      surah:[MP3Q + 'muhammad-minshawi/r1/'], ayah:['ea:Minshawy_Murattal_128kbps', 'in:ar.minshawi'] },
     { id:'husr', ar:'الحصري – مرتّل', en:'Al-Husary – Murattal',
-      surah:['https://server13.mp3quran.net/husr/'],
-      ayah:['ea:Husary_128kbps', 'in:ar.husary'] },
+      surah:[MP3Q + 'mahmoud-husary/r1/'], ayah:['ea:Husary_128kbps', 'in:ar.husary'] },
     { id:'basit', ar:'عبد الباسط عبد الصمد – مرتّل', en:'Abdul Basit Abdus-Samad – Murattal',
-      surah:['https://server7.mp3quran.net/basit/'],
-      ayah:['ea:Abdul_Basit_Murattal_192kbps', 'in:ar.abdulbasitmurattal'] }
+      surah:[MP3Q + 'abdulbasit-abdulsamad/r3/'], ayah:['ea:Abdul_Basit_Murattal_192kbps', 'in:ar.abdulbasitmurattal'] }
   ];
   var reciterSelect = document.getElementById('reciterSelect');
   var reciterId = 'minsh-teacher';
@@ -853,48 +851,64 @@
       return '<option value="' + r.id + '"' + (r.id === reciter().id ? ' selected' : '') + '>' + (en ? r.en : r.ar) + '</option>';
     }).join('');
   }
-  function surahUrls(){ return reciter().surah.map(function(b){ return b + '064.mp3'; }); }
   function ayahUrls(ayahInSurah, globalNum){
     return reciter().ayah.map(function(src){
       if(src.indexOf('ea:') === 0) return 'https://everyayah.com/data/' + src.slice(3) + '/' + pad3(D.n) + pad3(ayahInSurah) + '.mp3';
       return 'https://cdn.islamic.network/quran/audio/128/' + src.slice(3) + '/' + globalNum + '.mp3';
     });
   }
-  // يشغّل أول رابط، وإن فشل ينتقل للذي بعده
-  function attachFallback(audio, urls, autoplay){
+  function toast(){
+    listenToast.textContent = isEn() ? '🎧 Could not play the audio right now. Check the internet.' : '🎧 تعذّر تشغيل الصوت الآن، تأكد من الإنترنت.';
+    listenToast.classList.add('show');
+    setTimeout(function(){ listenToast.classList.remove('show'); }, 2600);
+  }
+  // يشغّل أول رابط، وإن فشل ينتقل بهدوء للذي بعده، ولا تظهر رسالة إلا إذا فشلت كل الروابط
+  function attachFallback(audio, urls, autoplay, onFail){
     var i = 0;
-    audio.src = urls[0];
     audio.onerror = function(){
       i++;
       if(i < urls.length){ audio.src = urls[i]; if(autoplay()){ var p = audio.play(); if(p && p.catch) p.catch(function(){}); } }
+      else if(onFail && autoplay()) onFail();
     };
+    audio.src = urls[0];
   }
-  var surahWanted = false;
-  function loadSurahAudio(){ attachFallback(audioEl, surahUrls(), function(){ return surahWanted; }); }
+  function quietPlay(audio){ var p = audio.play(); if(p && p.catch) p.catch(function(){}); }
+
+  // تشغيل السورة: ملف واحد، أو آية بعد آية إن لم يتوفر ملف كامل للقارئ
+  var surahWanted = false, plIndex = 0;
+  function setBtn(){ listenBtn.firstChild.nodeValue = surahWanted ? '⏸️ ' : '▶️ '; }
+  function stopSurah(){ surahWanted = false; audioEl.pause(); audioEl.onended = null; setBtn(); }
+  function playPlaylistFrom(i){
+    if(!surahWanted || !ayahs.length) return;
+    if(i >= ayahs.length){ stopSurah(); plIndex = 0; return; }
+    plIndex = i;
+    attachFallback(audioEl, ayahUrls(i + 1, ayahs[i].g), function(){ return surahWanted; }, function(){ stopSurah(); toast(); });
+    audioEl.onended = function(){ playPlaylistFrom(plIndex + 1); };
+    quietPlay(audioEl);
+  }
+  function startSurah(){
+    surahWanted = true; setBtn();
+    var r = reciter();
+    if(!r.surah){ playPlaylistFrom(plIndex); return; }
+    var want = r.surah.map(function(b){ return b + '064.mp3'; });
+    if(audioEl.dataset.rid !== r.id){
+      audioEl.dataset.rid = r.id;
+      attachFallback(audioEl, want, function(){ return surahWanted; }, function(){ stopSurah(); toast(); });
+    }
+    audioEl.onended = function(){ stopSurah(); };
+    quietPlay(audioEl);
+  }
   fillReciters();
-  loadSurahAudio();
   reciterSelect.addEventListener('change', function(){
     reciterId = reciterSelect.value;
     try { localStorage.setItem('fz_reciter', reciterId); } catch(e){}
-    var wasPlaying = !audioEl.paused;
-    audioEl.pause(); surahWanted = false; loadSurahAudio();
-    if(wasPlaying){ surahWanted = true; var p = audioEl.play(); if(p && p.catch) p.catch(function(){}); }
+    var was = surahWanted;
+    stopSurah(); audioEl.dataset.rid = ''; plIndex = 0;
+    if(was) startSurah();
   });
   document.getElementById('btnAr') && document.getElementById('btnAr').addEventListener('click', function(){ setTimeout(fillReciters, 0); });
   document.getElementById('btnEn') && document.getElementById('btnEn').addEventListener('click', function(){ setTimeout(fillReciters, 0); });
-
-  listenBtn.addEventListener('click', function(){
-    if(!audioEl.paused){ audioEl.pause(); surahWanted = false; return; }
-    surahWanted = true;
-    var p = audioEl.play();
-    if(p && p.catch){
-      p.catch(function(){
-        listenToast.textContent = isEn() ? '🎧 Could not play the audio right now.' : '🎧 تعذّر تشغيل الصوت الآن.';
-        listenToast.classList.add('show');
-        setTimeout(function(){ listenToast.classList.remove('show'); }, 2500);
-      });
-    }
-  });
+  listenBtn.addEventListener('click', function(){ if(surahWanted) stopSurah(); else startSurah(); });
 
   /* ============ لنفهم الآيات: بطاقة لكل آية داخل نافذة ============ */
   var kidNotes = {}; D.cards.forEach(function(c){ kidNotes[c[0]] = c; });

@@ -1,11 +1,11 @@
 {
-  "projectId": "",
-  "appId": "",
-  "apiKey": "",
-  "authDomain": "",
-  "firestoreDatabaseId": "",
-  "storageBucket": "",
-  "messagingSenderId": "",
+  "projectId": "fusha-zone",
+  "appId": "1:443942740832:web:865e6101403e605d0c3405",
+  "apiKey": "AIzaSyB76rAsSoGs4oIacskBjanetWi98rAK_08",
+  "authDomain": "fusha-zone.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "fusha-zone.firebasestorage.app",
+  "messagingSenderId": "443942740832",
   "measurementId": "",
   "oAuthClientId": "",
   "recaptchaSiteKey": ""

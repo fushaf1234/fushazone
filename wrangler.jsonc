@@ -1,6 +1,6 @@
 {
   // الموقع (ملفات dist) + خادم صغير لمسار /api/rtc فقط (الغرف الصوتية)
-  "name": "english-zone-academy",
+  "name": "fusha-zone",
   "main": "worker/index.js",
   "compatibility_date": "2025-10-01",
   // يبني الموقع قبل النشر (Workers Builds لم يعد يبنيه تلقائيًا بعد إضافة هذا الملف)

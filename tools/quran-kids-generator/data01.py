@@ -1,0 +1,16 @@
+SURAHS = [
+(1, "الفاتحة", "Al-Fatiha",
+ [(1,"ماذا تعني البسملة؟","What does the Basmalah mean?","نبدأ كل عمل باسم الله لأنه يبارك أعمالنا ويعيننا عليها.","We begin everything with Allah's name, so He blesses our work and helps us."),
+  (2,"ما معنى «الحمد لله رب العالمين»؟","What does «الحمد لله رب العالمين» mean?","نحمد الله لأنه خالق كل شيء ويعتني بجميع المخلوقات.","We praise Allah because He created everything and takes care of all His creation."),
+  (3,"ماذا نتعلم من «الرحمن الرحيم»؟","What do we learn from «الرحمن الرحيم»?","الله رحيم بنا، يرحم جميع خلقه في الدنيا، ويرحم المؤمنين خاصة يوم القيامة.","Allah is merciful to all His creation in this world, and especially to believers on Judgment Day."),
+  (4,"من هو مالك يوم الدين؟","Who is the Master of the Day of Judgment?","الله هو المالك الوحيد ليوم الحساب، وسيحاسب كل الناس بالعدل.","Allah alone owns the Day of Judgment, and He will judge everyone with perfect fairness."),
+  (5,"ماذا تعني «إياك نعبد وإياك نستعين»؟","What does «إياك نعبد وإياك نستعين» mean?","نعبد الله وحده، ولا نطلب العون إلا منه.","We worship Allah alone, and we ask for help only from Him."),
+  (6,"ماذا نطلب في «اهدنا الصراط المستقيم»؟","What do we ask for in «اهدنا الصراط المستقيم»?","ندعو الله أن يهدينا إلى الطريق الصحيح في حياتنا.","We ask Allah to guide us to the right path in our lives."),
+  (7,"ماذا نتمنى في الآية الأخيرة؟","What do we wish for in the final verse?","ندعو أن نكون مثل الصالحين الذين أحبهم الله، لا مثل من أخطأ الطريق.","We ask to be like the righteous whom Allah loves, not like those who went astray.")],
+ [("❤️","نشكر الله.","We thank Allah."),("🤲","نستعين بالله.","We seek Allah's help."),("🕌","نعبده وحده.","We worship Him alone."),("🌸","نسأل الله الهداية.","We ask Allah for guidance.")],
+ (1,7), [1,5,6],
+ [("من أسماء الله في السورة؟","Which names of Allah are in the surah?",[("الرحمن الرحيم","Ar-Rahman and Ar-Raheem"),("الرزاق","Ar-Razzaq"),("الخالق","Al-Khaliq")],0),
+  ("ماذا نطلب في «اهدنا الصراط المستقيم»؟","What do we ask for in «اهدنا الصراط المستقيم»?",[("الهداية إلى الطريق الصحيح","Guidance to the right path"),("المال والغنى","Money and wealth"),("الطعام","Food")],0),
+  ("ما معنى «الرحمن الرحيم»؟","What does «الرحمن الرحيم» mean?",[("أن الله رحيم بنا","That Allah is merciful to us"),("أن الله بعيد عنا","That Allah is far from us"),("أن الله ينسانا","That Allah forgets us")],0),
+  ("سورة الفاتحة هي أول سورة في:","Al-Fatiha is the first surah in:",[("القرآن الكريم","The Holy Qur'an"),("كتاب القراءة","A reading book"),("كتاب الرياضيات","A math book")],0)]),
+]

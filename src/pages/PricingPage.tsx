@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { usePackages } from '../hooks/usePackages';
 import { useAcademySettings, formatMoney } from '../hooks/useAcademySettings';
 import { PROGRAMS, ProgramId, PricePackage, unitLabel, billingLabel } from '../services/packagesService';
-import { Clock, CalendarDays, User, Users, GraduationCap } from 'lucide-react';
+import { Clock, CalendarDays, User, Users, GraduationCap, Gift } from 'lucide-react';
 
 interface PricingPageProps {
   navigate: (route: string, state?: any) => void;
@@ -40,6 +40,71 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
       </span>
     </div>
   );
+
+  // بطاقة العرض الحالي: ذهبية بكتابة خضراء وبيضاء وحمراء، وعليها هدية
+  const OfferCard = ({ p }: { p: PricePackage }) => {
+    const unit = unitLabel(p.unit, isAr);
+    const badge = isAr ? p.offerBadgeAr : p.offerBadgeEn;
+    const Row = ({ icon: Icon, label, now, was }: { icon: any; label: string; now: number; was?: number }) => (
+      <div className="flex items-center justify-between gap-3 px-3 py-2 rounded-xl bg-white/45">
+        <span className="flex items-center gap-1.5 text-xs font-bold text-[#0B3B2C]">
+          <Icon className="w-4 h-4 text-[#0B3B2C]" />
+          {label}
+        </span>
+        <span className="flex items-baseline gap-1.5" dir="ltr">
+          {was !== undefined && was > now && <span className="text-sm font-bold line-through text-red-600">{formatMoney(was, currency)}</span>}
+          <span className="font-extrabold text-2xl text-[#0B3B2C]">{formatMoney(now, currency)}</span>
+          <span className="text-[11px] text-[#0B3B2C]/80">{unit}</span>
+        </span>
+      </div>
+    );
+    return (
+      <div className="relative rounded-3xl p-7 flex flex-col justify-between shadow-2xl border-2 border-[#0B3B2C]/30 bg-gradient-to-br from-[#E6C67E] via-[#C9A04F] to-[#B08A3A] ring-4 ring-[#C9A04F]/30">
+        <div className="absolute -top-5 end-6 w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-lg rotate-6">
+          <Gift className="w-6 h-6" />
+        </div>
+        {badge && (
+          <span className="absolute -top-3 start-6 px-3 py-1 rounded-lg bg-red-600 text-white text-xs font-extrabold shadow">{badge}</span>
+        )}
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#0B3B2C] text-white text-[11px] font-bold">
+              <Gift className="w-3.5 h-3.5 text-[#E6C67E]" />
+              {tr('Current offer', 'العرض الحالي')}
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#0B3B2C]/40 text-[#0B3B2C]">{billingLabel(p, isAr)}</span>
+          </div>
+          <h2 className="font-serif-luxury font-bold text-2xl text-[#0B3B2C]">{isAr ? p.titleAr : p.titleEn}</h2>
+          <div className="flex flex-wrap gap-3 text-xs font-bold text-[#0B3B2C]">
+            {!!p.sessionsPerMonth && (
+              <span className="flex items-center gap-1">
+                <CalendarDays className="w-4 h-4" />
+                {tr(`${p.sessionsPerMonth} lessons / month`, `${p.sessionsPerMonth} حصص / شهر`)}
+              </span>
+            )}
+            {!!p.minutes && (
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {tr(`${p.minutes} min per lesson`, `${p.minutes} دقيقة للحصة`)}
+              </span>
+            )}
+          </div>
+          {(isAr ? p.descAr : p.descEn) && <p className="text-sm leading-relaxed text-[#0B3B2C] font-medium">{isAr ? p.descAr : p.descEn}</p>}
+        </div>
+        <div className="mt-6 pt-5 border-t border-[#0B3B2C]/20 space-y-2">
+          {p.individualPrice !== undefined && <Row icon={User} label={tr('Individual', 'فردي')} now={p.individualPrice} was={p.individualOriginal} />}
+          {p.groupPrice !== undefined && <Row icon={Users} label={tr('Group (per student)', 'مجموعة (للطالب)')} now={p.groupPrice} was={p.groupOriginal} />}
+          <button
+            onClick={() => navigate('register')}
+            className="w-full mt-2 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all bg-[#0B3B2C] text-white shadow-lg"
+          >
+            <Gift className="w-4 h-4 text-[#E6C67E]" />
+            {tr('Get the offer', 'احصل على العرض')}
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   const Card = ({ p }: { p: PricePackage }) => {
     const dark = !!p.featured;
@@ -159,9 +224,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
         )}
 
         <div className={`grid gap-8 ${shown.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
-          {shown.map((p) => (
-            <Card key={p.id} p={p} />
-          ))}
+          {shown.map((p) => (p.offer ? <OfferCard key={p.id} p={p} /> : <Card key={p.id} p={p} />))}
         </div>
       </div>
     </div>

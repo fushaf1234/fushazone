@@ -149,20 +149,20 @@ export const PROGRAM_CATEGORIES: ProgramCategory[] = [
   },
   {
     id: 'interactive-conversation',
-    titleEn: 'Interactive Conversation',
-    titleAr: 'المحادثات التفاعلية',
-    shortDescEn: 'Lessons dedicated to conversation and spoken fluency, to break the fear of speaking Arabic.',
-    shortDescAr: 'حصص مخصصة للمحادثة والطلاقة الشفهية لكسر حاجز الخوف من التحدث بالعربية.',
-    fullDescEn: 'Every lesson brings you closer to the language you actually want to use. Real conversations about daily life and culture, with your teacher correcting your pronunciation and expressions as you speak.',
-    fullDescAr: 'كل حصة تقربك من اللغة التي تريد استخدامها فعلا. محادثات حقيقية عن الحياة اليومية والثقافة، مع تصحيح المعلم لنطقك وتعبيرك أثناء الحديث.',
+    titleEn: 'Interactive Fusha Arabic Conversation',
+    titleAr: 'المحادثات التفاعلية بالعربية الفصحى',
+    shortDescEn: 'Lessons dedicated to conversation in Fusha Arabic and spoken fluency, to break the fear of speaking.',
+    shortDescAr: 'حصص مخصصة للمحادثة بالعربية الفصحى والطلاقة الشفهية لكسر حاجز الخوف من التحدث.',
+    fullDescEn: 'Every lesson brings you closer to the language you actually want to use. Real conversations in Fusha Arabic about daily life and culture, with your teacher correcting your pronunciation and expressions as you speak.',
+    fullDescAr: 'كل حصة تقربك من اللغة التي تريد استخدامها فعلا. محادثات حقيقية بالعربية الفصحى عن الحياة اليومية والثقافة، مع تصحيح المعلم لنطقك وتعبيرك أثناء الحديث.',
     objectivesEn: [
-      'Speak Arabic with confidence in everyday situations',
+      'Speak Fusha Arabic with confidence in everyday situations',
       'Grow your active vocabulary and natural expressions',
       'Improve pronunciation and listening',
       'Break the fear of speaking'
     ],
     objectivesAr: [
-      'التحدث بالعربية بثقة في مواقف الحياة اليومية',
+      'التحدث بالعربية الفصحى بثقة في مواقف الحياة اليومية',
       'توسيع المفردات والتعابير الطبيعية',
       'تحسين النطق والاستماع',
       'كسر حاجز الخوف من التحدث'

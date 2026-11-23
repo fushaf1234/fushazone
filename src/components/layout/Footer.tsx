@@ -124,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({ navigate }) => {
               </li>
               <li>
                 <button onClick={() => handleNav('course/interactive-conversation')} className="hover:text-[#F3E3B8] transition-colors">
-                  {language === 'ar' ? 'المحادثات التفاعلية' : 'Interactive Conversation'}
+                  {language === 'ar' ? 'المحادثات التفاعلية بالفصحى' : 'Fusha Arabic Conversation'}
                 </button>
               </li>
               <li>

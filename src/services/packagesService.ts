@@ -9,7 +9,7 @@ export type ProgramId = 'arabic' | 'conversation' | 'quran' | 'kids' | 'single';
 
 export const PROGRAMS: { id: ProgramId; ar: string; en: string }[] = [
   { id: 'arabic', ar: 'اللغة العربية (فُصحى)', en: 'Arabic Language (Fusha)' },
-  { id: 'conversation', ar: 'المحادثات التفاعلية', en: 'Interactive Conversation' },
+  { id: 'conversation', ar: 'المحادثات التفاعلية بالعربية الفصحى', en: 'Interactive Fusha Arabic Conversation' },
   { id: 'quran', ar: 'القرآن الكريم والتجويد', en: 'Quran & Tajweed' },
   { id: 'kids', ar: 'العربية والقرآن للأطفال', en: 'Arabic & Quran for Kids' },
   { id: 'single', ar: 'جلسات منفردة', en: 'Single Sessions' }
@@ -57,10 +57,10 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
   {
     id: 'conversation-pack',
     program: 'conversation',
-    titleAr: 'باقة المحادثة',
-    titleEn: 'Conversation Package',
-    descAr: 'حصص مخصصة للمحادثة والطلاقة الشفهية لكسر حاجز الخوف من التحدث.',
-    descEn: 'Sessions focused on conversation and fluency to break the fear of speaking.',
+    titleAr: 'باقة المحادثة بالعربية الفصحى',
+    titleEn: 'Fusha Arabic Conversation Package',
+    descAr: 'حصص محادثة بالعربية الفصحى لتطوير الطلاقة الشفهية وكسر حاجز الخوف من التحدث.',
+    descEn: 'Conversation lessons in Fusha Arabic to build spoken fluency and break the fear of speaking.',
     sessionsPerMonth: 8,
     minutes: 50,
     individualPrice: 100,
@@ -72,10 +72,10 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
   {
     id: 'conversation-single',
     program: 'conversation',
-    titleAr: 'جلسة محادثة منفردة',
-    titleEn: 'Single Conversation Session',
-    descAr: 'جلسة محادثة واحدة حسب وقتك.',
-    descEn: 'One conversation session at a time that suits you.',
+    titleAr: 'جلسة محادثة فصحى منفردة',
+    titleEn: 'Single Fusha Conversation Session',
+    descAr: 'جلسة محادثة واحدة بالعربية الفصحى، تُحجز وتُدفع منفردة دون اشتراك شهري.',
+    descEn: 'One Fusha Arabic conversation session, booked and paid on its own without a monthly subscription.',
     minutes: 60,
     individualPrice: 20,
     unit: 'hour',
@@ -101,10 +101,10 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
   {
     id: 'single-session',
     program: 'single',
-    titleAr: 'جلسة فردية',
-    titleEn: 'Single Session',
-    descAr: 'جلسة فردية واحدة في أي برنامج.',
-    descEn: 'One private session in any program.',
+    titleAr: 'حصة فصحى فردية منفردة',
+    titleEn: 'Single Fusha Lesson',
+    descAr: 'حصة فردية واحدة في اللغة العربية الفصحى، تُدفع للحصة دون اشتراك شهري.',
+    descEn: 'One private Fusha Arabic lesson, paid per lesson without a monthly subscription.',
     individualPrice: 15,
     unit: 'session',
     order: 5,

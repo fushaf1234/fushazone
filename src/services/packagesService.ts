@@ -66,7 +66,7 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
     individualPrice: 100,
     groupPrice: 70,
     unit: 'month',
-    order: 2,
+    order: 3,
     active: true
   },
   {
@@ -79,7 +79,7 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
     minutes: 60,
     individualPrice: 20,
     unit: 'hour',
-    order: 3,
+    order: 4,
     active: true
   },
   {
@@ -95,19 +95,19 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
     groupPrice: 50,
     unit: 'month',
     featured: true,
-    order: 4,
+    order: 5,
     active: true
   },
   {
     id: 'single-session',
-    program: 'single',
+    program: 'arabic',
     titleAr: 'حصة فصحى فردية منفردة',
     titleEn: 'Single Fusha Lesson',
     descAr: 'حصة فردية واحدة في اللغة العربية الفصحى، تُدفع للحصة دون اشتراك شهري.',
     descEn: 'One private Fusha Arabic lesson, paid per lesson without a monthly subscription.',
     individualPrice: 15,
     unit: 'session',
-    order: 5,
+    order: 2,
     active: true
   },
   {
@@ -152,6 +152,10 @@ export const programName = (id: ProgramId, isAr: boolean) => {
   const p = PROGRAMS.find((x) => x.id === id);
   return p ? (isAr ? p.ar : p.en) : '';
 };
+
+// نوع الاشتراك: شهري، أو حصة بحصة
+export const billingLabel = (p: PricePackage, isAr: boolean) =>
+  p.free ? (isAr ? 'مجانًا' : 'Free') : p.unit === 'month' ? (isAr ? 'اشتراك شهري' : 'Monthly subscription') : isAr ? 'حصة بحصة' : 'Pay per lesson';
 
 export const unitLabel = (u: PricePackage['unit'], isAr: boolean) =>
   u === 'month' ? (isAr ? 'شهريًا' : 'per month') : u === 'hour' ? (isAr ? 'للساعة' : 'per hour') : isAr ? 'للجلسة' : 'per session';

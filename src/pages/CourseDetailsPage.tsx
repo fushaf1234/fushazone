@@ -4,7 +4,7 @@ import { PROGRAM_CATEGORIES } from '../data/academyData';
 import { ProgramShowcase } from '../components/programs/ProgramShowcase';
 import { ProgramPrice } from '../components/programs/ProgramPrice';
 import { usePackages } from '../hooks/usePackages';
-import { unitLabel, ProgramId } from '../services/packagesService';
+import { unitLabel, billingLabel, ProgramId } from '../services/packagesService';
 import { useAcademySettings, formatMoney } from '../hooks/useAcademySettings';
 import { CEFRLevel } from '../types';
 import {
@@ -196,6 +196,7 @@ export const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ courseId, 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {programPackages.map((p) => (
                 <div key={p.id} className="bg-white rounded-3xl p-6 border-2 border-[#C9A04F]/30 shadow-md space-y-3">
+                  <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#0B3B2C]/30 text-[#0B3B2C] bg-[#FAF7EF]">{billingLabel(p, language === 'ar')}</span>
                   <h3 className="font-serif-luxury font-bold text-lg text-[#0B3B2C]">{language === 'ar' ? p.titleAr : p.titleEn}</h3>
                   <div className="text-xs font-bold text-[#9A772E]">
                     {[

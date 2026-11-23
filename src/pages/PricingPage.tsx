@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePackages } from '../hooks/usePackages';
 import { useAcademySettings, formatMoney } from '../hooks/useAcademySettings';
-import { PROGRAMS, ProgramId, PricePackage, unitLabel } from '../services/packagesService';
+import { PROGRAMS, ProgramId, PricePackage, unitLabel, billingLabel } from '../services/packagesService';
 import { Clock, CalendarDays, User, Users, GraduationCap } from 'lucide-react';
 
 interface PricingPageProps {
@@ -47,9 +47,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
           </span>
         )}
         <div className="space-y-3">
-          <span className={`text-[11px] font-bold ${dark ? 'text-[#F3E3B8]' : 'text-[#9A772E]'}`}>
-            {isAr ? PROGRAMS.find((x) => x.id === p.program)?.ar : PROGRAMS.find((x) => x.id === p.program)?.en}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`text-[11px] font-bold ${dark ? 'text-[#F3E3B8]' : 'text-[#9A772E]'}`}>
+              {isAr ? PROGRAMS.find((x) => x.id === p.program)?.ar : PROGRAMS.find((x) => x.id === p.program)?.en}
+            </span>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${dark ? 'border-[#C9A04F]/60 text-[#C9A04F]' : 'border-[#0B3B2C]/30 text-[#0B3B2C] bg-[#FAF7EF]'}`}>
+              {billingLabel(p, isAr)}
+            </span>
+          </div>
           <h2 className={`font-serif-luxury font-bold text-xl ${dark ? 'text-[#F3E3B8]' : 'text-[#0B3B2C]'}`}>{isAr ? p.titleAr : p.titleEn}</h2>
           <div className={`flex flex-wrap gap-3 text-xs font-bold ${dark ? 'text-[#C9A04F]' : 'text-[#9A772E]'}`}>
             {!!p.sessionsPerMonth && (

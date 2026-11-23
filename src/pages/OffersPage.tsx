@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { REFERRER_GROUP_DISCOUNT } from '../services/referralService';
 import { useAuth } from '../context/AuthContext';
 import { contentManagementService, DynamicPromotionOffer } from '../services/contentManagementService';
 import { useLanguage } from '../context/LanguageContext';
@@ -68,16 +69,16 @@ export const OffersPage: React.FC<OffersPageProps> = ({ navigate }) => {
                 {isAr ? (
                   <>
                     <span className="font-bold text-base sm:text-lg leading-snug">
-                      🎁 سجّلي معنا حسابًا مجانيًا واستمتعي بعرض خصم <span className="text-[#8a5a00] text-xl sm:text-2xl">50%</span>
+                      {'🎁 {سجّل|سجّلي} معنا حسابًا مجانيًا {واستمتع|واستمتعي} بعرض خصم '}<span className="text-[#8a5a00] text-xl sm:text-2xl">{REFERRER_GROUP_DISCOUNT}%</span>
                     </span>
                     <span className="w-24 h-px bg-[#0B3B2C]/25" />
                     <span className="font-bold text-sm sm:text-base">
-                      👑 كوني سفيرة لنا واربحي <span className="text-[#8a5a00] text-lg sm:text-xl">15%</span>
+                      {'👑 {كن سفيرًا|كوني سفيرة} لنا {واربح|واربحي} '}<span className="text-[#8a5a00] text-lg sm:text-xl">15%</span>
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="font-bold text-base sm:text-lg">🎁 Create a free account and enjoy a 50% discount</span>
+                    <span className="font-bold text-base sm:text-lg">🎁 Create a free account and enjoy a {REFERRER_GROUP_DISCOUNT}% discount</span>
                     <span className="w-24 h-px bg-[#0B3B2C]/25" />
                     <span className="font-bold text-sm sm:text-base">👑 Become our ambassador and earn 15%</span>
                   </>

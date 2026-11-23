@@ -341,12 +341,24 @@
     container.appendChild(h);
   }
 
+  // التجويد: ثلاثة مستويات. عند توفر ملف الدرس: ضع اسمه في file واحذف soon:true
   var tajweed = [
-    { icon:"🎙️", file:"", soon:true, nameAr:"لماذا نتعلم التجويد؟ (١)", nameEn:"Why Do We Learn Tajweed? (1)" }
+    { heading:{ ar:"تجويد الأطفال", en:"Tajweed for Kids" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"لماذا نتعلم التجويد؟ (١)", nameEn:"Why Do We Learn Tajweed? (1)" },
+    { heading:{ ar:"تجويد المبتدئين", en:"Tajweed for Beginners" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"دروس تجويد المبتدئين", nameEn:"Beginner Tajweed Lessons" },
+    { heading:{ ar:"تجويد المتقدمين", en:"Advanced Tajweed" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"دروس التجويد المتقدم", nameEn:"Advanced Tajweed Lessons" }
   ];
 
+  // العربية للناطقين بغيرها: ثلاثة مناهج
   var arabic = [
-    { icon:"🔤", file:"", soon:true, nameAr:"تمارين أحب العربي (١ - ٦)", nameEn:"'I Love Arabic' Exercises (1-6)" }
+    { heading:{ ar:"منهج أحب العربية", en:"'I Love Arabic' Curriculum" } },
+    { icon:"🔤", file:"", soon:true, nameAr:"تمارين أحب العربية (١ - ٦)", nameEn:"'I Love Arabic' Exercises (1-6)" },
+    { heading:{ ar:"منهج المدينة", en:"Madinah Arabic Curriculum" } },
+    { icon:"🔤", file:"", soon:true, nameAr:"دروس منهج المدينة", nameEn:"Madinah Arabic Lessons" },
+    { heading:{ ar:"منهج العربية بين يديك", en:"'Arabic Between Your Hands' Curriculum" } },
+    { icon:"🔤", file:"", soon:true, nameAr:"دروس العربية بين يديك", nameEn:"'Arabic Between Your Hands' Lessons" }
   ];
 
   function buildRow(container, item, kind){
@@ -386,10 +398,10 @@
   });
 
   var tajweedList = document.getElementById('tajweedList');
-  tajweed.forEach(function(t){ buildRow(tajweedList, t, 'tajweed'); });
+  tajweed.forEach(function(t){ if(t.heading) buildJuzHeading(tajweedList, t.heading); else buildRow(tajweedList, t, 'tajweed'); });
 
   var arabicList = document.getElementById('arabicList');
-  arabic.forEach(function(t){ buildRow(arabicList, t, 'arabic'); });
+  arabic.forEach(function(t){ if(t.heading) buildJuzHeading(arabicList, t.heading); else buildRow(arabicList, t, 'arabic'); });
 
   var panels = [
     { btn: document.getElementById('quranToggle'), panel: document.getElementById('quranSection') },
@@ -414,6 +426,11 @@
   panels.forEach(function(entry){
     entry.btn.addEventListener('click', function(){ togglePanel(entry); });
   });
+
+  // فتح القسم المطلوب من الرابط: #quran أو #tajweed أو #arabic (من صفحة المنهج في المنصة)
+  var hashMap = { quran:0, tajweed:1, arabic:2 };
+  var h0 = (location.hash || '').replace('#','');
+  if(hashMap.hasOwnProperty(h0)) togglePanel(panels[hashMap[h0]]);
 
   var btnAr = document.getElementById('btnAr');
   var btnEn = document.getElementById('btnEn');

@@ -5,9 +5,10 @@ import { db } from './firebase';
 /*  الباقات والأسعار: تُدار بالكامل من لوحة الإدارة (مجموعة packages)  */
 /* ------------------------------------------------------------------ */
 
-export type ProgramId = 'arabic' | 'conversation' | 'quran' | 'kids' | 'single';
+export type ProgramId = 'combo' | 'arabic' | 'conversation' | 'quran' | 'kids' | 'single';
 
 export const PROGRAMS: { id: ProgramId; ar: string; en: string }[] = [
+  { id: 'combo', ar: 'العربية والقرآن معًا', en: 'Arabic & Quran Together' },
   { id: 'arabic', ar: 'اللغة العربية (فُصحى)', en: 'Arabic Language (Fusha)' },
   { id: 'conversation', ar: 'المحادثات التفاعلية لتنمية اللغة', en: 'Interactive Conversation for Language Development' },
   { id: 'quran', ar: 'القرآن الكريم والتجويد', en: 'Quran & Tajweed' },
@@ -26,6 +27,11 @@ export interface PricePackage {
   minutes?: number;
   individualPrice?: number; // للمتعلم الواحد
   groupPrice?: number; // لكل طالب في المجموعة (شهريًا)
+  individualOriginal?: number; // السعر قبل الخصم (يُشطب)
+  groupOriginal?: number;
+  offer?: boolean; // يظهر في فقاعة «العرض الحالي»
+  offerBadgeAr?: string; // مثل: خصم 30%
+  offerBadgeEn?: string;
   unit: 'month' | 'session' | 'hour';
   free?: boolean;
   featured?: boolean;
@@ -38,6 +44,25 @@ const clean = <T extends object>(obj: T): T => JSON.parse(JSON.stringify(obj));
 
 // الباقات التي اعتمدتها الإدارة (تُضاف بضغطة زر من لوحة الإدارة عندما تكون القائمة فارغة، ثم تُعدَّل من هناك)
 export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
+  {
+    id: 'arabic-quran-offer',
+    program: 'combo',
+    titleAr: 'عرض العربية + القرآن',
+    titleEn: 'Arabic + Quran Offer',
+    descAr: 'اللغة العربية مع القرآن الكريم: تعليم قراءة القرآن، والقرائية، والتجويد، للأطفال والكبار.',
+    descEn: 'Arabic language with the Holy Quran: learning to read the Quran, literacy and Tajweed, for kids and adults.',
+    individualPrice: 140,
+    individualOriginal: 200,
+    groupPrice: 90,
+    groupOriginal: 130,
+    unit: 'month',
+    offer: true,
+    offerBadgeAr: 'خصم 30%',
+    offerBadgeEn: '30% off',
+    featured: true,
+    order: 0,
+    active: true
+  },
   {
     id: 'arabic-flex',
     program: 'arabic',
@@ -141,11 +166,15 @@ export const packagesService = {
     await deleteDoc(doc(db, 'packages', id));
   },
 
-  async addApproved(): Promise<void> {
+  // يضيف الباقات المعتمدة الناقصة فقط، ولا يغيّر ما عدّلته الإدارة
+  async addApproved(existingIds: string[] = []): Promise<number> {
+    const missing = APPROVED_PACKAGES.filter((p) => !existingIds.includes(p.id));
+    if (!missing.length) return 0;
     const batch = writeBatch(db);
     const now = new Date().toISOString();
-    APPROVED_PACKAGES.forEach((p) => batch.set(doc(db, 'packages', p.id), clean({ ...p, updatedAt: now })));
+    missing.forEach((p) => batch.set(doc(db, 'packages', p.id), clean({ ...p, updatedAt: now })));
     await batch.commit();
+    return missing.length;
   }
 };
 

@@ -3,8 +3,9 @@ import { REFERRER_GROUP_DISCOUNT } from '../services/referralService';
 import { useAuth } from '../context/AuthContext';
 import { contentManagementService, DynamicPromotionOffer } from '../services/contentManagementService';
 import { useLanguage } from '../context/LanguageContext';
-import { PROGRAM_CATEGORIES } from '../data/academyData';
-import { ProgramPrice } from '../components/programs/ProgramPrice';
+import { usePackages } from '../hooks/usePackages';
+import { unitLabel } from '../services/packagesService';
+import { useAcademySettings, formatMoney } from '../hooks/useAcademySettings';
 import { Tag, Sparkles, Check, ArrowRight, Gift, Calendar, Copy, CheckCheck } from 'lucide-react';
 
 interface OffersPageProps {
@@ -35,6 +36,9 @@ export const OffersPage: React.FC<OffersPageProps> = ({ navigate }) => {
 
   const today = new Date().toISOString().slice(0, 10);
   const isAr = language === 'ar';
+  const { packages } = usePackages();
+  const packageOffers = packages.filter((p) => p.offer);
+  const { currency } = useAcademySettings();
   const offers = offersRaw
     .filter((o) => o.isActive && (!o.validUntil || o.validUntil >= today))
     .map((o) => ({
@@ -91,25 +95,49 @@ export const OffersPage: React.FC<OffersPageProps> = ({ navigate }) => {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-        {PROGRAM_CATEGORIES.filter((p) => p.monthlyStartingPrice && p.offerNoteAr).map((p) => (
+        {packageOffers.map((p) => (
           <div key={p.id} dir={isAr ? 'rtl' : 'ltr'} className="bg-gradient-to-br from-[#0B3B2C] to-[#11503A] text-white rounded-3xl p-7 sm:p-9 border-2 border-[#C9A04F] shadow-xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-xs font-extrabold mb-3">
-              <Gift className="w-3.5 h-3.5" />
-              {isAr ? 'العرض الحالي' : 'Current offer'}
+            <div className="flex flex-wrap gap-2 mb-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A04F] text-[#0B3B2C] text-xs font-extrabold">
+                <Gift className="w-3.5 h-3.5" />
+                {isAr ? 'العرض الحالي' : 'Current offer'}
+              </span>
+              {(isAr ? p.offerBadgeAr : p.offerBadgeEn) && (
+                <span className="px-3 py-1 rounded-full bg-red-600 text-white text-xs font-extrabold">{isAr ? p.offerBadgeAr : p.offerBadgeEn}</span>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
               <div className="md:col-span-3">
                 <h2 className="font-serif-luxury font-bold text-2xl sm:text-3xl text-[#F3E3B8] mb-3">{isAr ? p.titleAr : p.titleEn}</h2>
-                <p className="text-sm sm:text-base text-gray-200 leading-relaxed mb-3">{isAr ? p.shortDescAr : p.shortDescEn}</p>
-                <p className="text-sm text-gray-300">{isAr ? p.durationAr : p.durationEn} • {isAr ? p.formatAr : p.formatEn}</p>
+                {(isAr ? p.descAr : p.descEn) && <p className="text-sm sm:text-base text-gray-200 leading-relaxed">{isAr ? p.descAr : p.descEn}</p>}
               </div>
               <div className="md:col-span-2 space-y-3">
-                <ProgramPrice prog={p} language={language} dark />
+                <div className="rounded-2xl border-2 border-[#C9A04F] p-4 bg-white/10 space-y-2">
+                  {p.individualPrice !== undefined && (
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-sm text-gray-200">{isAr ? 'فردي' : 'Individual'}</span>
+                      <span dir="ltr" className="flex items-baseline gap-2">
+                        {p.individualOriginal !== undefined && <span className="text-sm line-through text-gray-400">{formatMoney(p.individualOriginal, currency)}</span>}
+                        <span className="text-2xl font-extrabold text-[#F3E3B8]">{formatMoney(p.individualPrice, currency)}</span>
+                      </span>
+                    </div>
+                  )}
+                  {p.groupPrice !== undefined && (
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-sm text-gray-200">{isAr ? 'مجموعة (للطالب)' : 'Group (per student)'}</span>
+                      <span dir="ltr" className="flex items-baseline gap-2">
+                        {p.groupOriginal !== undefined && <span className="text-sm line-through text-gray-400">{formatMoney(p.groupOriginal, currency)}</span>}
+                        <span className="text-2xl font-extrabold text-[#F3E3B8]">{formatMoney(p.groupPrice, currency)}</span>
+                      </span>
+                    </div>
+                  )}
+                  <p className="text-[11px] text-gray-300 text-end">{unitLabel(p.unit, isAr)}</p>
+                </div>
                 <button
-                  onClick={() => navigate(`course/${p.id}`)}
+                  onClick={() => navigate('register')}
                   className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C9A04F] via-[#F3E3B8] to-[#C9A04F] text-[#0B3B2C] flex items-center justify-center gap-2"
                 >
-                  {isAr ? 'تفاصيل العرض' : 'Offer details'}
+                  {isAr ? 'سجّل الآن' : 'Enroll now'}
                   <ArrowRight className={`w-4 h-4 ${isAr ? 'rotate-180' : ''}`} />
                 </button>
               </div>

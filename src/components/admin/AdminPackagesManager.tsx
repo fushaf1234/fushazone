@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Save, Trash2, Eye, EyeOff, PackagePlus } from 'lucide-react';
-import { packagesService, PricePackage, PROGRAMS, ProgramId, unitLabel } from '../../services/packagesService';
+import { packagesService, PricePackage, PROGRAMS, ProgramId, unitLabel, APPROVED_PACKAGES } from '../../services/packagesService';
 import { resetPackagesCache } from '../../hooks/usePackages';
 import { useAcademySettings, formatMoney } from '../../hooks/useAcademySettings';
 
@@ -82,13 +82,16 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
     );
   };
 
+  const missingApproved = APPROVED_PACKAGES.filter((a) => !list.some((p) => p.id === a.id)).length;
+
   const set = (patch: Partial<PricePackage>) => setEditing((e) => (e ? { ...e, ...patch } : e));
 
   const priceLine = (p: PricePackage) => {
     if (p.free) return tr('Free', 'مجاني');
     const parts: string[] = [];
-    if (p.individualPrice !== undefined) parts.push(`${tr('Individual', 'فردي')} ${formatMoney(p.individualPrice, currency)}`);
-    if (p.groupPrice !== undefined) parts.push(`${tr('Group', 'مجموعة')} ${formatMoney(p.groupPrice, currency)} ${tr('per student', 'للطالب')}`);
+    const was = (v?: number) => (v !== undefined ? ` (${tr('was', 'بدل')} ${formatMoney(v, currency)})` : '');
+    if (p.individualPrice !== undefined) parts.push(`${tr('Individual', 'فردي')} ${formatMoney(p.individualPrice, currency)}${was(p.individualOriginal)}`);
+    if (p.groupPrice !== undefined) parts.push(`${tr('Group', 'مجموعة')} ${formatMoney(p.groupPrice, currency)} ${tr('per student', 'للطالب')}${was(p.groupOriginal)}`);
     return `${parts.join(' • ')} ${parts.length ? unitLabel(p.unit, isAr) : ''}`;
   };
 
@@ -114,11 +117,15 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
         </button>
       </div>
 
-      {!loading && list.length === 0 && !editing && (
+      {!loading && missingApproved > 0 && !editing && (
         <div className="p-5 rounded-2xl bg-[#FAF7EF] border border-[#C9A04F]/40 space-y-3 text-center">
-          <p className="text-xs text-gray-600">{tr('No packages yet.', 'لا توجد باقات بعد.')}</p>
+          <p className="text-xs text-gray-600">
+            {list.length === 0
+              ? tr('No packages yet.', 'لا توجد باقات بعد.')
+              : tr(`${missingApproved} approved package(s) not added yet.`, `${missingApproved} من الباقات المعتمدة لم تُضف بعد.`)}
+          </p>
           <button
-            onClick={() => run(() => packagesService.addApproved(), 'أُضيفت الباقات المعتمدة.', 'Approved packages added.')}
+            onClick={() => run(async () => { await packagesService.addApproved(list.map((p) => p.id)); }, 'أُضيفت الباقات المعتمدة.', 'Approved packages added.')}
             disabled={busy}
             className="px-4 py-2 rounded-xl bg-[#C9A04F] text-[#0B3B2C] text-xs font-bold inline-flex items-center gap-2 disabled:opacity-50"
           >
@@ -182,6 +189,22 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
               <input type="number" min="0" className={inputCls} value={editing.groupPrice ?? ''} onChange={(e) => set({ groupPrice: numOrUndef(e.target.value) })} />
             </div>
             <div>
+              <label className={labelCls}>{tr('Individual price before discount (optional)', 'السعر الفردي قبل الخصم (اختياري)')}</label>
+              <input type="number" min="0" className={inputCls} value={editing.individualOriginal ?? ''} onChange={(e) => set({ individualOriginal: numOrUndef(e.target.value) })} />
+            </div>
+            <div>
+              <label className={labelCls}>{tr('Group price before discount (optional)', 'سعر المجموعة قبل الخصم (اختياري)')}</label>
+              <input type="number" min="0" className={inputCls} value={editing.groupOriginal ?? ''} onChange={(e) => set({ groupOriginal: numOrUndef(e.target.value) })} />
+            </div>
+            <div>
+              <label className={labelCls}>{tr('Discount badge (Arabic)', 'علامة الخصم بالعربية')}</label>
+              <input className={inputCls} dir="rtl" placeholder="خصم 30%" value={editing.offerBadgeAr || ''} onChange={(e) => set({ offerBadgeAr: e.target.value })} />
+            </div>
+            <div>
+              <label className={labelCls}>{tr('Discount badge (English)', 'علامة الخصم بالإنجليزية')}</label>
+              <input className={inputCls} dir="ltr" placeholder="30% off" value={editing.offerBadgeEn || ''} onChange={(e) => set({ offerBadgeEn: e.target.value })} />
+            </div>
+            <div>
               <label className={labelCls}>{tr('Order on the page', 'الترتيب في الصفحة')}</label>
               <input type="number" className={inputCls} value={editing.order} onChange={(e) => set({ order: Number(e.target.value) || 0 })} />
             </div>
@@ -189,6 +212,10 @@ export const AdminPackagesManager: React.FC<Props> = ({ isAr, onNotice }) => {
               <label className="flex items-center gap-1.5">
                 <input type="checkbox" checked={!!editing.free} onChange={(e) => set({ free: e.target.checked })} />
                 {tr('Free', 'مجانية')}
+              </label>
+              <label className="flex items-center gap-1.5">
+                <input type="checkbox" checked={!!editing.offer} onChange={(e) => set({ offer: e.target.checked })} />
+                {tr('Current offer (side bubble)', 'العرض الحالي (الفقاعة الجانبية)')}
               </label>
               <label className="flex items-center gap-1.5">
                 <input type="checkbox" checked={!!editing.featured} onChange={(e) => set({ featured: e.target.checked })} />

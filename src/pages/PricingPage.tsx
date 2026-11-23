@@ -21,13 +21,18 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
   const programs = PROGRAMS.filter((p) => packages.some((x) => x.program === p.id));
   const shown = packages.filter((p) => filter === 'ALL' || p.program === filter);
 
-  const PriceRow = ({ icon: Icon, label, amount, unit, dark }: { icon: any; label: string; amount: number; unit: string; dark: boolean }) => (
+  const PriceRow = ({ icon: Icon, label, amount, original, unit, dark }: { icon: any; label: string; amount: number; original?: number; unit: string; dark: boolean }) => (
     <div className="flex items-center justify-between gap-3">
       <span className={`flex items-center gap-1.5 text-xs ${dark ? 'text-gray-300' : 'text-gray-500'}`}>
         <Icon className="w-4 h-4 text-[#C9A04F]" />
         {label}
       </span>
       <span className="flex items-baseline gap-1">
+        {original !== undefined && original > amount && (
+          <span className={`text-sm line-through ${dark ? 'text-gray-400' : 'text-gray-400'}`} dir="ltr">
+            {formatMoney(original, currency)}
+          </span>
+        )}
         <span className={`font-bold text-2xl ${dark ? 'text-white' : 'text-[#0B3B2C]'}`} dir="ltr">
           {formatMoney(amount, currency)}
         </span>
@@ -41,10 +46,15 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
     const unit = unitLabel(p.unit, isAr);
     return (
       <div className={`relative rounded-3xl p-7 flex flex-col justify-between shadow-lg border-2 ${dark ? 'bg-[#0B3B2C] border-[#C9A04F] text-white' : 'bg-white border-[#C9A04F]/30'}`}>
-        {p.featured && (
-          <span className="absolute -top-3 start-6 px-3 py-1 rounded-lg bg-[#C9A04F] text-[#0B3B2C] text-[11px] font-bold">
-            {tr('Most chosen', 'الأكثر اختيارًا')}
-          </span>
+        {(p.featured || (isAr ? p.offerBadgeAr : p.offerBadgeEn)) && (
+          <div className="absolute -top-3 start-6 flex gap-2">
+            {(isAr ? p.offerBadgeAr : p.offerBadgeEn) && (
+              <span className="px-3 py-1 rounded-lg bg-red-600 text-white text-[11px] font-extrabold shadow">{isAr ? p.offerBadgeAr : p.offerBadgeEn}</span>
+            )}
+            {p.featured && !(isAr ? p.offerBadgeAr : p.offerBadgeEn) && (
+              <span className="px-3 py-1 rounded-lg bg-[#C9A04F] text-[#0B3B2C] text-[11px] font-bold">{tr('Most chosen', 'الأكثر اختيارًا')}</span>
+            )}
+          </div>
         )}
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -81,10 +91,10 @@ export const PricingPage: React.FC<PricingPageProps> = ({ navigate }) => {
           ) : (
             <>
               {p.individualPrice !== undefined && (
-                <PriceRow icon={User} label={tr('Individual', 'فردي')} amount={p.individualPrice} unit={unit} dark={dark} />
+                <PriceRow icon={User} label={tr('Individual', 'فردي')} amount={p.individualPrice} original={p.individualOriginal} unit={unit} dark={dark} />
               )}
               {p.groupPrice !== undefined && (
-                <PriceRow icon={Users} label={tr('Group (per student)', 'مجموعة (للطالب)')} amount={p.groupPrice} unit={unit} dark={dark} />
+                <PriceRow icon={Users} label={tr('Group (per student)', 'مجموعة (للطالب)')} amount={p.groupPrice} original={p.groupOriginal} unit={unit} dark={dark} />
               )}
             </>
           )}

@@ -6,6 +6,7 @@ import { BookOpen, Newspaper, GraduationCap, MessageCircle, LogOut, Gift, Target
 import { CommunityFeed } from '../community/CommunityFeed';
 import { CompleteProfile } from './CompleteProfile';
 import { DailyChallenge } from './DailyChallenge';
+import { InteractiveLessons } from '../lessons/InteractiveLessons';
 import { useAcademySettings } from '../../hooks/useAcademySettings';
 import { studentHubService } from '../../services/studentHubService';
 import { whatsappWithText } from '../../hooks/useAcademySettings';
@@ -115,6 +116,10 @@ export const VisitorDashboard: React.FC<Props> = ({ isAr, uid, name, whatsapp, n
         </button>
 
         <DailyChallenge uid={uid} isAr={isAr} />
+
+        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200 shadow-sm">
+          <InteractiveLessons isAr={isAr} />
+        </div>
 
         {/* الغرف الصوتية المجانية */}
         <button

@@ -1,3 +1,4 @@
+import { InteractiveLessons } from '../../components/lessons/InteractiveLessons';
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -738,6 +739,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ navigate, pr
                 <h4 className="font-bold text-lg text-[#0B3B2C] mt-1">{formatLabel || notSet}</h4>
               </div>
             </div>
+            <InteractiveLessons isAr={isAr} />
             <StudentCourseMaterials level={level} isAr={isAr} />
           </div>
         )}

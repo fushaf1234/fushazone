@@ -341,14 +341,26 @@
     container.appendChild(h);
   }
 
-  // التجويد: ثلاثة مستويات. عند توفر ملف الدرس: ضع اسمه في file واحذف soon:true
+  // التجويد: تُولَّد الدروس من tools/tajweed-generator. عند توفر ملف درس: ضع اسمه في file واحذف soon:true
   var tajweed = [
-    { heading:{ ar:"تجويد الأطفال", en:"Tajweed for Kids" } },
-    { icon:"🎙️", file:"", soon:true, nameAr:"لماذا نتعلم التجويد؟ (١)", nameEn:"Why Do We Learn Tajweed? (1)" },
-    { heading:{ ar:"تجويد المبتدئين", en:"Tajweed for Beginners" } },
-    { icon:"🎙️", file:"", soon:true, nameAr:"دروس تجويد المبتدئين", nameEn:"Beginner Tajweed Lessons" },
-    { heading:{ ar:"تجويد المتقدمين", en:"Advanced Tajweed" } },
-    { icon:"🎙️", file:"", soon:true, nameAr:"دروس التجويد المتقدم", nameEn:"Advanced Tajweed Lessons" }
+    { heading:{ ar:"تجويد الأطفال – المستوى الأول", en:"Tajweed for Kids – Level 1" } },
+    { icon:"📖", file:"tajweed-k1-01.html", nameAr:"التجويد ومراتب القراءة", nameEn:"Tajweed and the Levels of Reading" },
+    { icon:"🧭", file:"tajweed-k1-02.html", nameAr:"اللحن وآداب التلاوة", nameEn:"Mistakes (Lahn) and the Manners of Recitation" },
+    { icon:"🛡️", file:"tajweed-k1-03.html", nameAr:"الاستعاذة والبسملة", nameEn:"Isti'adhah and Basmalah" },
+    { icon:"🔔", file:"tajweed-k1-04.html", nameAr:"الغنة والنون والميم المشددتان", nameEn:"Ghunnah: Doubled Noon and Meem" },
+    { icon:"🔤", file:"tajweed-k1-05.html", nameAr:"النون الساكنة والتنوين", nameEn:"Silent Noon and Tanween" },
+    { icon:"🔵", file:"tajweed-k1-06.html", nameAr:"الإظهار الحلقي", nameEn:"Izhar Halqi (Clear Noon)" },
+    { icon:"🟣", file:"tajweed-k1-07.html", nameAr:"الإدغام", nameEn:"Idgham (Merging)" },
+    { icon:"🔴", file:"tajweed-k1-08.html", nameAr:"الإقلاب", nameEn:"Iqlab (Changing to Meem)" },
+    { icon:"🟠", file:"tajweed-k1-09.html", nameAr:"الإخفاء الحقيقي", nameEn:"Ikhfa Haqiqi (Hiding)" },
+    { icon:"💗", file:"tajweed-k1-10.html", nameAr:"أحكام الميم الساكنة", nameEn:"Rules of the Silent Meem" },
+    { icon:"💥", file:"tajweed-k1-11.html", nameAr:"القلقلة", nameEn:"Qalqalah (Echo)" },
+    { heading:{ ar:"تجويد الأطفال – المستوى الثاني", en:"Tajweed for Kids – Level 2" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"دروس المستوى الثاني", nameEn:"Level 2 lessons" },
+    { heading:{ ar:"التجويد المختصر", en:"Tajweed – Short Course" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"دروس التجويد المختصر", nameEn:"Short course lessons" },
+    { heading:{ ar:"التجويد الكامل", en:"Tajweed – Full Course" } },
+    { icon:"🎙️", file:"", soon:true, nameAr:"دروس التجويد الكامل", nameEn:"Full course lessons" }
   ];
 
   // العربية للناطقين بغيرها: ثلاثة مناهج

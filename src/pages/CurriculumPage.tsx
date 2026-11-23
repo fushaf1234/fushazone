@@ -23,11 +23,12 @@ const LESSON_TRACKS: LessonTrack[] = [
   },
   {
     id: 'tajweed', icon: Mic, ar: 'التجويد', en: 'Tajweed',
-    descAr: 'أحكام التجويد بثلاثة مستويات.', descEn: 'Tajweed rules in three levels.',
+    descAr: 'دروس تفاعلية بالبطاقات والتمارين.', descEn: 'Interactive lessons with cards and exercises.',
     items: [
-      { ar: 'تجويد الأطفال', en: 'Tajweed for Kids' },
-      { ar: 'تجويد المبتدئين', en: 'Tajweed for Beginners' },
-      { ar: 'تجويد المتقدمين', en: 'Advanced Tajweed' }
+      { ar: 'تجويد الأطفال – المستوى الأول', en: 'Tajweed for Kids – Level 1', href: '/quran-kids/#tajweed', noteAr: '١١ درسًا', noteEn: '11 lessons' },
+      { ar: 'تجويد الأطفال – المستوى الثاني', en: 'Tajweed for Kids – Level 2' },
+      { ar: 'التجويد المختصر', en: 'Tajweed – Short Course' },
+      { ar: 'التجويد الكامل', en: 'Tajweed – Full Course' }
     ]
   },
   {

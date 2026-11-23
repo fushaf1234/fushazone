@@ -459,6 +459,8 @@
   .fb-answer{ font-size:24px; }
   .fillblank-text{ font-size:clamp(24px, 4.4vw, 30px); }
   .fillblank-row input{ font-size:22px; }
+  .reciter-row{ margin-top:14px; display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; color:var(--gold-light); font-weight:bold; font-size:14px; }
+  .reciter-row select{ font-family:inherit; font-weight:bold; font-size:14px; padding:8px 14px; border-radius:999px; border:2px solid var(--gold-light); background:var(--cream); color:var(--green-deep); max-width:100%; }
 </style>
 </head>
 <body>
@@ -529,7 +531,11 @@
     <div class="surah-translation" id="surahTranslation"></div>
     <button class="listen-btn" id="listenBtn">▶️ <span data-ar-only>استمع للسورة</span><span data-en-only>Listen to the Surah</span></button>
     <div class="listen-toast" id="listenToast"></div>
-    <audio id="surahAudio" preload="none" src="https://server10.mp3quran.net/minsh/Almusshaf-Al-Mo-lim/058.mp3"></audio>
+    <div class="reciter-row">
+      <label for="reciterSelect"><span data-ar-only>🎙️ القارئ:</span><span data-en-only>🎙️ Reciter:</span></label>
+      <select id="reciterSelect"></select>
+    </div>
+    <audio id="surahAudio" preload="none"></audio>
   </div>
 
   <!-- ============ بطاقات شرح السورة (Flip Cards) ============ -->
@@ -716,13 +722,68 @@
   var listenBtn = document.getElementById('listenBtn');
   var listenToast = document.getElementById('listenToast');
   var audioEl = document.getElementById('surahAudio');
-  // القارئ: محمد صديق المنشاوي (المصحف المعلم). إن تعذر الملف يُستعمل مرتل المنشاوي
-  var surahFallback = 'https://server10.mp3quran.net/minsh/058.mp3';
-  audioEl.addEventListener('error', function(){
-    if(audioEl.src !== surahFallback){ audioEl.src = surahFallback; var pp = audioEl.play(); if(pp && pp.catch) pp.catch(function(){}); }
+  /* ============ القرّاء: السورة كاملة وصوت كل آية، مع رابط احتياطي لكل قارئ ============ */
+  function pad3(x){ return ('00' + x).slice(-3); }
+  var RECITERS = [
+    { id:'minsh-teacher', ar:'المنشاوي – المصحف المعلم', en:'Al-Minshawi – Teaching Mushaf',
+      surah:['https://server10.mp3quran.net/minsh/Almusshaf-Al-Mo-lim/', 'https://server10.mp3quran.net/minsh/'],
+      ayah:['ea:Minshawy_Teacher_128kbps', 'in:ar.minshawi'] },
+    { id:'husr-teacher', ar:'الحصري – المصحف المعلم', en:'Al-Husary – Teaching Mushaf',
+      surah:['https://server13.mp3quran.net/husr/Almusshaf-Al-Mo-lim/', 'https://server13.mp3quran.net/husr/'],
+      ayah:['ea:Husary_Muallim_128kbps', 'in:ar.husary'] },
+    { id:'minsh', ar:'المنشاوي – مرتّل', en:'Al-Minshawi – Murattal',
+      surah:['https://server10.mp3quran.net/minsh/'],
+      ayah:['ea:Minshawy_Murattal_128kbps', 'in:ar.minshawi'] },
+    { id:'husr', ar:'الحصري – مرتّل', en:'Al-Husary – Murattal',
+      surah:['https://server13.mp3quran.net/husr/'],
+      ayah:['ea:Husary_128kbps', 'in:ar.husary'] },
+    { id:'basit', ar:'عبد الباسط عبد الصمد – مرتّل', en:'Abdul Basit Abdus-Samad – Murattal',
+      surah:['https://server7.mp3quran.net/basit/'],
+      ayah:['ea:Abdul_Basit_Murattal_192kbps', 'in:ar.abdulbasitmurattal'] }
+  ];
+  var reciterSelect = document.getElementById('reciterSelect');
+  var reciterId = 'minsh-teacher';
+  try { var saved = localStorage.getItem('fz_reciter'); if(saved) reciterId = saved; } catch(e){}
+  function reciter(){ for(var i = 0; i < RECITERS.length; i++){ if(RECITERS[i].id === reciterId) return RECITERS[i]; } return RECITERS[0]; }
+  function fillReciters(){
+    var en = isEn();
+    reciterSelect.innerHTML = RECITERS.map(function(r){
+      return '<option value="' + r.id + '"' + (r.id === reciter().id ? ' selected' : '') + '>' + (en ? r.en : r.ar) + '</option>';
+    }).join('');
+  }
+  function surahUrls(){ return reciter().surah.map(function(b){ return b + '058.mp3'; }); }
+  function ayahUrls(ayahInSurah, globalNum){
+    return reciter().ayah.map(function(src){
+      if(src.indexOf('ea:') === 0) return 'https://everyayah.com/data/' + src.slice(3) + '/' + pad3(D.n) + pad3(ayahInSurah) + '.mp3';
+      return 'https://cdn.islamic.network/quran/audio/128/' + src.slice(3) + '/' + globalNum + '.mp3';
+    });
+  }
+  // يشغّل أول رابط، وإن فشل ينتقل للذي بعده
+  function attachFallback(audio, urls, autoplay){
+    var i = 0;
+    audio.src = urls[0];
+    audio.onerror = function(){
+      i++;
+      if(i < urls.length){ audio.src = urls[i]; if(autoplay()){ var p = audio.play(); if(p && p.catch) p.catch(function(){}); } }
+    };
+  }
+  var surahWanted = false;
+  function loadSurahAudio(){ attachFallback(audioEl, surahUrls(), function(){ return surahWanted; }); }
+  fillReciters();
+  loadSurahAudio();
+  reciterSelect.addEventListener('change', function(){
+    reciterId = reciterSelect.value;
+    try { localStorage.setItem('fz_reciter', reciterId); } catch(e){}
+    var wasPlaying = !audioEl.paused;
+    audioEl.pause(); surahWanted = false; loadSurahAudio();
+    if(wasPlaying){ surahWanted = true; var p = audioEl.play(); if(p && p.catch) p.catch(function(){}); }
   });
+  document.getElementById('btnAr') && document.getElementById('btnAr').addEventListener('click', function(){ setTimeout(fillReciters, 0); });
+  document.getElementById('btnEn') && document.getElementById('btnEn').addEventListener('click', function(){ setTimeout(fillReciters, 0); });
+
   listenBtn.addEventListener('click', function(){
-    if(!audioEl.paused){ audioEl.pause(); return; }
+    if(!audioEl.paused){ audioEl.pause(); surahWanted = false; return; }
+    surahWanted = true;
     var p = audioEl.play();
     if(p && p.catch){
       p.catch(function(){
@@ -828,15 +889,9 @@
   document.getElementById('mxListen').addEventListener('click', function(){
     var a = ayahs[mxIndex]; if(!a) return;
     stopAyahAudio();
-    // المنشاوي المعلم لكل آية، وإن تعذر: المنشاوي مرتلًا
-    var pad = function(x){ return ('00' + x).slice(-3); };
-    var teacherUrl = 'https://everyayah.com/data/Minshawy_Teacher_128kbps/' + pad(D.n) + pad(mxIndex + 1) + '.mp3';
-    var fallbackUrl = 'https://cdn.islamic.network/quran/audio/128/ar.minshawi/' + a.g + '.mp3';
-    var thisAudio = new Audio(teacherUrl);
+    var thisAudio = new Audio();
     ayahAudio = thisAudio;
-    thisAudio.addEventListener('error', function(){
-      if(ayahAudio === thisAudio && thisAudio.src !== fallbackUrl){ thisAudio.src = fallbackUrl; var p2 = thisAudio.play(); if(p2 && p2.catch) p2.catch(function(){}); }
-    });
+    attachFallback(thisAudio, ayahUrls(mxIndex + 1, a.g), function(){ return ayahAudio === thisAudio; });
     var p = thisAudio.play(); if(p && p.catch) p.catch(function(){});
   });
   document.addEventListener('keydown', function(e){

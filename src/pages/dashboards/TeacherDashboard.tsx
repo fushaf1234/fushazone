@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LogOut, Users, Star, MessageSquare, Globe2, UserRound, Mic, PenLine, MessagesSquare } from 'lucide-react';
+import { LogOut, Users, Star, MessageSquare, Globe2, UserRound, Mic, PenLine, MessagesSquare, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { FushaZoneEmblem } from '../../components/common/Logo';
@@ -13,12 +13,13 @@ import { toEZAvatar } from '../../components/avatar/ezAvatar';
 import { squarePhoto } from '../../services/studentHubService';
 import { ChatHub } from '../../components/chat/ChatHub';
 import { TeacherProfileEditor } from '../../components/teacher/TeacherProfileEditor';
+import { QuranKidsManager } from '../../components/admin/QuranKidsManager';
 
 interface TeacherDashboardProps {
   navigate: (route: string) => void;
 }
 
-type Tab = 'students' | 'ledger' | 'messages' | 'chats' | 'community' | 'profile';
+type Tab = 'students' | 'ledger' | 'messages' | 'chats' | 'community' | 'quran_kids' | 'profile';
 
 // لوحة المعلم: طلاب مجموعاته فقط، بدون صلاحيات الإدارة
 export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) => {
@@ -41,6 +42,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
     { id: 'messages', ar: 'رسائل الطلاب', en: 'Messages', icon: MessageSquare },
     { id: 'chats', ar: 'المحادثات', en: 'Chats', icon: MessagesSquare },
     { id: 'community', ar: 'مجتمع الطلاب', en: 'Community', icon: Globe2 },
+    { id: 'quran_kids', ar: 'دروس القرآن للأطفال', en: "Kids' Qur'an lessons", icon: BookOpen },
     { id: 'profile', ar: 'بياناتي الشخصية', en: 'My profile', icon: UserRound }
   ];
 
@@ -139,6 +141,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ navigate }) 
         {tab === 'students' && <AdminStudentsManager onNotice={notify} teacherMode />}
         {tab === 'ledger' && <AdminStarsLedger onNotice={notify} teacherMode />}
         {tab === 'messages' && <AdminMessagesManager onNotice={notify} teacherMode />}
+        {tab === 'quran_kids' && <QuranKidsManager isAr={isAr} onNotice={notify} />}
         {tab === 'profile' && firebaseUser && (
           <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
             <TeacherProfileEditor

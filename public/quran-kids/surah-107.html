@@ -461,6 +461,22 @@
   .fillblank-row input{ font-size:22px; }
   .reciter-row{ margin-top:14px; display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; color:var(--gold-light); font-weight:bold; font-size:14px; }
   .reciter-row select{ font-family:inherit; font-weight:bold; font-size:14px; padding:8px 14px; border-radius:999px; border:2px solid var(--gold-light); background:var(--cream); color:var(--green-deep); max-width:100%; }
+  .range-bar{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:center; text-align:center;
+    background:var(--gold-glow); border:2px solid var(--gold); border-radius:var(--radius-md); padding:14px 16px;
+    margin:28px auto 0; max-width:760px; font-weight:bold; font-size:16px; color:var(--green-deep); }
+  .range-bar[hidden]{ display:none; }
+  .ex-q{ text-align:center; color:var(--ink-soft); font-weight:bold; font-size:15px; margin:8px 0 12px; }
+  .ex-prompt{ font-family:var(--font-ar-display); font-weight:700; font-size:clamp(23px, 4.4vw, 30px); line-height:2.1; text-align:center; color:var(--green-deep); margin-bottom:16px; }
+  .ex-opt .ex-ayah{ font-family:var(--font-ar-display); font-weight:700; font-size:clamp(20px, 3.8vw, 25px); line-height:1.9; }
+  .ex-choices{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .ex-chip{ font-family:var(--font-ar-display); font-weight:700; font-size:23px; padding:6px 18px; border-radius:999px;
+    border:2px solid var(--green-mid); background:var(--cream); color:var(--green-deep); cursor:pointer; transition:transform .15s ease; }
+  .ex-chip:hover{ transform:translateY(-2px); }
+  .ex-chip.correct{ background:var(--green-soft); border-color:var(--green); }
+  .ex-chip.wrong{ background:#FBE7E4; border-color:#C0554A; }
+  .wo-line{ min-height:70px; border:2px dashed var(--green-mid); border-radius:var(--radius-md); padding:10px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-bottom:14px; direction:rtl; background:var(--white); }
+  .wo-pool{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; direction:rtl; }
+  .ex-empty{ text-align:center; color:var(--ink-soft); font-weight:bold; }
 </style>
 </head>
 <body>
@@ -574,15 +590,23 @@
   <div class="section-title">🌸 <span data-ar-only>ماذا نتعلم من سورة الماعون؟</span><span data-en-only>What Do We Learn from Al-Ma'un?</span></div>
   <div class="mini-grid" id="lessonsGrid"></div>
 
+  <!-- ============ مقدار التمارين (يحدده المعلم أو الإدارة) ============ -->
+  <div class="range-bar" id="rangeBar" hidden>
+    <span id="rangeText"></span>
+    <button class="action-btn secondary" id="rangeToggle" type="button"></button>
+  </div>
+
   <!-- ============ نشاط الترتيب ============ -->
   <div class="section-title">🔀 <span data-ar-only>رتب آيات السورة</span><span data-en-only>Order the Verses</span></div>
   <div class="activity-card">
     <h3><span data-ar-only>اسحب الآيات ورتبها بالترتيب الصحيح</span><span data-en-only>Drag the verses into the correct order</span></h3>
     <p class="activity-sub"><span data-ar-only>اضغط مطولاً واسحب لأعلى أو لأسفل</span><span data-en-only>Press and hold, then drag up or down</span></p>
+    <div class="fb-progress" id="orderRoundLabel"></div>
     <ul id="orderList" dir="rtl" lang="ar"></ul>
     <div class="activity-actions">
       <button class="action-btn" id="checkOrderBtn"><span data-ar-only>تحقق من الترتيب</span><span data-en-only>Check Order</span></button>
       <button class="action-btn secondary" id="shuffleOrderBtn"><span data-ar-only>إعادة الخلط</span><span data-en-only>Shuffle Again</span></button>
+      <button class="action-btn secondary" id="nextRoundBtn"><span data-ar-only>الجولة التالية ←</span><span data-en-only>Next round →</span></button>
     </div>
     <div class="activity-feedback" id="orderFeedback"></div>
   </div>
@@ -595,10 +619,56 @@
       <input type="text" id="fillblankInput" placeholder="..." dir="rtl" lang="ar">
       <button class="action-btn" id="fillblankCheck"><span data-ar-only>تحقق</span><span data-en-only>Check</span></button>
       <button class="action-btn secondary" id="fillblankShow"><span data-ar-only>أظهر الإجابة</span><span data-en-only>Show Answer</span></button>
+      <button class="action-btn secondary" id="fillblankNext"><span data-ar-only>التالي ←</span><span data-en-only>Next →</span></button>
     </div>
+    <p class="ex-q"><span data-ar-only>أو اختر الكلمة الصحيحة:</span><span data-en-only>Or choose the right word:</span></p>
+    <div class="ex-choices" id="fbChoices"></div>
     <div class="fb-answer" id="fbAnswer" lang="ar" dir="rtl"></div>
     <div class="activity-feedback" id="fillblankFeedback"></div>
     <div class="fb-progress" id="fbProgress"></div>
+  </div>
+
+  <!-- ============ ما الآية التالية؟ ============ -->
+  <div id="nxSection">
+    <div class="section-title">➡️ <span data-ar-only>ما الآية التالية؟</span><span data-en-only>What Comes Next?</span></div>
+    <div class="activity-card">
+      <p class="ex-q"><span data-ar-only>اقرأ الآية، ثم اختر الآية التي تأتي بعدها</span><span data-en-only>Read the verse, then choose the verse that comes after it</span></p>
+      <div class="ex-prompt" id="nxPrompt" lang="ar" dir="rtl"></div>
+      <div class="quiz-options" id="nxOptions"></div>
+      <div class="activity-feedback" id="nxFeedback"></div>
+      <div class="activity-actions"><button class="action-btn secondary" id="nxNext"><span data-ar-only>التالي ←</span><span data-en-only>Next →</span></button></div>
+      <div class="fb-progress" id="nxProgress"></div>
+    </div>
+  </div>
+
+  <!-- ============ استمع واختر ============ -->
+  <div id="lsSection">
+    <div class="section-title">🎧 <span data-ar-only>استمع واختر</span><span data-en-only>Listen and Choose</span></div>
+    <div class="activity-card">
+      <p class="ex-q"><span data-ar-only>استمع للآية، ثم اختر نصها الصحيح</span><span data-en-only>Listen to the verse, then choose its correct text</span></p>
+      <div class="activity-actions"><button class="action-btn" id="lsPlay">🔊 <span data-ar-only>استمع للآية</span><span data-en-only>Listen to the verse</span></button></div>
+      <div class="quiz-options" id="lsOptions"></div>
+      <div class="activity-feedback" id="lsFeedback"></div>
+      <div class="activity-actions"><button class="action-btn secondary" id="lsNext"><span data-ar-only>التالي ←</span><span data-en-only>Next →</span></button></div>
+      <div class="fb-progress" id="lsProgress"></div>
+    </div>
+  </div>
+
+  <!-- ============ رتّب كلمات الآية ============ -->
+  <div id="woSection">
+    <div class="section-title">🧩 <span data-ar-only>رتّب كلمات الآية</span><span data-en-only>Build the Verse</span></div>
+    <div class="activity-card">
+      <p class="ex-q"><span data-ar-only>اضغط على الكلمات بالترتيب الصحيح لتكوّن الآية</span><span data-en-only>Tap the words in the right order to build the verse</span></p>
+      <div class="wo-line" id="woLine"></div>
+      <div class="wo-pool" id="woPool"></div>
+      <div class="activity-actions">
+        <button class="action-btn" id="woCheck"><span data-ar-only>تحقق</span><span data-en-only>Check</span></button>
+        <button class="action-btn secondary" id="woReset"><span data-ar-only>ابدأ من جديد</span><span data-en-only>Start over</span></button>
+        <button class="action-btn secondary" id="woNext"><span data-ar-only>التالي ←</span><span data-en-only>Next →</span></button>
+      </div>
+      <div class="activity-feedback" id="woFeedback"></div>
+      <div class="fb-progress" id="woProgress"></div>
+    </div>
   </div>
 
   <!-- ============ الاختبار ============ -->
@@ -652,6 +722,39 @@
   var TAFSIR_API = 'https://api.alquran.cloud/v1/surah/' + D.n + '/ar.muyassar'; // التفسير الميسر
   var ayahs = []; // { ar, en, tafsir, g }
 
+  /* ============ مقدار التمارين ============
+     الأولوية: رابط خاص للطالب (?from=&to=) ثم إعداد السورة من لوحة الإدارة/المعلم (Firestore: quranKids/s{n}) ثم السورة كاملة */
+  var params = new URLSearchParams(location.search);
+  function intParam(k){ var v = parseInt(params.get(k), 10); return isNaN(v) ? null : v; }
+  var RANGE = null, showAll = false, settingsReady = false;
+  if(intParam('from')) RANGE = { from: intParam('from'), to: intParam('to') || intParam('from') };
+  var SETTINGS_URL = 'https://firestore.googleapis.com/v1/projects/fusha-zone/databases/(default)/documents/quranKids/s' + D.n + '?key=AIzaSyB76rAsSoGs4oIacskBjanetWi98rAK_08';
+  function loadSettings(){
+    if(RANGE){ settingsReady = true; return; }
+    fetch(SETTINGS_URL).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+      var f = j && j.fields;
+      if(f && f.from && f.to){
+        var a = parseInt(f.from.integerValue, 10), b = parseInt(f.to.integerValue, 10);
+        if(a >= 1 && b >= a) RANGE = { from: a, to: b };
+      }
+    }).catch(function(){}).then(function(){ settingsReady = true; if(ayahs.length) applyRange(); });
+  }
+  function isLimited(){ return !!RANGE && !(RANGE.from <= 1 && RANGE.to >= ayahs.length); }
+  function activeIdx(){
+    var n = ayahs.length, a = 0, b = n - 1;
+    if(isLimited() && !showAll){
+      a = Math.max(0, Math.min(n - 1, RANGE.from - 1));
+      b = Math.max(a, Math.min(n - 1, RANGE.to - 1));
+    }
+    var r = []; for(var i = a; i <= b; i++) r.push(i); return r;
+  }
+  function shuffle(arr){ for(var i = arr.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; }
+  // آيات أخرى عشوائية من السورة لاستعمالها خيارات خاطئة
+  function pickOthers(exclude, count){
+    var pool = []; for(var i = 0; i < ayahs.length; i++) if(exclude.indexOf(i) < 0) pool.push(i);
+    return shuffle(pool).slice(0, count);
+  }
+
   function isEn(){ return document.body.classList.contains('lang-en'); }
   function toAr(n){ return String(n).replace(/[0-9]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; }); }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -699,8 +802,7 @@
         }
         renderSurah();
         buildMeanings();
-        buildOrderList();
-        buildFillBlanks();
+        if(settingsReady) applyRange();
         fetch(TAFSIR_API).then(function(r){ return r.json(); }).then(function(j){
           j.data.ayahs.forEach(function(a, i){ if(ayahs[i]) ayahs[i].tafsir = a.text; });
           if(!mx.hidden) renderCard(0);
@@ -940,26 +1042,46 @@
   /* ============ نشاط الترتيب (دائمًا بالعربية) ============ */
   var orderList = document.getElementById('orderList');
   var orderFeedback = document.getElementById('orderFeedback');
-  var orderStart = D.order[0] - 1, orderEnd = D.order[1] - 1;
-  var orderState = [];
+  var orderState = [], orderRounds = [], orderRound = 0;
+  var orderRoundLabel = document.getElementById('orderRoundLabel');
+  var nextRoundBtn = document.getElementById('nextRoundBtn');
+
+  // جولات من آيات متتالية تغطي كل الآيات المحددة
+  function buildOrderRounds(){
+    var idx = activeIdx();
+    if(idx.length < 2){
+      var e = Math.min(ayahs.length - 1, Math.max(idx[0], 0) + 2), st = Math.max(0, e - 2);
+      idx = []; for(var i = st; i <= e; i++) idx.push(i);
+    }
+    var words = 0; idx.forEach(function(k){ words += tokens(ayahs[k].ar).length; });
+    var size = (words / idx.length) > 22 ? 3 : 5;
+    orderRounds = [];
+    for(var i2 = 0; i2 < idx.length; i2 += size) orderRounds.push(idx.slice(i2, i2 + size));
+    if(orderRounds.length > 1 && orderRounds[orderRounds.length - 1].length < 2){
+      var last = orderRounds.pop(); orderRounds[orderRounds.length - 1] = orderRounds[orderRounds.length - 1].concat(last);
+    }
+    orderRound = 0;
+    buildOrderList();
+  }
+  function roundIdx(){ return orderRounds[orderRound] || []; }
 
   function buildOrderList(){
-    if(!ayahs.length) return;
-    orderState = [];
-    for(var k = orderStart; k <= orderEnd && k < ayahs.length; k++) orderState.push(k);
-    do {
-      for(var i=orderState.length-1;i>0;i--){
-        var j = Math.floor(Math.random()*(i+1));
-        var tmp = orderState[i]; orderState[i]=orderState[j]; orderState[j]=tmp;
-      }
-    } while(orderState.length > 1 && orderState.every(function(v, p){ return v === orderStart + p; }));
+    if(!ayahs.length || !orderRounds.length) return;
+    var round = roundIdx();
+    orderState = round.slice();
+    do { shuffle(orderState); }
+    while(orderState.length > 1 && orderState.every(function(v, p){ return v === round[p]; }));
+    nextRoundBtn.style.display = orderRounds.length > 1 ? '' : 'none';
     renderOrderList();
     orderFeedback.textContent = '';
     orderFeedback.className = 'activity-feedback';
   }
 
   function renderOrderList(){
-    if(!ayahs.length) return;
+    if(!ayahs.length || !orderRounds.length) return;
+    var round = roundIdx();
+    orderRoundLabel.textContent = (isEn() ? 'Round ' + (orderRound + 1) + ' / ' + orderRounds.length + ' — verses ' + (round[0] + 1) + '–' + (round[round.length - 1] + 1)
+      : 'الجولة ' + toAr(orderRound + 1) + ' / ' + toAr(orderRounds.length) + ' — الآيات ' + toAr(round[0] + 1) + '–' + toAr(round[round.length - 1] + 1));
     orderList.innerHTML = '';
     orderState.forEach(function(idx){
       var li = document.createElement('li');
@@ -1010,7 +1132,7 @@
     var allCorrect = true;
     Array.prototype.forEach.call(items, function(li, position){
       var idx = parseInt(li.dataset.idx,10);
-      if(idx === orderStart + position){
+      if(idx === roundIdx()[position]){
         li.classList.remove('wrong-slot'); li.classList.add('correct-slot');
       } else {
         li.classList.remove('correct-slot'); li.classList.add('wrong-slot');
@@ -1019,10 +1141,17 @@
     });
     orderFeedback.className = 'activity-feedback ' + (allCorrect ? 'good' : 'bad');
     orderFeedback.textContent = allCorrect
-      ? (isEn() ? '🎉 Perfect order!' : '🎉 الترتيب صحيح تمامًا!')
+      ? (orderRound < orderRounds.length - 1
+          ? (isEn() ? '🎉 Perfect order! Go to the next round.' : '🎉 الترتيب صحيح تمامًا! انتقل للجولة التالية.')
+          : (isEn() ? '🎉 Perfect order! You finished all the rounds.' : '🎉 الترتيب صحيح تمامًا! أنهيت كل الجولات.'))
       : (isEn() ? 'Not quite — try rearranging the highlighted verses.' : 'ليس تمامًا، حاول تعديل الآيات المميزة.');
   });
   document.getElementById('shuffleOrderBtn').addEventListener('click', buildOrderList);
+  nextRoundBtn.addEventListener('click', function(){
+    if(!orderRounds.length) return;
+    orderRound = (orderRound + 1) % orderRounds.length;
+    buildOrderList();
+  });
 
   /* ============ أكمل الآية (دائمًا بالعربية: الكلمة الأخيرة من الآية) ============ */
   var fillBlanks = [];
@@ -1035,22 +1164,42 @@
 
   function buildFillBlanks(){
     fillBlanks = [];
-    D.blanks.forEach(function(k){
-      var a = ayahs[k-1];
-      if(!a) return;
-      var w = tokens(a.ar);
+    // كلمات نهايات الآيات في السورة كلها (للخيارات)
+    var pool = [], seen = {};
+    ayahs.forEach(function(a){ var w = tokens(a.ar); var x = w[w.length - 1]; if(x && !seen[normalize(x)]){ seen[normalize(x)] = 1; pool.push(x); } });
+    activeIdx().forEach(function(i){
+      var w = tokens(ayahs[i].ar);
       if(w.length < 2) return;
-      var answer = w[w.length-1];
-      var before = w.slice(0, -1);
-      fillBlanks.push({ k:k, text: before.join(' ') + ' ______', answer: answer });
+      var answer = w[w.length - 1];
+      var wrong = shuffle(pool.filter(function(x){ return normalize(x) !== normalize(answer); })).slice(0, 2);
+      if(wrong.length < 2){
+        var extra = shuffle(w.slice(0, -1).filter(function(x){ return normalize(x) !== normalize(answer); }));
+        wrong = wrong.concat(extra).slice(0, 2);
+      }
+      fillBlanks.push({ k: i + 1, text: w.slice(0, -1).join(' ') + ' ______', answer: answer, choices: shuffle([answer].concat(wrong)) });
     });
     fbIndex = 0;
     renderFillBlank();
   }
 
+  var fbChoices = document.getElementById('fbChoices');
   function renderFillBlank(){
-    if(!fillBlanks.length) return;
+    if(!ayahs.length) return;
+    if(!fillBlanks.length){ fbTextEl.innerHTML = '<p class="ex-empty">' + (isEn() ? 'No verses for this exercise here.' : 'لا توجد آيات لهذا التمرين هنا.') + '</p>'; fbChoices.innerHTML = ''; fbProgress.textContent = ''; return; }
     var item = fillBlanks[fbIndex];
+    fbChoices.innerHTML = '';
+    item.choices.forEach(function(c){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'ex-chip'; b.lang = 'ar'; b.textContent = c;
+      b.addEventListener('click', function(){
+        var ok = normalize(c) === normalize(item.answer);
+        b.classList.add(ok ? 'correct' : 'wrong');
+        fbFeedback.className = 'activity-feedback ' + (ok ? 'good' : 'bad');
+        fbFeedback.textContent = ok ? (isEn() ? '✅ Well done!' : '✅ أحسنت!') : (isEn() ? '❌ Try again.' : '❌ حاول مرة أخرى.');
+        if(ok){ fbAnswer.textContent = item.answer; nextBlank(); }
+      });
+      fbChoices.appendChild(b);
+    });
     fbTextEl.innerHTML = '<span lang="ar" dir="rtl">' + esc(item.text) + '</span>' +
       '<span class="fb-ref"><span data-ar-only>(الآية ' + toAr(item.k) + ')</span><span data-en-only>(Verse ' + item.k + ')</span></span>';
     fbInput.value = '';
@@ -1060,11 +1209,20 @@
     fbProgress.textContent = (isEn() ? 'Question ' : 'السؤال ') + (fbIndex+1) + ' / ' + fillBlanks.length;
   }
   function nextBlank(){
+    var finished = fbIndex === fillBlanks.length - 1;
+    if(finished && fillBlanks.length > 1){
+      fbFeedback.className = 'activity-feedback good';
+      fbFeedback.textContent = isEn() ? '🎉 You completed all the verses!' : '🎉 أكملتَ كل الآيات!';
+    }
     setTimeout(function(){
       fbIndex = (fbIndex + 1) % fillBlanks.length;
       renderFillBlank();
-    }, 1400);
+    }, finished ? 2200 : 1400);
   }
+  document.getElementById('fillblankNext').addEventListener('click', function(){
+    if(!fillBlanks.length) return;
+    fbIndex = (fbIndex + 1) % fillBlanks.length; renderFillBlank();
+  });
 
   document.getElementById('fillblankCheck').addEventListener('click', function(){
     if(!fillBlanks.length) return;
@@ -1081,6 +1239,171 @@
     if(!fillBlanks.length) return;
     fbAnswer.textContent = fillBlanks[fbIndex].answer;
   });
+
+  /* ============ خيارات الآيات (للتمرينين: ما الآية التالية؟ واستمع واختر) ============ */
+  function renderAyahOptions(container, item, feedbackEl, onCorrect){
+    container.innerHTML = '';
+    item.options.forEach(function(oi){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'quiz-option ex-opt';
+      b.innerHTML = '<span class="dot"></span><span class="ex-ayah" lang="ar" dir="rtl">' + esc(tokens(ayahs[oi].ar).join(' ')) + '</span>';
+      b.addEventListener('click', function(){
+        if(item.done) return;
+        var ok = oi === item.answer;
+        b.classList.add(ok ? 'correct' : 'wrong');
+        feedbackEl.className = 'activity-feedback ' + (ok ? 'good' : 'bad');
+        feedbackEl.textContent = ok ? (isEn() ? '✅ Well done!' : '✅ أحسنت!') : (isEn() ? '❌ Try again.' : '❌ حاول مرة أخرى.');
+        if(ok){ item.done = true; onCorrect(); }
+      });
+      container.appendChild(b);
+    });
+  }
+  function progressText(i, n){ return (isEn() ? 'Question ' : 'السؤال ') + (i + 1) + ' / ' + n; }
+  function finishedText(){ return isEn() ? '🎉 You finished this exercise!' : '🎉 أنهيت هذا التمرين!'; }
+
+  /* ما الآية التالية؟ */
+  var nxItems = [], nxIndex = 0;
+  var nxPrompt = document.getElementById('nxPrompt'), nxOptions = document.getElementById('nxOptions');
+  var nxFeedback = document.getElementById('nxFeedback'), nxProgress = document.getElementById('nxProgress');
+  function buildNx(){
+    nxItems = [];
+    activeIdx().forEach(function(i){
+      if(i + 1 >= ayahs.length) return;
+      nxItems.push({ i: i, answer: i + 1, options: shuffle([i + 1].concat(pickOthers([i, i + 1], 2))) });
+    });
+    nxIndex = 0;
+    document.getElementById('nxSection').style.display = nxItems.length ? '' : 'none';
+    renderNx();
+  }
+  function renderNx(){
+    if(!nxItems.length) return;
+    var it = nxItems[nxIndex];
+    nxPrompt.innerHTML = esc(tokens(ayahs[it.i].ar).join(' ')) + ' <span class="ayah-num">﴿' + toAr(it.i + 1) + '﴾</span>';
+    nxFeedback.textContent = ''; nxFeedback.className = 'activity-feedback';
+    nxProgress.textContent = progressText(nxIndex, nxItems.length);
+    renderAyahOptions(nxOptions, it, nxFeedback, function(){ advance('nx'); });
+  }
+
+  /* استمع واختر */
+  var lsItems = [], lsIndex = 0, lsAudio = null;
+  var lsOptions = document.getElementById('lsOptions'), lsFeedback = document.getElementById('lsFeedback'), lsProgress = document.getElementById('lsProgress');
+  function buildLs(){
+    lsItems = activeIdx().map(function(i){ return { i: i, answer: i, options: shuffle([i].concat(pickOthers([i], 2))) }; });
+    if(ayahs.length < 2) lsItems = [];
+    lsIndex = 0;
+    document.getElementById('lsSection').style.display = lsItems.length ? '' : 'none';
+    renderLs();
+  }
+  function stopLs(){ if(lsAudio){ lsAudio.pause(); lsAudio = null; } }
+  function renderLs(){
+    if(!lsItems.length) return;
+    stopLs();
+    var it = lsItems[lsIndex];
+    lsFeedback.textContent = ''; lsFeedback.className = 'activity-feedback';
+    lsProgress.textContent = progressText(lsIndex, lsItems.length);
+    renderAyahOptions(lsOptions, it, lsFeedback, function(){ advance('ls'); });
+  }
+  document.getElementById('lsPlay').addEventListener('click', function(){
+    if(!lsItems.length) return;
+    stopLs();
+    var it = lsItems[lsIndex], a = new Audio();
+    lsAudio = a;
+    attachFallback(a, ayahUrls(it.i + 1, ayahs[it.i].g), function(){ return lsAudio === a; });
+    var p = a.play(); if(p && p.catch) p.catch(function(){});
+  });
+
+  /* رتّب كلمات الآية (للآيات من ٣ إلى ١٢ كلمة) */
+  var woItems = [], woIndex = 0, woPicked = [], woPoolOrder = [];
+  var woLine = document.getElementById('woLine'), woPool = document.getElementById('woPool');
+  var woFeedback = document.getElementById('woFeedback'), woProgress = document.getElementById('woProgress');
+  function buildWo(){
+    woItems = [];
+    activeIdx().forEach(function(i){
+      var w = tokens(ayahs[i].ar);
+      if(w.length >= 3 && w.length <= 12) woItems.push({ i: i, words: w });
+    });
+    woIndex = 0;
+    document.getElementById('woSection').style.display = woItems.length ? '' : 'none';
+    resetWo();
+  }
+  function resetWo(){
+    if(!woItems.length) return;
+    var it = woItems[woIndex];
+    woPicked = [];
+    woPoolOrder = it.words.map(function(_, k){ return k; });
+    do { shuffle(woPoolOrder); } while(woPoolOrder.length > 1 && woPoolOrder.every(function(v, p){ return v === p; }));
+    woFeedback.textContent = ''; woFeedback.className = 'activity-feedback';
+    renderWo();
+  }
+  function renderWo(){
+    if(!woItems.length) return;
+    var it = woItems[woIndex];
+    woProgress.textContent = progressText(woIndex, woItems.length) + (isEn() ? ' — verse ' + (it.i + 1) : ' — الآية ' + toAr(it.i + 1));
+    woLine.innerHTML = ''; woPool.innerHTML = '';
+    woPicked.forEach(function(k, pos){
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ex-chip'; b.lang = 'ar'; b.textContent = it.words[k];
+      b.addEventListener('click', function(){ woPicked.splice(pos, 1); renderWo(); });
+      woLine.appendChild(b);
+    });
+    woPoolOrder.forEach(function(k){
+      if(woPicked.indexOf(k) >= 0) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ex-chip'; b.lang = 'ar'; b.textContent = it.words[k];
+      b.addEventListener('click', function(){ woPicked.push(k); renderWo(); });
+      woPool.appendChild(b);
+    });
+  }
+  document.getElementById('woCheck').addEventListener('click', function(){
+    if(!woItems.length) return;
+    var it = woItems[woIndex];
+    var built = woPicked.map(function(k){ return normalize(it.words[k]); }).join(' ');
+    var target = it.words.map(function(w){ return normalize(w); }).join(' ');
+    var ok = woPicked.length === it.words.length && built === target;
+    woFeedback.className = 'activity-feedback ' + (ok ? 'good' : 'bad');
+    woFeedback.textContent = ok ? (isEn() ? '✅ Excellent! The verse is correct.' : '✅ ممتاز! الآية صحيحة.')
+      : (woPicked.length < it.words.length ? (isEn() ? 'Use all the words first.' : 'استعمل كل الكلمات أولًا.') : (isEn() ? '❌ Not quite, try again.' : '❌ ليس تمامًا، حاول مرة أخرى.'));
+    if(ok) advance('wo');
+  });
+  document.getElementById('woReset').addEventListener('click', resetWo);
+
+  // الانتقال للسؤال التالي في التمارين الجديدة
+  function advance(kind){
+    var map = {
+      nx: { len: function(){ return nxItems.length; }, get: function(){ return nxIndex; }, set: function(v){ nxIndex = v; }, render: renderNx, fb: nxFeedback },
+      ls: { len: function(){ return lsItems.length; }, get: function(){ return lsIndex; }, set: function(v){ lsIndex = v; }, render: renderLs, fb: lsFeedback },
+      wo: { len: function(){ return woItems.length; }, get: function(){ return woIndex; }, set: function(v){ woIndex = v; }, render: resetWo, fb: woFeedback }
+    }[kind];
+    var finished = map.get() === map.len() - 1;
+    if(finished && map.len() > 1){ map.fb.className = 'activity-feedback good'; map.fb.textContent = finishedText(); }
+    setTimeout(function(){ map.set((map.get() + 1) % map.len()); map.render(); }, finished ? 2200 : 1300);
+  }
+  document.getElementById('nxNext').addEventListener('click', function(){ if(nxItems.length){ nxIndex = (nxIndex + 1) % nxItems.length; renderNx(); } });
+  document.getElementById('lsNext').addEventListener('click', function(){ if(lsItems.length){ lsIndex = (lsIndex + 1) % lsItems.length; renderLs(); } });
+  document.getElementById('woNext').addEventListener('click', function(){ if(woItems.length){ woIndex = (woIndex + 1) % woItems.length; resetWo(); } });
+
+  /* شريط المقدار وزر «كل التمارين» */
+  var rangeBar = document.getElementById('rangeBar'), rangeText = document.getElementById('rangeText'), rangeToggle = document.getElementById('rangeToggle');
+  function renderRangeBar(){
+    if(!ayahs.length) return;
+    rangeBar.hidden = !isLimited();
+    if(!isLimited()) return;
+    var idx = activeIdx(), f = idx[0] + 1, t = idx[idx.length - 1] + 1, en = isEn();
+    if(showAll){
+      rangeText.textContent = en ? '📖 You are practicing the whole surah' : '📖 أنت تتدرّب على السورة كاملة';
+      rangeToggle.textContent = en ? 'Back to today\'s verses' : 'العودة لآيات الدرس';
+    } else {
+      rangeText.textContent = en ? ('📌 Today\'s verses: ' + (f === t ? f : f + '–' + t))
+        : ('📌 آيات الدرس: ' + (f === t ? 'الآية ' + toAr(f) : 'الآيات ' + toAr(f) + '–' + toAr(t)));
+      rangeToggle.textContent = en ? '🚀 I want all the exercises' : '🚀 أريد كل تمارين السورة';
+    }
+  }
+  rangeToggle.addEventListener('click', function(){ showAll = !showAll; applyRange(); rangeBar.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  function applyRange(){
+    if(!ayahs.length) return;
+    renderRangeBar();
+    buildOrderRounds();
+    buildFillBlanks();
+    buildNx(); buildLs(); buildWo();
+  }
 
   /* ============ الاختبار ============ */
   function countQuestion(){
@@ -1231,6 +1554,7 @@
     if(!mx.hidden) renderCard(mxIndex, 0);
     renderOrderList();
     renderFillBlank();
+    renderRangeBar(); renderNx(); renderLs(); renderWo();
     quizScore = 0; quizIndex = 0;
     renderQuiz();
     document.getElementById('resultCard').classList.remove('show');
@@ -1240,8 +1564,11 @@
   btnAr.addEventListener('click', function(){ setLang(false); });
   btnEn.addEventListener('click', function(){ setLang(true); });
 
+  // اسم الطالب من الرابط الخاص (?name=)
+  if(params.get('name')){ nameInput.value = params.get('name').slice(0, 40); renderWelcome(); }
   renderQuiz();
   updateTile();
+  loadSettings();
   loadSurah();
 
 })();

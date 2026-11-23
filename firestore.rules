@@ -303,6 +303,16 @@ service cloud.firestore {
     }
 
     // --- الباقات والأسعار (تديرها الإدارة؛ يراها كل زوار الموقع) ---
+    // دروس القرآن للأطفال: مقدار آيات التمارين لكل سورة (تقرؤه الصفحات الثابتة للجميع)
+    match /quranKids/{docId} {
+      allow get, list: if true;
+      allow write: if isTeacher() && isValidId(docId) &&
+        request.resource.data.from is int && request.resource.data.to is int &&
+        request.resource.data.from >= 1 && request.resource.data.to >= request.resource.data.from &&
+        request.resource.data.to <= 286;
+      allow delete: if isTeacher();
+    }
+
     match /packages/{packageId} {
       allow get, list: if true;
       allow write: if isAdmin() && isValidId(packageId) &&

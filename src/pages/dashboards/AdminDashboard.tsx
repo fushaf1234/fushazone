@@ -55,6 +55,7 @@ import { AdminVisitors } from '../../components/admin/AdminVisitors';
 import { CURRENCIES } from '../../hooks/useAcademySettings';
 import { useUnreadMessages } from '../../hooks/useUnreadMessages';
 import { AdminPackagesManager } from '../../components/admin/AdminPackagesManager';
+import { QuranKidsManager } from '../../components/admin/QuranKidsManager';
 import { AdminWorkshops } from '../../components/admin/AdminWorkshops';
 import { AdminReferrals } from '../../components/admin/AdminReferrals';
 import { AdminVoiceRooms } from '../../components/admin/AdminVoiceRooms';
@@ -86,6 +87,7 @@ type TabId =
   | 'students'
   | 'feedback_reviews'
   | 'pricing'
+  | 'quran_kids'
   | 'stars_audit'
   | 'settings'
   | 'english_club'
@@ -711,6 +713,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigate }) => {
     { id: 'content_cms', labelEn: 'Content & Curricula', labelAr: 'إدارة المحتوى والمناهج' },
     { id: 'blog', labelEn: 'Blog', labelAr: 'المدونة' },
     { id: 'pricing', labelEn: 'Packages & prices', labelAr: 'الباقات والأسعار' },
+    { id: 'quran_kids', labelEn: "Kids' Qur'an lessons", labelAr: 'دروس القرآن للأطفال' },
     { id: 'english_club', labelEn: 'Conversation Club Config', labelAr: 'إعدادات نادي المحادثة' },
     { id: 'stars_audit', labelEn: 'Stars Audit Ledger', labelAr: 'سجل تدقيق النجوم' },
     { id: 'workshops', labelEn: 'Workshops & Certificates', labelAr: 'الورش والشهادات' },
@@ -1038,6 +1041,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigate }) => {
 
         {/* PACKAGES & PRICES */}
         {activeTab === 'pricing' && <AdminPackagesManager isAr={isAr} onNotice={(msg) => notify(msg, 4000)} />}
+        {activeTab === 'quran_kids' && <QuranKidsManager isAr={isAr} onNotice={(msg) => notify(msg, 4000)} />}
 
         {/* STARS AUDIT */}
         {activeTab === 'stars_audit' && <AdminStarsLedger onNotice={(msg) => notify(msg, 4000)} />}

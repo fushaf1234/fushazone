@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { CEFR_LEVELS_INFO } from '../data/academyData';
 import { CEFRLevel } from '../types';
 import { usePublishedCourses } from '../hooks/useSiteContent';
+import { FreeCurriculumButton } from '../components/home/FreeCurriculumButton';
 import { BookOpen, CheckCircle, GraduationCap, Users, Mic, Languages, School, ArrowUpRight } from 'lucide-react';
 
 interface CurriculumPageProps {
@@ -73,6 +74,8 @@ export const CurriculumPage: React.FC<CurriculumPageProps> = ({ navigate, initia
           <h1 className="font-serif-luxury font-bold text-3xl sm:text-5xl text-[#0B3B2C]">{t.curriculum.sectionTitle}</h1>
           <p className="text-base text-gray-600 mt-4 leading-relaxed">{t.curriculum.sectionSubtitle}</p>
         </div>
+
+        <FreeCurriculumButton className="mb-10" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {groups.map((g) => (

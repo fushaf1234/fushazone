@@ -26,6 +26,7 @@ import {
 , Mic } from 'lucide-react';
 import { FushaZoneEmblem } from '../components/common/Logo';
 import { FeaturesShowcase } from '../components/home/FeaturesShowcase';
+import { FreeCurriculumButton } from '../components/home/FreeCurriculumButton';
 import { EnglishClubHomeSection } from '../components/englishClub/EnglishClubHomeSection';
 import { StudentReviewsSection } from '../components/reviews/StudentReviewsSection';
 import { VerifiedTestimonials } from '../components/reviews/VerifiedTestimonials';
@@ -114,6 +115,8 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate }) => {
           </div>
         </div>
       </section>
+
+      <FreeCurriculumButton className="-mt-8 relative z-10 mb-4" />
 
       {/* 1. ACADEMY FEATURES & BENEFITS: نظرة عامة ثم شرائح دائرية */}
       <FeaturesShowcase ar={ar} isAuthenticated={isAuthenticated} navigate={navigate} />

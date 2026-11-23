@@ -302,9 +302,9 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // --- الباقات والأسعار (تديرها الإدارة؛ يراها المسجّلون ما عدا المعلمين) ---
+    // --- الباقات والأسعار (تديرها الإدارة؛ يراها كل زوار الموقع) ---
     match /packages/{packageId} {
-      allow get, list: if isAdmin() || (isMember() && !isTeacherDoc() && myProfile().get('role', '') != 'teacher');
+      allow get, list: if true;
       allow write: if isAdmin() && isValidId(packageId) &&
         request.resource.data.titleAr is string && request.resource.data.titleAr.size() <= 120 &&
         request.resource.data.titleEn is string && request.resource.data.titleEn.size() <= 120 &&

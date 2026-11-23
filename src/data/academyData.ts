@@ -149,8 +149,8 @@ export const PROGRAM_CATEGORIES: ProgramCategory[] = [
   },
   {
     id: 'interactive-conversation',
-    titleEn: 'Interactive Fusha Arabic Conversation',
-    titleAr: 'المحادثات التفاعلية بالعربية الفصحى',
+    titleEn: 'Interactive Conversation for Language Development',
+    titleAr: 'المحادثات التفاعلية لتنمية اللغة',
     shortDescEn: 'Lessons dedicated to conversation in Fusha Arabic and spoken fluency, to break the fear of speaking.',
     shortDescAr: 'حصص مخصصة للمحادثة بالعربية الفصحى والطلاقة الشفهية لكسر حاجز الخوف من التحدث.',
     fullDescEn: 'Every lesson brings you closer to the language you actually want to use. Real conversations in Fusha Arabic about daily life and culture, with your teacher correcting your pronunciation and expressions as you speak.',

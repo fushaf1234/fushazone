@@ -9,7 +9,7 @@ export type ProgramId = 'arabic' | 'conversation' | 'quran' | 'kids' | 'single';
 
 export const PROGRAMS: { id: ProgramId; ar: string; en: string }[] = [
   { id: 'arabic', ar: 'اللغة العربية (فُصحى)', en: 'Arabic Language (Fusha)' },
-  { id: 'conversation', ar: 'المحادثات التفاعلية بالعربية الفصحى', en: 'Interactive Fusha Arabic Conversation' },
+  { id: 'conversation', ar: 'المحادثات التفاعلية لتنمية اللغة', en: 'Interactive Conversation for Language Development' },
   { id: 'quran', ar: 'القرآن الكريم والتجويد', en: 'Quran & Tajweed' },
   { id: 'kids', ar: 'العربية والقرآن للأطفال', en: 'Arabic & Quran for Kids' },
   { id: 'single', ar: 'جلسات منفردة', en: 'Single Sessions' }
@@ -71,7 +71,7 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
   },
   {
     id: 'conversation-single',
-    program: 'conversation',
+    program: 'arabic',
     titleAr: 'جلسة محادثة فصحى منفردة',
     titleEn: 'Single Fusha Conversation Session',
     descAr: 'جلسة محادثة واحدة بالعربية الفصحى، تُحجز وتُدفع منفردة دون اشتراك شهري.',
@@ -79,7 +79,7 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
     minutes: 60,
     individualPrice: 20,
     unit: 'hour',
-    order: 4,
+    order: 2,
     active: true
   },
   {
@@ -95,19 +95,19 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
     groupPrice: 50,
     unit: 'month',
     featured: true,
-    order: 5,
+    order: 4,
     active: true
   },
   {
     id: 'single-session',
-    program: 'arabic',
-    titleAr: 'حصة فصحى فردية منفردة',
-    titleEn: 'Single Fusha Lesson',
-    descAr: 'حصة فردية واحدة في اللغة العربية الفصحى، تُدفع للحصة دون اشتراك شهري.',
-    descEn: 'One private Fusha Arabic lesson, paid per lesson without a monthly subscription.',
+    program: 'single',
+    titleAr: 'جلسة فردية',
+    titleEn: 'Single Session',
+    descAr: 'حصة فردية واحدة في أي برنامج (العربية أو المحادثة أو القرآن)، تُدفع للحصة دون اشتراك شهري.',
+    descEn: 'One private lesson in any program (Arabic, conversation or Quran), paid per lesson without a monthly subscription.',
     individualPrice: 15,
     unit: 'session',
-    order: 2,
+    order: 5,
     active: true
   },
   {

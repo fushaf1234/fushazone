@@ -247,3 +247,6 @@ dict(icon='🎯', title=('إتمام الحركات', 'Completing the Vowels'),
   dict(t='tf', items=[('مطّ الحركة حتى تصير حرف مد خطأ.', 'Stretching a vowel into a madd letter is a mistake.', True), ('نختصر الحركات لنقرأ بسرعة.', 'We shorten vowels to read faster.', False)]),
  ]),
 ]
+
+LESSONS[0]['mouth'] = ['adna', 'q', 'd', 'szs', 'tdt', 'zdt']
+LESSONS[5]['mouth'] = ['jawf']

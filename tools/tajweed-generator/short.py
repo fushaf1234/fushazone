@@ -170,3 +170,6 @@ dict(icon='🧬', title=('صفات مهمّة للحروف', 'Important Letter Q
     dict(q=('حرف الاستطالة:', 'The extension letter:'), o=[('الضاد', 'Daad'), ('الظاء', 'Dhaa'), ('الطاء', 'Taa')])]),
  ]),
 ]
+
+LESSONS[1]['mouth'] = ['lips', 'nasal']
+LESSONS[6]['mouth'] = 'all'

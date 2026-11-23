@@ -151,6 +151,37 @@
   .medal.show{ display:flex; }
   @keyframes pop{ from{ transform:scale(.2) rotate(-30deg); } to{ transform:scale(1) rotate(0); } }
   footer{ text-align:center; color:var(--ink-soft); font-size:13px; margin-top:30px; }
+
+  /* خريطة المخارج */
+  .mouth-sec{ background:var(--white); border-radius:var(--r); padding:18px 14px; margin:10px auto 0; max-width:900px; box-shadow:0 10px 26px rgba(0,0,0,.08); }
+  .mouth-views{ display:grid; grid-template-columns: 1.5fr 1fr; gap:10px; align-items:start; }
+  .mouth-views .top{ grid-column: 2; }
+  .mouth-views .main{ grid-row: span 2; }
+  @media (max-width:640px){ .mouth-views{ grid-template-columns:1fr 1fr; } .mouth-views .main{ grid-column: 1 / -1; grid-row:auto; } .mouth-views .top{ grid-column:auto; } }
+  .mv{ margin:0; text-align:center; } .mv svg{ width:100%; height:auto; display:block; }
+  .mv figcaption{ font-size:12px; font-weight:800; color:var(--ink-soft); margin-top:4px; }
+  .skin{ fill:#F8D9C4; stroke:#C98F6B; stroke-width:2; } .nose{ fill:#FDEDE3; } .cav{ fill:#FFFFFF; }
+  .palate{ fill:none; stroke:#B5525C; stroke-width:4; stroke-linecap:round; } .wall{ fill:none; stroke:#B5525C; stroke-width:3; }
+  .tongue, .tongue-z, .tongue-top{ fill:#F08A9A; stroke:#B5525C; stroke-width:2; } .epi{ fill:none; stroke:#B5525C; stroke-width:3; } .larynx{ stroke:#7A3E48; stroke-width:3; }
+  .tooth, .tooth-z{ fill:#fff; stroke:#9CA3AF; stroke-width:1.5; } .lip, .lip-z{ fill:#E07A7A; stroke:#B5525C; stroke-width:1.5; }
+  .palate-z{ fill:none; stroke:#B5525C; stroke-width:5; stroke-linecap:round; } .gum-z{ fill:none; stroke:#E39AA6; stroke-width:9; stroke-linecap:round; }
+  .zoom-bg{ fill:#FFF8F2; stroke:#F1D5C4; } .arch{ fill:none; stroke:#D1D5DB; stroke-width:10; stroke-dasharray:6 4; }
+  .area{ fill:#FFC107; opacity:0; transition:opacity .3s; } .area.on{ opacity:.45; animation:blink 1.2s ease-in-out infinite; }
+  .front-box{ fill:none; stroke:var(--mid); stroke-width:2; stroke-dasharray:5 4; opacity:.7; }
+  .edge{ fill:none; stroke:transparent; stroke-width:7; stroke-linecap:round; transition:stroke .3s; } .edge.on{ stroke:#FFC107; animation:blink 1.2s ease-in-out infinite; }
+  .pts circle{ fill:var(--deep); stroke:#fff; stroke-width:2; cursor:pointer; transition:r .2s, fill .2s; }
+  .pts circle.on{ fill:#FFC107; stroke:var(--deep); stroke-width:3; r:11; animation:blink 1.2s ease-in-out infinite; }
+  @keyframes blink{ 50%{ opacity:.55; } }
+  .lbl text{ font-family:var(--ar); font-size:11px; fill:#6B7280; font-weight:700; } body.lang-en .lbl text{ font-family:var(--en); }
+  .mv text tspan[data-en-only]{ display:none; } body.lang-en .mv text tspan[data-en-only]{ display:inline; } body.lang-en .mv text tspan[data-ar-only]{ display:none; }
+  .front .lbl text{ font-size:10px; } .top .lbl text{ font-size:10px; }
+  .mouth-panel{ margin-top:12px; }
+  .mouth-letters{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; direction:rtl; }
+  .mouth-letters button{ font-family:var(--quran); font-weight:700; font-size:22px; min-width:56px; padding:4px 10px; border-radius:14px; border:3px solid var(--soft); background:var(--cream); color:var(--deep); cursor:pointer; }
+  .mouth-letters button.on{ background:var(--deep); color:var(--gold-light); border-color:var(--deep); }
+  .mouth-info{ margin-top:12px; background:var(--gold-glow); border-radius:18px; padding:12px 16px; min-height:70px; line-height:1.9; }
+  .mouth-info h4{ margin:0 0 4px; color:var(--deep); font-size:19px; } .mouth-info .ls{ font-family:var(--quran); font-weight:700; font-size:26px; color:#B45309; }
+  .mouth-info .tip{ font-size:14px; color:var(--ink-soft); margin-top:6px; }
   #confetti{ position:fixed; inset:0; pointer-events:none; z-index:50; }
 </style>
 </head>
@@ -176,6 +207,7 @@
     <div class="teacher"><span data-ar-only>🌟 من إعداد المعلمة أمل الحسن</span><span data-en-only>🌟 Prepared by teacher Amal Al-Hasan</span></div>
   </header>
 
+  
   <div class="section-title">📚 <span data-ar-only>لنتعلّم معًا</span><span data-en-only>Let's Learn Together</span></div>
   <p class="section-sub"><span data-ar-only>اضغط على البطاقة لتقلبها، واسحب يمينًا أو يسارًا للتنقل</span><span data-en-only>Tap a card to flip it, swipe to move between cards</span></p>
   <div class="deck-head">
@@ -207,7 +239,7 @@
 <script>
 (function(){
   "use strict";
-  var L = {"title": ["المد المتصل والمنفصل", "Connected and Separated Madd"], "cards": [{"icon": "🔗", "t": ["المد المتصل", "Connected Madd"], "x": ["إذا جاء **حرف المد ثم الهمزة في كلمة واحدة** فهو **مد متصل واجب**، نمدّه **٤ أو ٥ حركات**.", "When a **madd letter and then a hamza are in the same word**, it is the **obligatory connected madd**, stretched **4 or 5 counts**."], "line": ["في كلمة واحدة", "In one word"], "ex": [{"s": 110, "a": 1, "hl": "جاء", "rule": "madd_muttasil"}, {"s": 86, "a": 1, "hl": "والسماء", "rule": "madd_muttasil"}]}, {"icon": "✂️", "t": ["المد المنفصل", "Separated Madd"], "x": ["إذا جاء **حرف المد في آخر كلمة** و**الهمزة في أول الكلمة التي بعدها** فهو **مد منفصل جائز**، نمدّه **٤ أو ٥ حركات** في القراءة التي نتعلّمها.", "When the **madd letter ends one word** and the **hamza starts the next**, it is the **permissible separated madd**, stretched **4 or 5 counts** in the reading we learn."], "line": ["في كلمتين", "Across two words"], "ex": [{"s": 108, "a": 1, "hl": "انا اعطيناك", "rule": "madd_munfasil"}, {"s": 109, "a": 1, "hl": "يايها|يا ايها", "rule": "madd_munfasil"}]}], "ex": [{"t": "sort", "buckets": ["madd_muttasil", "madd_munfasil"], "items": [{"b": 0, "s": 110, "a": 1, "hl": "جاء"}, {"b": 0, "s": 86, "a": 1, "hl": "والسماء"}, {"b": 1, "s": 108, "a": 1, "hl": "انا اعطيناك"}, {"b": 1, "s": 109, "a": 1, "hl": "يايها|يا ايها"}]}, {"t": "mcq", "items": [{"q": ["ما نوع المد في الموضع الملوّن؟", "Which madd is in the coloured part?"], "ex": {"s": 110, "a": 1, "hl": "جاء", "rule": ""}, "o": ["madd_muttasil", "madd_munfasil", "madd_t"]}, {"q": ["ما نوع المد في الموضع الملوّن؟", "Which madd is in the coloured part?"], "ex": {"s": 109, "a": 1, "hl": "يايها|يا ايها", "rule": ""}, "o": ["madd_munfasil", "madd_muttasil", "madd_badal"]}]}]};
+  var L = {"title": ["المد المتصل والمنفصل", "Connected and Separated Madd"], "cards": [{"icon": "🔗", "t": ["المد المتصل", "Connected Madd"], "x": ["إذا جاء **حرف المد ثم الهمزة في كلمة واحدة** فهو **مد متصل واجب**، نمدّه **٤ أو ٥ حركات**.", "When a **madd letter and then a hamza are in the same word**, it is the **obligatory connected madd**, stretched **4 or 5 counts**."], "line": ["في كلمة واحدة", "In one word"], "ex": [{"s": 110, "a": 1, "hl": "جاء", "rule": "madd_muttasil"}, {"s": 86, "a": 1, "hl": "والسماء", "rule": "madd_muttasil"}]}, {"icon": "✂️", "t": ["المد المنفصل", "Separated Madd"], "x": ["إذا جاء **حرف المد في آخر كلمة** و**الهمزة في أول الكلمة التي بعدها** فهو **مد منفصل جائز**، نمدّه **٤ أو ٥ حركات** في القراءة التي نتعلّمها.", "When the **madd letter ends one word** and the **hamza starts the next**, it is the **permissible separated madd**, stretched **4 or 5 counts** in the reading we learn."], "line": ["في كلمتين", "Across two words"], "ex": [{"s": 108, "a": 1, "hl": "انا اعطيناك", "rule": "madd_munfasil"}, {"s": 109, "a": 1, "hl": "يايها|يا ايها", "rule": "madd_munfasil"}]}], "ex": [{"t": "sort", "buckets": ["madd_muttasil", "madd_munfasil"], "items": [{"b": 0, "s": 110, "a": 1, "hl": "جاء"}, {"b": 0, "s": 86, "a": 1, "hl": "والسماء"}, {"b": 1, "s": 108, "a": 1, "hl": "انا اعطيناك"}, {"b": 1, "s": 109, "a": 1, "hl": "يايها|يا ايها"}]}, {"t": "mcq", "items": [{"q": ["ما نوع المد في الموضع الملوّن؟", "Which madd is in the coloured part?"], "ex": {"s": 110, "a": 1, "hl": "جاء", "rule": ""}, "o": ["madd_muttasil", "madd_munfasil", "madd_t"]}, {"q": ["ما نوع المد في الموضع الملوّن؟", "Which madd is in the coloured part?"], "ex": {"s": 109, "a": 1, "hl": "يايها|يا ايها", "rule": ""}, "o": ["madd_munfasil", "madd_muttasil", "madd_badal"]}]}], "mouth": null};
   var SURAHS = {"1": ["الفاتحة", "Al-Fatihah"], "2": ["البقرة", "Al-Baqarah"], "6": ["الأنعام", "Al-An'am"], "16": ["النحل", "An-Nahl"], "58": ["المجادلة", "Al-Mujadilah"], "73": ["المزمل", "Al-Muzzammil"], "78": ["النبأ", "An-Naba'"], "87": ["الأعلى", "Al-A'la"], "92": ["الليل", "Al-Layl"], "95": ["التين", "At-Tin"], "96": ["العلق", "Al-'Alaq"], "97": ["القدر", "Al-Qadr"], "99": ["الزلزلة", "Az-Zalzalah"], "101": ["القارعة", "Al-Qari'ah"], "102": ["التكاثر", "At-Takathur"], "104": ["الهمزة", "Al-Humazah"], "105": ["الفيل", "Al-Fil"], "106": ["قريش", "Quraysh"], "108": ["الكوثر", "Al-Kawthar"], "112": ["الإخلاص", "Al-Ikhlas"], "113": ["الفلق", "Al-Falaq"], "114": ["الناس", "An-Nas"], "4": ["النساء", "An-Nisa'"], "10": ["يونس", "Yunus"], "17": ["الإسراء", "Al-Isra'"], "18": ["الكهف", "Al-Kahf"], "19": ["مريم", "Maryam"], "20": ["طه", "Ta-Ha"], "33": ["الأحزاب", "Al-Ahzab"], "50": ["ق", "Qaf"], "54": ["القمر", "Al-Qamar"], "67": ["الملك", "Al-Mulk"], "69": ["الحاقة", "Al-Haqqah"], "76": ["الإنسان", "Al-Insan"], "80": ["عبس", "'Abasa"], "86": ["الطارق", "At-Tariq"], "89": ["الفجر", "Al-Fajr"], "90": ["البلد", "Al-Balad"], "91": ["الشمس", "Ash-Shams"], "98": ["البينة", "Al-Bayyinah"], "100": ["العاديات", "Al-'Adiyat"], "103": ["العصر", "Al-'Asr"], "109": ["الكافرون", "Al-Kafirun"], "110": ["النصر", "An-Nasr"], "3": ["آل عمران", "Al 'Imran"], "5": ["المائدة", "Al-Ma'idah"], "11": ["هود", "Hud"], "12": ["يوسف", "Yusuf"], "27": ["النمل", "An-Naml"], "36": ["يس", "Ya-Sin"], "75": ["القيامة", "Al-Qiyamah"], "77": ["المرسلات", "Al-Mursalat"], "83": ["المطففين", "Al-Mutaffifin"]};
   var RULES = {"izhar": {"ar": "إظهار حلقي", "en": "Izhar Halqi", "color": "#1E88E5"}, "idgham_g": {"ar": "إدغام بغنة", "en": "Idgham with ghunnah", "color": "#8E24AA"}, "idgham_ng": {"ar": "إدغام بغير غنة", "en": "Idgham without ghunnah", "color": "#6D4C41"}, "iqlab": {"ar": "إقلاب", "en": "Iqlab", "color": "#E53935"}, "ikhfa": {"ar": "إخفاء حقيقي", "en": "Ikhfa Haqiqi", "color": "#F57C00"}, "ghunna": {"ar": "غنة مشددة", "en": "Doubled ghunnah", "color": "#D81B60"}, "ikhfa_sh": {"ar": "إخفاء شفوي", "en": "Ikhfa Shafawi", "color": "#F4511E"}, "idgham_sh": {"ar": "إدغام شفوي", "en": "Idgham Shafawi", "color": "#7B1FA2"}, "izhar_sh": {"ar": "إظهار شفوي", "en": "Izhar Shafawi", "color": "#00897B"}, "qalqala": {"ar": "قلقلة", "en": "Qalqalah", "color": "#3949AB"}, "tafkheem": {"ar": "تفخيم", "en": "Heavy (tafkheem)", "color": "#B45309"}, "tarqeeq": {"ar": "ترقيق", "en": "Light (tarqeeq)", "color": "#0284C7"}, "madd_t": {"ar": "مد طبيعي", "en": "Natural madd", "color": "#16A34A"}, "alif7": {"ar": "ألف تُحذف وصلًا", "en": "Alif dropped when continuing", "color": "#64748B"}, "madd_iwad": {"ar": "مد العوض", "en": "Madd al-iwad", "color": "#0D9488"}, "madd_badal": {"ar": "مد البدل", "en": "Madd al-badal", "color": "#65A30D"}, "madd_muttasil": {"ar": "مد متصل", "en": "Connected madd", "color": "#DC2626"}, "madd_munfasil": {"ar": "مد منفصل", "en": "Separated madd", "color": "#EA580C"}, "sila_s": {"ar": "صلة صغرى", "en": "Minor silah", "color": "#0891B2"}, "sila_k": {"ar": "صلة كبرى", "en": "Major silah", "color": "#BE185D"}, "madd_arid": {"ar": "مد عارض للسكون", "en": "Madd arid", "color": "#7C3AED"}, "madd_leen": {"ar": "مد اللين", "en": "Madd al-leen", "color": "#059669"}, "madd_lazim": {"ar": "مد لازم", "en": "Madd lazim", "color": "#991B1B"}, "lam_qamari": {"ar": "لام قمرية (إظهار)", "en": "Lunar laam (clear)", "color": "#1D4ED8"}, "lam_shamsi": {"ar": "لام شمسية (إدغام)", "en": "Solar laam (merged)", "color": "#CA8A04"}, "lam_idgham": {"ar": "إدغام اللام", "en": "Merged laam", "color": "#A16207"}, "lam_izhar": {"ar": "إظهار اللام", "en": "Clear laam", "color": "#0369A1"}};
 
@@ -317,6 +349,50 @@
     });
   }
   function exBox(e){ return '<div class="ex" data-ex="1" data-s="' + e.s + '" data-a="' + e.a + '" data-hl="' + esc(e.hl || '') + '" data-rule="' + (e.rule || '') + '"></div>'; }
+
+
+  /* ============ خريطة المخارج (المقدمة الجزرية: ١٧ مخرجًا) ============ */
+  var MK = [
+    { g:'jawf', area:'mk-jawf', l:'ا و ي', t:['الجوف','Al-Jawf (the open space)'], d:['الفراغ داخل الحلق والفم، تخرج منه **حروف المد**: الألف، والواو الساكنة بعد ضم، والياء الساكنة بعد كسر، وينتهي صوتها بانتهاء الهواء.','The open space of the throat and mouth. The **madd letters** come from it: alif, silent waw after damma, silent yaa after kasra; their sound ends when the air ends.'] },
+    { g:'aqsa', l:'ء هـ', t:['أقصى الحلق','The deepest throat'], d:['أبعد الحلق عن الفم، مما يلي الصدر.','The part of the throat farthest from the mouth, next to the chest.'] },
+    { g:'wasat', l:'ع ح', t:['وسط الحلق','The middle of the throat'], d:['وسط الحلق.','The middle of the throat.'] },
+    { g:'adna', l:'غ خ', t:['أدنى الحلق','The top of the throat'], d:['أقرب الحلق إلى الفم.','The part of the throat nearest the mouth.'] },
+    { g:'q', l:'ق', t:['أقصى اللسان مع ما فوقه من الحنك','Back of the tongue and the palate above it'], d:['أقصى اللسان مما يلي الحلق، مع ما يحاذيه من الحنك الأعلى (اللحمي).','The back of the tongue, near the throat, against the soft palate above it.'] },
+    { g:'k', l:'ك', t:['أقصى اللسان أسفل مخرج القاف','Back of the tongue, just in front of qaaf'], d:['أقصى اللسان أسفل من مخرج القاف قليلًا (أقرب إلى الفم)، مع ما يحاذيه من الحنك الأعلى.','The back of the tongue slightly in front of qaaf (closer to the mouth), against the palate.'] },
+    { g:'mid', l:'ج ش ي', t:['وسط اللسان مع الحنك الأعلى','Middle of the tongue and the hard palate'], d:['وسط اللسان مع ما يحاذيه من الحنك الأعلى. والياء هنا **غير المدّية**.','The middle of the tongue against the hard palate. The yaa here is the **non-madd** yaa.'] },
+    { g:'d', top:'mk-d-side', l:'ض', t:['حافّة اللسان مع الأضراس العليا','The side of the tongue and the upper molars'], d:['إحدى حافّتي اللسان أو كلتاهما، مع ما يحاذيهما من الأضراس العليا. ومن الحافّة اليسرى أسهل وأكثر.','One or both side edges of the tongue against the upper molars; the left side is easier and more common.'] },
+    { g:'l', top:'mk-l-side', l:'ل', t:['أدنى حافّتي اللسان إلى طرفه','Front edges of the tongue up to the tip'], d:['أدنى حافّتي اللسان إلى منتهى طرفه، مع ما يحاذيها من لثة الأسنان العليا.','The front part of both tongue edges up to the tip, against the gums of the upper teeth.'] },
+    { g:'n', l:'ن', t:['طرف اللسان تحت مخرج اللام','The tongue tip, just below laam'], d:['طرف اللسان مع ما يحاذيه من لثة الثنيتين العليين، تحت مخرج اللام قليلًا.','The tongue tip against the gum of the two upper front teeth, slightly below the makhraj of laam.'] },
+    { g:'r', l:'ر', t:['طرف اللسان مع ظهره','The tongue tip with a little of its top'], d:['قريب من مخرج النون، لكنه أدخل إلى ظهر اللسان قليلًا، مع لثة الثنيتين العليين.','Close to noon, but using a little more of the top of the tongue, against the upper gum.'] },
+    { g:'tdt', l:'ط د ت', t:['طرف اللسان مع أصول الثنايا العليا','The tongue tip and the roots of the upper front teeth'], d:['طرف اللسان مع أصول الثنيتين العليين (مما يلي اللثة).','The tongue tip against the roots of the two upper front teeth, next to the gum.'] },
+    { g:'szs', l:'ص ز س', t:['طرف اللسان مع ما فوق الثنايا السفلى','The tongue tip above the lower front teeth'], d:['طرف اللسان مع ما فوق الثنايا السفلى، مع بقاء فرجة يسيرة بينه وبين الثنايا العليا يخرج منها الصفير.','The tongue tip just above the lower front teeth, leaving a small gap under the upper teeth where the whistle comes out.'] },
+    { g:'zdt', l:'ظ ذ ث', t:['طرف اللسان مع أطراف الثنايا العليا','The tongue tip and the edges of the upper front teeth'], d:['طرف اللسان مع أطراف الثنيتين العليين.','The tongue tip against the edges of the two upper front teeth.'] },
+    { g:'f', l:'ف', t:['بطن الشفة السفلى مع أطراف الثنايا العليا','Inner lower lip and the upper front teeth'], d:['بطن الشفة السفلى مع أطراف الثنيتين العليين.','The inside of the lower lip against the edges of the two upper front teeth.'] },
+    { g:'lips', l:'ب م و', t:['الشفتان','The two lips'], d:['الباء والميم **بانطباق** الشفتين، والواو غير المدّية **بانفتاحهما** مع ضمّهما.','Baa and meem with the lips **closed**; non-madd waw with the lips **rounded and open**.'] },
+    { g:'nasal', area:'mk-nasal', l:'غنة', t:['الخيشوم','The nasal passage'], d:['أقصى الأنف من الداخل، ومنه تخرج **الغنة** في النون والميم.','The inner back of the nose; the **ghunnah** of noon and meem comes from it.'] }
+  ];
+  function initMouth(){
+    var wrap = document.getElementById('mouthWrap'); if(!wrap) return;
+    var focus = (L.mouth && L.mouth !== 'all') ? L.mouth : null;
+    var list = MK.filter(function(m){ return !focus || focus.indexOf(m.g) >= 0; });
+    var letters = document.getElementById('mouthLetters'), info = document.getElementById('mouthInfo');
+    var cur = list[0].g;
+    function show(g){
+      cur = g; var m = MK.filter(function(x){ return x.g === g; })[0];
+      wrap.querySelectorAll('.on').forEach(function(e){ e.classList.remove('on'); });
+      wrap.querySelectorAll('circle[data-g="' + g + '"]').forEach(function(c){ c.classList.add('on'); });
+      if(m.area) document.getElementById(m.area).classList.add('on');
+      if(m.top) document.getElementById(m.top).classList.add('on');
+      letters.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.g === g); });
+      info.innerHTML = '<h4>' + bi(m.t) + '</h4><div><span class="ls">' + esc(m.l) + '</span></div><div>' + bi(m.d) + '</div>' +
+        '<div class="tip">' + bi(['💡 لتعرف مخرج الحرف: سكّنه وأدخل عليه همزة مفتوحة، مثل «أَبْ، أَقْ»، ثم لاحظ أين ينقطع الصوت.', '💡 To find a letter\'s makhraj, make it silent after a hamza with fatha ("ab", "aq") and notice where the sound stops.']) + '</div>';
+    }
+    letters.innerHTML = list.map(function(m){ return '<button type="button" data-g="' + m.g + '">' + esc(m.l) + '</button>'; }).join('');
+    letters.addEventListener('click', function(e){ var b = e.target.closest('button'); if(b) show(b.dataset.g); });
+    wrap.querySelectorAll('circle[data-g]').forEach(function(c){ c.addEventListener('click', function(){ if(list.some(function(m){ return m.g === c.dataset.g; })) show(c.dataset.g); }); });
+    show(cur);
+    wrap.renderMouth = function(){ show(cur); };
+  }
 
   /* ============ بطاقات الدرس ============ */
   var cardEl = document.getElementById('card'), idx = 0, got = {};
@@ -544,6 +620,7 @@
     btnAr.classList.toggle('active', !en); btnEn.classList.toggle('active', en);
     document.getElementById('studentName').placeholder = en ? 'Student name…' : 'اسم الطالب…';
     fillReciters(); renderNav(); renderFinish();
+    var mw = document.getElementById('mouthWrap'); if(mw && mw.renderMouth) mw.renderMouth();
     var fl = cardEl.classList.contains('flipped'); renderCard(0); if(fl) cardEl.classList.add('flipped');
   }
   btnAr.addEventListener('click', function(){ setLang(false); });
@@ -551,6 +628,7 @@
 
   var qs = new URLSearchParams(location.search);
   if(qs.get('name')) document.getElementById('studentName').value = qs.get('name').slice(0, 40);
+  initMouth();
   if(qs.get('lang') === 'en') setLang(true); else setLang(false);
   buildActs();
 })();

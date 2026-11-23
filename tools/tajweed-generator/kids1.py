@@ -453,3 +453,7 @@ dict(icon='💥', title=('القلقلة', 'Qalqalah (Echo)'),
     ('نضيف فتحة للحرف المقلقل.', 'We add a fatha to the qalqalah letter.', False, ('القلقلة صوت بلا حركة.', 'Qalqalah is a bounce, not a vowel.'))]),
  ]),
 ]
+
+# خريطة المخارج في الدروس المناسبة
+for _i, _m in {3: ['nasal'], 5: ['aqsa', 'wasat', 'adna'], 7: ['lips', 'nasal'], 9: ['lips', 'nasal'], 10: ['q', 'tdt', 'lips', 'mid']}.items():
+    LESSONS[_i]['mouth'] = _m

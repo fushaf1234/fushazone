@@ -240,3 +240,6 @@ dict(icon='🛑', title=('الوقف والابتداء', 'Stopping and Starting
     dict(q=('علامة «ج» تعني:', 'The mark «ج» means:'), o=[('الوقف والوصل جائزان بالتساوي', 'Stopping and continuing are equal'), ('الوقف ممنوع', 'Stopping is forbidden'), ('الوقف لازم', 'Stopping is required')])]),
  ]),
 ]
+
+for _i, _m in {2: ['nasal'], 3: ['lips', 'nasal'], 4: ['aqsa', 'wasat', 'adna'], 5: ['lips', 'nasal'], 6: ['jawf'], 11: ['q', 'tdt', 'lips', 'mid'], 15: 'all', 16: 'all'}.items():
+    LESSONS[_i]['mouth'] = _m

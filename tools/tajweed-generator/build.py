@@ -64,6 +64,12 @@ AR_DIGITS = '٠١٢٣٤٥٦٧٨٩'
 def ar_num(n): return ''.join(AR_DIGITS[int(d)] for d in str(n))
 
 tpl = open(os.path.join(HERE, 'template.html'), encoding='utf8').read()
+MOUTH = open(os.path.join(HERE, 'mouth.svg.html'), encoding='utf8').read()
+def mouth_section(L):
+    if not L.get('mouth'): return ''
+    return ('<div class="section-title">🗺️ <span data-ar-only>من أين يخرج الحرف؟</span><span data-en-only>Where Does the Letter Come From?</span></div>'
+            '<p class="section-sub"><span data-ar-only>اضغط على الحرف ليضيء مكان خروجه</span><span data-en-only>Tap a letter to light up where it comes from</span></p>'
+            '<div class="mouth-sec">' + MOUTH + '</div>')
 errors, index = [], []
 
 def check_refs(obj, where):
@@ -89,7 +95,7 @@ for mod, prefix, lvl_ar, lvl_en in SETS:
             if a['t'] == 'sort':
                 for b in a['buckets']:
                     if isinstance(b, str) and b not in RULES: errors.append(f'{slug}: bucket rule {b}')
-        data = {'title': L['title'], 'cards': L['cards'], 'ex': L['ex']}
+        data = {'title': L['title'], 'cards': L['cards'], 'ex': L['ex'], 'mouth': L.get('mouth')}
         hue = round((i * 47 + 200) % 360)
         html = (tpl.replace('__DATA__', json.dumps(data, ensure_ascii=False))
                    .replace('__SURAHS__', json.dumps({k: v for k, v in SURAHS.items()}, ensure_ascii=False))
@@ -98,6 +104,7 @@ for mod, prefix, lvl_ar, lvl_en in SETS:
                    .replace('__SUB_AR__', L['sub'][0]).replace('__SUB_EN__', L['sub'][1])
                    .replace('__LEVEL_AR__', lvl_ar).replace('__LEVEL_EN__', lvl_en)
                    .replace('__NUM_AR__', ar_num(i)).replace('__NUM__', str(i))
+                   .replace('__MOUTH_SECTION__', mouth_section(L))
                    .replace('__ICON__', L['icon']).replace('__HUE__', str(hue)))
         open(os.path.join(OUT, slug + '.html'), 'w', encoding='utf8').write(html)
         index.append((slug, L['icon'], L['title'][0], L['title'][1]))

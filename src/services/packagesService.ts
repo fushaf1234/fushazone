@@ -12,7 +12,7 @@ export const PROGRAMS: { id: ProgramId; ar: string; en: string }[] = [
   { id: 'conversation', ar: 'المحادثات التفاعلية لتنمية اللغة', en: 'Interactive Conversation for Language Development' },
   { id: 'quran', ar: 'القرآن الكريم والتجويد', en: 'Quran & Tajweed' },
   { id: 'kids', ar: 'العربية والقرآن للأطفال', en: 'Arabic & Quran for Kids' },
-  { id: 'single', ar: 'جلسات منفردة', en: 'Single Sessions' }
+  { id: 'single', ar: 'تقييم المستوى', en: 'Level Assessment' }
 ];
 
 export interface PricePackage {
@@ -100,11 +100,12 @@ export const APPROVED_PACKAGES: Omit<PricePackage, 'updatedAt'>[] = [
   },
   {
     id: 'single-session',
-    program: 'single',
+    program: 'quran',
     titleAr: 'جلسة فردية',
     titleEn: 'Single Session',
-    descAr: 'حصة فردية واحدة في أي برنامج (العربية أو المحادثة أو القرآن)، تُدفع للحصة دون اشتراك شهري.',
-    descEn: 'One private lesson in any program (Arabic, conversation or Quran), paid per lesson without a monthly subscription.',
+    descAr: 'حصة قرآن وتجويد فردية واحدة، تُدفع للحصة دون اشتراك شهري.',
+    descEn: 'One private Quran & Tajweed lesson, paid per lesson without a monthly subscription.',
+    minutes: 40,
     individualPrice: 15,
     unit: 'session',
     order: 5,

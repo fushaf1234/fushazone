@@ -200,6 +200,7 @@
     .hero-crest{ align-self:flex-start; }
   }
 </style>
+<script src="access.js"></script>
 </head>
 <body>
 
@@ -449,6 +450,9 @@
 
   var arabicList = document.getElementById('arabicList');
   arabic.forEach(function(t){ if(t.heading) buildJuzHeading(arabicList, t.heading); else buildRow(arabicList, t, 'arabic'); });
+
+  // علامات الدروس المقفلة (سجّل مجانًا / بالاشتراك) مع فسيفساء
+  if(window.FZAccess) FZAccess.markLinks(document);
 
   var panels = [
     { btn: document.getElementById('quranToggle'), panel: document.getElementById('quranSection') },

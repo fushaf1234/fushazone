@@ -342,15 +342,103 @@
     header.hero{ flex-direction:column; }
     .hero-badges{ justify-content:flex-start; }
   }
+  /* لون خاص بهذه السورة */
+  :root{ --green-deep:hsl(83 55% 17%); --green:hsl(83 48% 27%); --green-mid:hsl(83 42% 38%); --green-soft:hsl(83 50% 91%); }
   /* ============ إضافات صفحات السور ============ */
   .surah-basmala{ font-family: var(--font-ar-display); font-size:24px; color:var(--gold-light); margin-bottom:10px; }
   .ayah-num{ color:var(--gold-light); font-size:0.8em; white-space:nowrap; }
   .surah-status{ color:var(--gold-light); font-size:15px; }
   .surah-status button{ margin-top:10px; }
-  .flip-card{ height:240px; }
-  .flip-front{ overflow:hidden; }
-  .card-ayah{ font-family: var(--font-ar-display); font-size:17px; line-height:1.9; color:var(--gold-glow); margin:0 0 8px; }
-  .card-q{ margin:0; font-size:14.5px; color:var(--white); font-weight:bold; line-height:1.6; }
+  .teacher-avatar{ background: linear-gradient(160deg, var(--green-mid), var(--green)); }
+
+  /* ===== ألوان البطاقات ===== */
+  .c0{ --c1:#FF8A65; --c2:#E8505B; }  .c1{ --c1:#4FACFE; --c2:#2F6FDB; }
+  .c2{ --c1:#B07CFF; --c2:#7C3AED; }  .c3{ --c1:#FFB347; --c2:#E07B00; }
+  .c4{ --c1:#34D399; --c2:#047857; }  .c5{ --c1:#F472B6; --c2:#C21F6E; }
+  .c6{ --c1:#2DD4BF; --c2:#0F766E; }  .c7{ --c1:#818CF8; --c2:#4338CA; }
+
+  /* ===== أيقونة «لنفهم الآيات» ===== */
+  .tile-wrap{ display:flex; justify-content:center; }
+  .meaning-tile{
+    position:relative; overflow:hidden; cursor:pointer; border:none; font-family:inherit;
+    width:100%; max-width:520px; padding:26px 22px; border-radius:var(--radius-lg); color:#fff; text-align:center;
+    background: linear-gradient(135deg, #FF8A65 0%, #F472B6 30%, #B07CFF 60%, #4FACFE 100%);
+    box-shadow: 0 14px 34px rgba(124,58,237,0.30); transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .meaning-tile:hover, .meaning-tile:focus-visible{ transform: translateY(-4px) scale(1.01); box-shadow:0 20px 40px rgba(124,58,237,0.38); outline:none; }
+  .meaning-tile .t-icon{
+    width:86px; height:86px; margin:0 auto 12px; border-radius:26px; display:flex; align-items:center; justify-content:center;
+    font-size:44px; background:rgba(255,255,255,0.22); box-shadow: inset 0 0 0 3px rgba(255,255,255,0.45);
+    animation: tile-bob 2.6s ease-in-out infinite;
+  }
+  @keyframes tile-bob{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-6px) rotate(-4deg); } }
+  .meaning-tile .t-title{ display:block; font-size:22px; font-weight:bold; }
+  .meaning-tile .t-sub{ display:block; font-size:14px; opacity:.95; margin-top:6px; }
+  .meaning-tile .t-mini{ display:flex; justify-content:center; gap:6px; margin-top:14px; }
+  .meaning-tile .t-mini i{ width:26px; height:34px; border-radius:7px; background:linear-gradient(160deg,var(--c1),var(--c2)); box-shadow:0 3px 8px rgba(0,0,0,.2); border:2px solid rgba(255,255,255,.7); }
+  .meaning-tile .t-mini i:nth-child(2){ transform:rotate(-8deg); } .meaning-tile .t-mini i:nth-child(4){ transform:rotate(8deg); }
+  .meaning-progress{ text-align:center; margin-top:10px; font-size:14px; color:var(--ink-soft); font-weight:bold; }
+
+  /* ===== نافذة البطاقات ===== */
+  .mx-overlay{ position:fixed; inset:0; z-index:80; background:rgba(10,20,30,0.62); backdrop-filter: blur(3px);
+    display:flex; align-items:center; justify-content:center; padding:14px; }
+  .mx-overlay[hidden]{ display:none; }
+  .mx-box{ width:100%; max-width:640px; max-height:96vh; display:flex; flex-direction:column; gap:12px;
+    background:var(--cream); border-radius:var(--radius-lg); padding:18px; box-shadow:0 24px 60px rgba(0,0,0,0.35); animation: mx-in .3s ease; }
+  @keyframes mx-in{ from{ opacity:0; transform:scale(.94) translateY(10px); } to{ opacity:1; transform:none; } }
+  .mx-head{ display:flex; align-items:center; gap:10px; }
+  .mx-title{ flex:1; font-weight:bold; color:var(--green-deep); font-size:17px; }
+  .mx-stars{ background:var(--gold-glow); color:#8A6410; border-radius:999px; padding:5px 12px; font-weight:bold; font-size:13px; white-space:nowrap; }
+  .mx-close{ border:none; background:var(--white); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:18px; box-shadow:0 3px 10px rgba(0,0,0,.12); }
+  .mx-bar{ height:8px; border-radius:99px; background:rgba(0,0,0,0.08); overflow:hidden; }
+  .mx-bar span{ display:block; height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,#FF8A65,#F472B6,#B07CFF,#4FACFE); transition: width .35s ease; }
+  .mx-stage{ perspective:1400px; height:min(56vh, 440px); touch-action:pan-y; }
+  .mx-card{ position:relative; width:100%; height:100%; cursor:pointer; transform-style:preserve-3d; transition: transform .6s cubic-bezier(.4,.2,.2,1); }
+  .mx-card.flipped{ transform: rotateY(180deg); }
+  .mx-card.enter{ animation: card-enter .35s ease; }
+  @keyframes card-enter{ from{ opacity:0; transform: translateX(var(--dx, 30px)) rotate(var(--rot, 2deg)); } to{ opacity:1; transform:none; } }
+  .mx-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius-md); padding:22px 20px;
+    display:flex; flex-direction:column; overflow-y:auto; box-shadow:0 12px 28px rgba(0,0,0,0.18); }
+  .mx-front{ background: linear-gradient(155deg, var(--c1), var(--c2)); color:#fff; align-items:center; justify-content:center; text-align:center; }
+  .mx-back{ background:#fff; transform: rotateY(180deg); border:4px solid var(--c1); color:var(--ink); text-align:start; }
+  .mx-num{ width:54px; height:54px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.25); box-shadow: inset 0 0 0 3px rgba(255,255,255,0.6); font-weight:bold; font-size:18px; margin-bottom:14px; }
+  .mx-ayah{ font-family: var(--font-ar-display); font-size:clamp(20px, 3.6vw, 27px); line-height:2.1; margin:0; text-shadow:0 2px 6px rgba(0,0,0,0.18); }
+  .mx-hint{ margin-top:16px; font-size:13px; background:rgba(255,255,255,0.22); padding:6px 14px; border-radius:999px; }
+  .mx-back h4{ margin:0 0 8px; color:var(--c2); font-size:17px; display:flex; align-items:center; gap:8px; }
+  .mx-back .mx-ayah-small{ font-family: var(--font-ar-display); font-size:17px; color:var(--c2); line-height:1.9; margin:0 0 12px; padding-bottom:10px; border-bottom:2px dashed var(--c1); }
+  .mx-meaning{ font-size:16px; line-height:2; margin:0; }
+  .mx-kid{ margin-top:14px; background: color-mix(in srgb, var(--c1) 16%, white); border-radius:var(--radius-sm); padding:12px 14px; font-size:15px; line-height:1.8; }
+  .mx-kid b{ color:var(--c2); }
+  .mx-controls{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .mx-btn{ border:none; cursor:pointer; font-family:inherit; font-weight:bold; font-size:14px; padding:11px 16px; border-radius:999px;
+    background:var(--white); color:var(--green-deep); box-shadow:0 4px 12px rgba(0,0,0,0.1); transition: transform .15s ease, background .2s ease; }
+  .mx-btn:hover{ transform:translateY(-2px); }
+  .mx-btn:disabled{ opacity:.4; cursor:default; transform:none; }
+  .mx-btn.listen{ background:linear-gradient(160deg,#4FACFE,#2F6FDB); color:#fff; }
+  .mx-btn.got{ background:linear-gradient(160deg,#FFD166,#F4A100); color:#5A3B00; }
+  .mx-btn.got.done{ background:linear-gradient(160deg,#34D399,#047857); color:#fff; }
+  .mx-dots{ display:flex; gap:6px; overflow-x:auto; padding:4px 2px 6px; scrollbar-width:thin; }
+  .mx-dot{ flex:0 0 auto; width:32px; height:32px; border-radius:50%; border:2px solid rgba(0,0,0,0.12); background:#fff; cursor:pointer;
+    font-size:12px; font-weight:bold; color:var(--ink-soft); font-family:inherit; }
+  .mx-dot.cur{ border-color:var(--green-deep); transform:scale(1.12); }
+  .mx-dot.got{ background:linear-gradient(160deg,#FFD166,#F4A100); color:#5A3B00; border-color:transparent; }
+  .mx-done{ text-align:center; font-weight:bold; color:var(--green); min-height:20px; }
+
+  /* ===== بطاقات «ماذا نتعلم» الملونة ===== */
+  .mini-card{ position:relative; cursor:pointer; border:none; background:linear-gradient(170deg, #fff 55%, color-mix(in srgb, var(--c1) 18%, white));
+    border-top:6px solid var(--c1); transition: transform .2s ease; }
+  .mini-card .icon{ width:54px; height:54px; margin:0 auto 8px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg,var(--c1),var(--c2)); box-shadow:0 6px 14px rgba(0,0,0,0.15); }
+  .mini-card:hover{ transform:translateY(-4px) rotate(-1deg); }
+  .mini-card.pop{ animation: pop .5s ease; }
+  @keyframes pop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.08) rotate(2deg); } 100%{ transform:scale(1); } }
+  #orderList li:nth-child(8n+1){ border-inline-start:6px solid #FF8A65; } #orderList li:nth-child(8n+2){ border-inline-start:6px solid #4FACFE; }
+  #orderList li:nth-child(8n+3){ border-inline-start:6px solid #B07CFF; } #orderList li:nth-child(8n+4){ border-inline-start:6px solid #FFB347; }
+  #orderList li:nth-child(8n+5){ border-inline-start:6px solid #34D399; } #orderList li:nth-child(8n+6){ border-inline-start:6px solid #F472B6; }
+  #orderList li:nth-child(8n+7){ border-inline-start:6px solid #2DD4BF; } #orderList li:nth-child(8n+8){ border-inline-start:6px solid #818CF8; }
+  #orderList li{ line-height:2; }
+  .quiz-option:nth-child(1) .dot{ border-color:#FF8A65; } .quiz-option:nth-child(2) .dot{ border-color:#4FACFE; } .quiz-option:nth-child(3) .dot{ border-color:#B07CFF; }
   .fb-ref{ display:block; font-size:13px; color:var(--ink-soft); font-family: var(--font-ar-body); margin-top:4px; }
   .fb-answer{ text-align:center; margin-top:8px; font-family: var(--font-ar-display); font-size:18px; color:var(--green); min-height:24px; }
   .back-wrap{ text-align:center; margin-top:30px; }
@@ -431,7 +519,35 @@
 
   <!-- ============ بطاقات شرح السورة (Flip Cards) ============ -->
   <div class="section-title">🌿 <span data-ar-only>لنفهم الآيات</span><span data-en-only>Let's Understand the Verses</span></div>
-  <div class="cards-grid" id="ayahGrid"></div>
+  <div class="tile-wrap">
+    <button class="meaning-tile" id="openMeanings" type="button">
+      <span class="t-icon">📖</span>
+      <span class="t-title"><span data-ar-only>لنفهم الآيات</span><span data-en-only>Let's Understand the Verses</span></span>
+      <span class="t-sub" id="tileSub"></span>
+      <span class="t-mini"><i class="c0"></i><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></span>
+    </button>
+  </div>
+  <div class="meaning-progress" id="meaningProgress"></div>
+
+  <div class="mx-overlay" id="mx" hidden role="dialog" aria-modal="true" aria-labelledby="mxTitle">
+    <div class="mx-box">
+      <div class="mx-head">
+        <div class="mx-title" id="mxTitle"></div>
+        <div class="mx-stars" id="mxStars"></div>
+        <button class="mx-close" id="mxClose" type="button" aria-label="close">✕</button>
+      </div>
+      <div class="mx-bar"><span id="mxBar"></span></div>
+      <div class="mx-stage" id="mxStage"><div class="mx-card" id="mxCard"></div></div>
+      <div class="mx-controls">
+        <button class="mx-btn" id="mxPrev" type="button"></button>
+        <button class="mx-btn listen" id="mxListen" type="button">🔊 <span data-ar-only>استمع للآية</span><span data-en-only>Listen</span></button>
+        <button class="mx-btn got" id="mxGot" type="button"></button>
+        <button class="mx-btn" id="mxNext" type="button"></button>
+      </div>
+      <div class="mx-done" id="mxDone"></div>
+      <div class="mx-dots" id="mxDots"></div>
+    </div>
+  </div>
 
   <!-- ============ ماذا نتعلم ============ -->
   <div class="section-title">🌸 <span data-ar-only>ماذا نتعلم من سورة الأعلى؟</span><span data-en-only>What Do We Learn from Al-A'la?</span></div>
@@ -512,7 +628,8 @@
 
   /* نص القرآن والترجمة يُحمّلان من مصدر موثوق (الرسم العثماني + Sahih International) */
   var API = 'https://api.alquran.cloud/v1/surah/' + D.n + '/editions/quran-uthmani,en.sahih';
-  var ayahs = []; // { ar, en }
+  var TAFSIR_API = 'https://api.alquran.cloud/v1/surah/' + D.n + '/ar.muyassar'; // التفسير الميسر
+  var ayahs = []; // { ar, en, tafsir, g }
 
   function isEn(){ return document.body.classList.contains('lang-en'); }
   function toAr(n){ return String(n).replace(/[0-9]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; }); }
@@ -551,7 +668,7 @@
     fetch(API).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
       .then(function(j){
         var arA = j.data[0].ayahs, enA = j.data[1].ayahs;
-        ayahs = arA.map(function(a, i){ return { ar: a.text.trim(), en: enA[i].text }; });
+        ayahs = arA.map(function(a, i){ return { ar: a.text.trim(), en: enA[i].text, tafsir: '', g: a.number }; });
         // البسملة تأتي ملتصقة بالآية الأولى، فنفصلها
         var first = ayahs[0].ar.split(/\s+/);
         var basm = first.slice(0, 4).join(' ');
@@ -560,9 +677,13 @@
           ayahs[0].ar = first.slice(4).join(' ');
         }
         renderSurah();
-        buildCards();
+        buildMeanings();
         buildOrderList();
         buildFillBlanks();
+        fetch(TAFSIR_API).then(function(r){ return r.json(); }).then(function(j){
+          j.data.ayahs.forEach(function(a, i){ if(ayahs[i]) ayahs[i].tafsir = a.text; });
+          if(!mx.hidden) renderCard(0);
+        }).catch(function(){});
       })
       .catch(function(){ showStatus(false); });
   }
@@ -592,37 +713,130 @@
     }
   });
 
-  /* ============ بطاقات شرح الآيات ============ */
-  var ayahGrid = document.getElementById('ayahGrid');
-  function buildCards(){
-    ayahGrid.innerHTML = '';
-    D.cards.forEach(function(c){
-      var a = ayahs[c[0]-1];
-      if(!a) return;
-      var card = document.createElement('div');
-      card.className = 'flip-card';
-      card.innerHTML =
-        '<div class="flip-inner">' +
-          '<div class="flip-face flip-front">' +
-            '<div class="q-icon">🌟</div>' +
-            '<p class="card-ayah" lang="ar" dir="rtl">﴿' + esc(shortText(a.ar, 9)) + '﴾</p>' +
-            '<p class="card-q"><span data-ar-only>' + fmt(c[1]) + '</span><span data-en-only>' + fmt(c[2]) + '</span></p>' +
-            '<div class="flip-hint"><span data-ar-only>اضغط لعرض الإجابة</span><span data-en-only>Tap for the answer</span></div>' +
-          '</div>' +
-          '<div class="flip-face flip-back">' +
-            '<div><span data-ar-only>' + fmt(c[3]) + '</span><span data-en-only>' + fmt(c[4]) + '</span></div>' +
-          '</div>' +
-        '</div>';
-      card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
-      ayahGrid.appendChild(card);
-    });
+  /* ============ لنفهم الآيات: بطاقة لكل آية داخل نافذة ============ */
+  var kidNotes = {}; D.cards.forEach(function(c){ kidNotes[c[0]] = c; });
+  var mx = document.getElementById('mx'), mxCard = document.getElementById('mxCard');
+  var mxIndex = 0, understood = {}, ayahAudio = null;
+  var mxPrev = document.getElementById('mxPrev'), mxNext = document.getElementById('mxNext'), mxGot = document.getElementById('mxGot');
+  var mxDots = document.getElementById('mxDots');
+
+  function updateTile(){
+    var n = ayahs.length || D.count, got = Object.keys(understood).length;
+    document.getElementById('tileSub').innerHTML = '<span data-ar-only>' + toAr(n) + ' بطاقة ملونة · اضغط لتفتح</span><span data-en-only>' + n + ' colorful cards · tap to open</span>';
+    document.getElementById('meaningProgress').innerHTML = got
+      ? '<span data-ar-only>⭐ فهمتَ ' + toAr(got) + ' من ' + toAr(n) + ' آيات</span><span data-en-only>⭐ You understood ' + got + ' of ' + n + ' verses</span>' : '';
   }
+  function buildMeanings(){
+    mxDots.innerHTML = '';
+    ayahs.forEach(function(a, i){
+      var d = document.createElement('button');
+      d.type = 'button'; d.className = 'mx-dot'; d.textContent = i + 1;
+      d.addEventListener('click', function(){ renderCard(i, i > mxIndex ? 1 : -1); });
+      mxDots.appendChild(d);
+    });
+    updateTile();
+  }
+  function renderCard(i, dir){
+    if(!ayahs.length) return;
+    mxIndex = i;
+    var a = ayahs[i], k = i + 1, note = kidNotes[k], en = isEn();
+    var meaning = en ? esc(a.en) : (a.tafsir ? esc(a.tafsir) : '<span style="color:var(--ink-soft)">⏳ جارٍ تحميل التفسير...</span>');
+    mxCard.className = 'mx-card c' + (i % 8);
+    mxCard.innerHTML =
+      '<div class="mx-face mx-front">' +
+        '<div class="mx-num">' + (en ? k : toAr(k)) + '</div>' +
+        '<p class="mx-ayah" lang="ar" dir="rtl">' + esc(a.ar) + '</p>' +
+        '<div class="mx-hint"><span data-ar-only>👆 اضغط لترى المعنى</span><span data-en-only>👆 Tap to see the meaning</span></div>' +
+      '</div>' +
+      '<div class="mx-face mx-back">' +
+        '<p class="mx-ayah-small" lang="ar" dir="rtl">﴿' + esc(a.ar) + '﴾ <span style="white-space:nowrap">(' + toAr(k) + ')</span></p>' +
+        '<h4>💡 <span data-ar-only>المعنى</span><span data-en-only>Meaning</span></h4>' +
+        '<p class="mx-meaning">' + meaning + '</p>' +
+        (note ? '<div class="mx-kid">🌟 <b>' + fmt(en ? note[2] : note[1]) + '</b><br>' + fmt(en ? note[4] : note[3]) + '</div>' : '') +
+        (en ? '' : '<p style="font-size:12px;color:var(--ink-soft);margin:12px 0 0">المصدر: التفسير الميسر</p>') +
+      '</div>';
+    if(dir){
+      mxCard.style.setProperty('--dx', ((document.documentElement.dir === 'rtl' ? -1 : 1) * dir * 40) + 'px');
+      mxCard.style.setProperty('--rot', (dir * 3) + 'deg');
+      mxCard.classList.add('enter');
+    }
+    var n = ayahs.length;
+    document.getElementById('mxTitle').innerHTML = '<span data-ar-only>الآية ' + toAr(k) + ' من ' + toAr(n) + '</span><span data-en-only>Verse ' + k + ' of ' + n + '</span>';
+    document.getElementById('mxBar').style.width = (k / n * 100) + '%';
+    var got = Object.keys(understood).length;
+    document.getElementById('mxStars').textContent = '⭐ ' + (en ? got + ' / ' + n : toAr(got) + ' / ' + toAr(n));
+    mxPrev.disabled = i === 0; mxNext.disabled = i === n - 1;
+    var rtl = document.documentElement.dir === 'rtl';
+    mxPrev.innerHTML = rtl ? '→ السابق' : '← Previous';
+    mxNext.innerHTML = rtl ? 'التالي ←' : 'Next →';
+    mxGot.classList.toggle('done', !!understood[k]);
+    mxGot.innerHTML = understood[k]
+      ? '<span data-ar-only>✅ فهمتُها</span><span data-en-only>✅ Got it</span>'
+      : '<span data-ar-only>⭐ فهمتُها</span><span data-en-only>⭐ I understand</span>';
+    Array.prototype.forEach.call(mxDots.children, function(d, j){
+      d.classList.toggle('cur', j === i); d.classList.toggle('got', !!understood[j+1]);
+      d.textContent = en ? (j + 1) : toAr(j + 1);
+    });
+    var cur = mxDots.children[i]; if(cur && cur.scrollIntoView) cur.scrollIntoView({ block:'nearest', inline:'center' });
+  }
+  function stopAyahAudio(){ if(ayahAudio){ ayahAudio.pause(); ayahAudio = null; } }
+  function go(d){ var j = mxIndex + d; if(j >= 0 && j < ayahs.length){ stopAyahAudio(); renderCard(j, d); } }
+  function openMeanings(){
+    if(!ayahs.length) return;
+    mx.hidden = false; document.body.style.overflow = 'hidden';
+    renderCard(mxIndex, 0);
+  }
+  function closeMeanings(){ mx.hidden = true; document.body.style.overflow = ''; stopAyahAudio(); updateTile(); }
+
+  document.getElementById('openMeanings').addEventListener('click', openMeanings);
+  document.getElementById('mxClose').addEventListener('click', closeMeanings);
+  mx.addEventListener('click', function(e){ if(e.target === mx) closeMeanings(); });
+  mxPrev.addEventListener('click', function(){ go(-1); });
+  mxNext.addEventListener('click', function(){ go(1); });
+  mxCard.addEventListener('click', function(){ mxCard.classList.remove('enter'); mxCard.classList.toggle('flipped'); });
+  mxCard.addEventListener('animationend', function(){ mxCard.classList.remove('enter'); });
+  mxGot.addEventListener('click', function(){
+    var k = mxIndex + 1;
+    if(understood[k]) delete understood[k]; else understood[k] = true;
+    var all = Object.keys(understood).length === ayahs.length;
+    var doneEl = document.getElementById('mxDone');
+    doneEl.textContent = all ? (isEn() ? '🎉 Amazing! You understood every verse!' : '🎉 رائع! فهمتَ كل آيات السورة!') : '';
+    if(all){ launchConfetti(); renderCard(mxIndex, 0); }
+    else if(understood[k] && mxIndex < ayahs.length - 1){ renderCard(mxIndex, 0); setTimeout(function(){ go(1); }, 450); }
+    else renderCard(mxIndex, 0);
+  });
+  document.getElementById('mxListen').addEventListener('click', function(){
+    var a = ayahs[mxIndex]; if(!a) return;
+    stopAyahAudio();
+    ayahAudio = new Audio('https://cdn.islamic.network/quran/audio/128/ar.alafasy/' + a.g + '.mp3');
+    var p = ayahAudio.play(); if(p && p.catch) p.catch(function(){});
+  });
+  document.addEventListener('keydown', function(e){
+    if(mx.hidden) return;
+    var rtl = document.documentElement.dir === 'rtl';
+    if(e.key === 'Escape') closeMeanings();
+    else if(e.key === 'ArrowLeft') go(rtl ? 1 : -1);
+    else if(e.key === 'ArrowRight') go(rtl ? -1 : 1);
+    else if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); mxCard.classList.toggle('flipped'); }
+  });
+  /* سحب البطاقة يمينًا ويسارًا */
+  var swipeX = null;
+  document.getElementById('mxStage').addEventListener('pointerdown', function(e){ swipeX = e.clientX; });
+  document.getElementById('mxStage').addEventListener('pointerup', function(e){
+    if(swipeX === null) return;
+    var dx = e.clientX - swipeX; swipeX = null;
+    if(Math.abs(dx) > 60){
+      var rtl = document.documentElement.dir === 'rtl';
+      go((dx < 0) === rtl ? 1 : -1);
+    }
+  });
 
   /* ============ ماذا نتعلم ============ */
   var lessonsGrid = document.getElementById('lessonsGrid');
   D.lessons.forEach(function(l){
     var card = document.createElement('div');
-    card.className = 'mini-card';
+    card.className = 'mini-card c' + ((D.n + lessonsGrid.children.length * 3) % 8);
+    card.addEventListener('click', function(){ card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); });
     card.innerHTML = '<span class="icon">' + l[0] + '</span><span data-ar-only>' + fmt(l[1]) + '</span><span data-en-only>' + fmt(l[2]) + '</span>';
     lessonsGrid.appendChild(card);
   });
@@ -667,7 +881,7 @@
     orderState.forEach(function(idx){
       var li = document.createElement('li');
       li.dataset.idx = idx;
-      li.innerHTML = '<span class="handle">☰</span><span lang="ar">' + esc(shortText(ayahs[idx].ar, 8)) + '</span>';
+      li.innerHTML = '<span class="handle">☰</span><span lang="ar">' + esc(tokens(ayahs[idx].ar).join(' ')) + '</span>';
       orderList.appendChild(li);
     });
   }
@@ -745,7 +959,6 @@
       if(w.length < 2) return;
       var answer = w[w.length-1];
       var before = w.slice(0, -1);
-      if(before.length > 10) before = ['...'].concat(before.slice(-10));
       fillBlanks.push({ k:k, text: before.join(' ') + ' ______', answer: answer });
     });
     fbIndex = 0;
@@ -931,6 +1144,8 @@
     btnEn.classList.toggle('active', en);
     nameInput.placeholder = en ? nameInput.dataset.phEn : nameInput.dataset.phAr;
     renderWelcome();
+    updateTile();
+    if(!mx.hidden) renderCard(mxIndex, 0);
     renderOrderList();
     renderFillBlank();
     quizScore = 0; quizIndex = 0;
@@ -943,6 +1158,7 @@
   btnEn.addEventListener('click', function(){ setLang(true); });
 
   renderQuiz();
+  updateTile();
   loadSurah();
 
 })();

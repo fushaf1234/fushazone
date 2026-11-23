@@ -367,6 +367,15 @@
         (item.soon ? '<span data-ar-only>قريبًا</span><span data-en-only>Coming soon</span>' : '<span data-ar-only>ابدأ الدرس</span><span data-en-only>Start Lesson</span>') +
         '<span class="arrow" data-ar-only>←</span><span class="arrow" data-en-only>→</span>' +
       '</div>';
+    if(!kind && item.n){
+      // نفس لون صفحة السورة
+      var h = Math.round((item.n * 137.508) % 360);
+      var badge = a.querySelector('.lesson-badge');
+      badge.style.background = 'radial-gradient(circle at 35% 30%, hsl(' + h + ' 70% 78%), hsl(' + h + ' 50% 42%) 65%, hsl(' + h + ' 55% 22%) 100%)';
+      badge.style.color = '#fff';
+      a.style.borderInlineStart = '6px solid hsl(' + h + ' 50% 42%)';
+      a.querySelector('.name-ar').style.color = 'hsl(' + h + ' 55% 22%)';
+    }
     container.appendChild(a);
   }
 

@@ -34,7 +34,10 @@ const LESSON_TRACKS: LessonTrack[] = [
   {
     id: 'native', icon: School, ar: 'مناهج اللغة العربية للعرب', en: 'Arabic School Curricula (Native Speakers)',
     descAr: 'دروس تفاعلية على مناهج المدارس العربية.', descEn: 'Interactive lessons following Arab school curricula.',
-    items: [{ ar: 'لغتي الجميلة – الصف الرابع – الفصل الأول (السعودية)', en: 'My Beautiful Language – Grade 4 – Term 1 (Saudi)' }]
+    items: [
+      { ar: 'لغتي الجميلة – الصف الخامس – الفصل الأول (السعودية)', en: 'My Beautiful Language – Grade 5 – Term 1 (Saudi)', href: '/quran-kids/lughati-g5-t1.html', noteAr: 'مراجعة + الوحدة الأولى: أخلاق وفضائل', noteEn: 'Review + Unit 1: Morals and Virtues' },
+      { ar: 'لغتي الجميلة – الصف الرابع – الفصل الأول (السعودية)', en: 'My Beautiful Language – Grade 4 – Term 1 (Saudi)' }
+    ]
   }
 ];
 

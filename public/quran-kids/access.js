@@ -68,7 +68,8 @@
     '#fzLock .ico{font-size:54px}#fzLock h2{margin:8px 0;color:#0B3B2C;font-size:24px}#fzLock p{color:#555;line-height:1.8;margin:0 0 16px}' +
     '#fzLock a.btn{display:block;text-decoration:none;font-weight:800;padding:13px 16px;border-radius:999px;margin:8px 0}' +
     '#fzLock a.gold{background:linear-gradient(135deg,#F3D98B,#C9A24B);color:#3B2A05}#fzLock a.red{background:linear-gradient(135deg,#EF4444,#B91C1C);color:#fff}' +
-    '#fzLock a.ghost{color:#0B3B2C;background:#F3F4F6}';
+    '#fzLock a.ghost{color:#0B3B2C;background:#F3F4F6}' +
+    '#fzLock [data-en-only]{display:none}body.lang-en #fzLock [data-en-only]{display:inline}body.lang-en #fzLock [data-ar-only]{display:none}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   function en(){ return document.body.classList.contains('lang-en'); }
